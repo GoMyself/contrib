@@ -4,12 +4,13 @@ import (
 	// "log"
 	"errors"
 	"fmt"
-	"github.com/go-redis/redis/v7"
+  	"context"
+	"github.com/go-redis/redis/v8"
 	"github.com/valyala/fasthttp"
 )
 
 
-
+var ctx = context.Background()
 var	client *redis.Client
 
 
@@ -22,7 +23,7 @@ func Set(value []byte, uid uint64, demo bool) (string, error) {
 	uuid := fmt.Sprintf("TI%d", uid)
 	key  := fmt.Sprintf("%d", Cputicks())
 	
-	val  := client.Get(uuid).Val()
+	val  := client.Get(ctx, uuid).Val()
 	pipe := client.TxPipeline()
 
 	defer pipe.Close()
@@ -71,7 +72,7 @@ func Destroy(ctx *fasthttp.RequestCtx) {
 	if len(key) == 0 {
 		return
 	}
-	client.Unlink(key)
+	client.Unlink(ctx, key)
 	//cookie.Delete(ctx, defaultSessionKeyName)
 }
 
@@ -82,7 +83,7 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 		return nil, errors.New("does not exist")
 	}
 
-	val, err := client.Get(key).Bytes()
+	val, err := client.Get(ctx, key).Bytes()
 	if err == redis.Nil {
 		return nil, errors.New("does not exist")
 	} else if err != nil {
