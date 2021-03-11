@@ -4,7 +4,6 @@ import (
 	"fmt"
     "log"
     "time"
-	"context"
 	_ "github.com/go-sql-driver/mysql"
     "github.com/jmoiron/sqlx"
     "github.com/go-redis/redis/v8"

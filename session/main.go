@@ -30,14 +30,10 @@ func Set(value []byte, uid uint64, demo bool) (string, error) {
 
 	if len(val) > 0 {
 		//同一个用户，一个时间段，只能登录一个
-		pipe.Unlink(val)
+		pipe.Unlink(ctx, val)
 	}
-	pipe.Set(uuid, key, -1)
-	expire := defaultGCLifetime
-	if demo {
-		expire = defaultDemoExpires
-	}
-	pipe.SetNX(key, value, expire)
+	pipe.Set(ctx, uuid, key, -1)
+	pipe.SetNX(ctx, key, value, defaultGCLifetime)
 
 	_, err := pipe.Exec()
 
@@ -56,8 +52,8 @@ func Update(value []byte, uid uint64) bool {
 		return false
 	}
 
-	pipe.Unlink(val)
-	pipe.SetNX(val, value, defaultGCLifetime)
+	pipe.Unlink(ctx, val)
+	pipe.SetNX(ctx, val, value, defaultGCLifetime)
 
 	_, err := pipe.Exec()
     if err != nil {
