@@ -5,6 +5,7 @@ import (
     "log"
     "time"
     "context"
+    "github.com/olivere/elastic/v7"
 	_ "github.com/go-sql-driver/mysql"
     "github.com/jmoiron/sqlx"
     "github.com/go-redis/redis/v8"
@@ -75,4 +76,14 @@ func InitRedis(dsn string, psd string) *redis.Client {
     fmt.Println(pong, err)
 
     return reddb
+}
+
+func InitES(url []string) *elastic.Client {
+
+	client, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(url...))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return client
 }
