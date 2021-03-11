@@ -35,7 +35,7 @@ func Set(value []byte, uid uint64, demo bool) (string, error) {
 	pipe.Set(ctx, uuid, key, -1)
 	pipe.SetNX(ctx, key, value, defaultGCLifetime)
 
-	_, err := pipe.Exec()
+	_, err := pipe.Exec(ctx)
 
 	return key, err
 }
@@ -44,7 +44,7 @@ func Update(value []byte, uid uint64) bool {
 
 	uuid := fmt.Sprintf("TI%d", uid)
 	
-	val  := client.Get(uuid).Val()
+	val  := client.Get(ctx, uuid).Val()
 	pipe := client.TxPipeline()
 	defer pipe.Close()
   
@@ -55,7 +55,7 @@ func Update(value []byte, uid uint64) bool {
 	pipe.Unlink(ctx, val)
 	pipe.SetNX(ctx, val, value, defaultGCLifetime)
 
-	_, err := pipe.Exec()
+	_, err := pipe.Exec(ctx)
     if err != nil {
     	return false
     }
