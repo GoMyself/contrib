@@ -46,3 +46,15 @@ func Parse(key string, v interface{}) error {
 
 	return cjson.Unmarshal(gr.Kvs[0].Value, v)
 }
+
+func ParsePlatform(key string, v interface{}) ([]byte, error) {
+
+	ctx, _ := context.WithTimeout(context.Background(), requestTimeout)
+	kv := clientv3.NewKV(conn)
+	gr, _ := kv.Get(ctx, key)
+	if gr == nil || len(gr.Kvs) == 0 {
+		return nil, fmt.Errorf("No more '%s'", key)
+	}
+
+	return gr.Kvs[0].Value, nil
+}
