@@ -4,10 +4,13 @@ import (
 	"fmt"
     "log"
     "time"
+    "context"
 	_ "github.com/go-sql-driver/mysql"
     "github.com/jmoiron/sqlx"
     "github.com/go-redis/redis/v8"
 )
+
+var ctx = context.Background()
 
 func InitDB(dsn string, maxIdleConn, maxOpenConn int) *sqlx.DB {
 
@@ -42,7 +45,7 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
         MaxRetries:    2,
         IdleTimeout:   5 * time.Minute,
     })
-    pong, err := reddb.Ping().Result()
+    pong, err := reddb.Ping(ctx).Result()
     if err != nil {
         log.Fatalf("initRedisSentinel failed: %s", err.Error())
     }
@@ -65,7 +68,7 @@ func InitRedis(dsn string, psd string) *redis.Client {
         MaxRetries:   2,
         IdleTimeout:  5 * time.Minute,
     })
-    pong, err := reddb.Ping().Result()
+    pong, err := reddb.Ping(ctx).Result()
     if err != nil {
         log.Fatalf("initRedisSlave failed: %s", err.Error())
     }
