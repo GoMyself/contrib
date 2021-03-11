@@ -47,7 +47,7 @@ func Parse(key string, v interface{}) error {
 	return cjson.Unmarshal(gr.Kvs[0].Value, v)
 }
 
-func ParsePlatform(key string, v interface{}) ([]byte, error) {
+func ParsePlatform(key string) ([]byte, error) {
 
 	ctx, _ := context.WithTimeout(context.Background(), requestTimeout)
 	kv := clientv3.NewKV(conn)
