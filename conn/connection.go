@@ -30,13 +30,13 @@ func InitDB(dsn string, maxIdleConn, maxOpenConn int) *sqlx.DB {
     return db
 }
 
-func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
+func InitRedisSentinel(dsn []string, psd, name string) *redis.Client {
 
     reddb := redis.NewFailoverClient(&redis.FailoverOptions{
         MasterName:    name,
         SentinelAddrs: dsn,
         Password:      psd, // no password set
-        DB:            db,  // use default DB
+        DB:            0,  // use default DB
         DialTimeout:   10 * time.Second,
         ReadTimeout:   30 * time.Second,
         WriteTimeout:  30 * time.Second,
