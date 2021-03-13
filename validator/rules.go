@@ -12,6 +12,8 @@ import (
 	//"fmt"
 )
 
+loc, _ := time.LoadLocation("Asia/Shanghai")
+
 // 判断字符是否为数字
 func isDigit(r rune) bool {
 	return '0' <= r && r <= '9'
@@ -243,7 +245,7 @@ func CheckStringAlnum(s string) bool {
 
 // 检查日期格式"YYYY-MM-DD"
 func CheckDate(str string) bool {
-	loc, _ := time.LoadLocation("Asia/Shanghai")
+	
 	_, err := time.ParseInLocation("2006-01-02", str, loc)
 	if err != nil {
 		return false
@@ -253,7 +255,7 @@ func CheckDate(str string) bool {
 
 // 匹配时间 "HH:ii" or "HH:ii:ss"
 func checkTime(str string) bool {
-	loc, _ := time.LoadLocation("Asia/Shanghai")
+	//loc, _ := time.LoadLocation("Asia/Shanghai")
 	_, err := time.ParseInLocation("15:04:05", str, loc)
 	if err != nil {
 		return false
@@ -263,7 +265,7 @@ func checkTime(str string) bool {
 
 // 检查日期时间格式"YYYY-MM-DD HH:ii:ss"
 func CheckDateTime(str string) bool {
-	loc, _ := time.LoadLocation("Asia/Shanghai")
+	//loc, _ := time.LoadLocation("Asia/Shanghai")
 	_, err := time.ParseInLocation("2006-01-02 15:04:05", str, loc)
 	if err != nil {
 		return false
