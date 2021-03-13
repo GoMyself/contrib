@@ -5,3 +5,4 @@ TEXT ·Cputicks(SB),7,$0
     ADDQ  DX, AX
     MOVQ  AX, n+0(FP)
     RET
+ 
