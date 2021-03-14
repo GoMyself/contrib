@@ -55,9 +55,9 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 
 		defaultVal := ""
 		if string(ctx.Method()) == "GET" {
-			defaultVal = string(ctx.QueryArgs().Peek(name))
+			defaultVal = strings.TrimSpace(string(ctx.QueryArgs().Peek(name)))
 		} else if string(ctx.Method()) == "POST" {
-			defaultVal = string(ctx.PostArgs().Peek(name))
+			defaultVal = strings.TrimSpace(string(ctx.PostArgs().Peek(name)))
 		}
 
 		//fmt.Println("name = ", string(ctx.PostBody()))
