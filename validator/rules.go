@@ -12,7 +12,7 @@ import (
 	//"fmt"
 )
 
-var loc, _ := time.LoadLocation("Asia/Shanghai")
+var loc, _ = time.LoadLocation("Asia/Shanghai")
 
 // 判断字符是否为数字
 func isDigit(r rune) bool {
