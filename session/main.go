@@ -69,7 +69,7 @@ func Update(value []byte, uid uint64) bool {
 
 func Destroy(ctx *fasthttp.RequestCtx) {
 
-	key := string(ctx.Request.Header.Peek("token"))
+	key := string(ctx.Request.Header.Peek("t"))
 	if len(key) == 0 {
 		return
 	}
