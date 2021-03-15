@@ -4,7 +4,7 @@ import "time"
 
 const defaultSessionKeyName = "y"
 const defaultDomain = ""
-const defaultExpires = 2 * time.Hour
+const defaultExpires = 5 * time.Hour
 const defaultDemoExpires = 5 * time.Minute // 试玩登录默认过期时间
 
 
