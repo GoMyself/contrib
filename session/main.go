@@ -79,7 +79,7 @@ func Destroy(ctx *fasthttp.RequestCtx) {
 
 func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 
-	key := string(ctx.Request.Header.Peek("token"))
+	key := string(ctx.Request.Header.Peek("t"))
 	if len(key) == 0 {
 		return nil, errors.New("does not exist")
 	}
