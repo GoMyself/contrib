@@ -14,11 +14,11 @@ import (
 )
 
 type Response struct {
-	Status string      `json:"status"`
+	Status bool      `json:"status"`
 	Data   interface{} `json:"data"`
 }
 
-func Print(ctx *fasthttp.RequestCtx, state string, data interface{}) {
+func Print(ctx *fasthttp.RequestCtx, state bool, data interface{}) {
 
 	ctx.SetStatusCode(200)
 	ctx.SetContentType("application/json")
@@ -37,16 +37,16 @@ func Print(ctx *fasthttp.RequestCtx, state string, data interface{}) {
 	ctx.SetBody(bytes)
 }
 
-func PrintJson(ctx *fasthttp.RequestCtx, state, data string) {
+func PrintJson(ctx *fasthttp.RequestCtx, state bool, data string) {
 
 	ctx.SetStatusCode(200)
 	ctx.SetContentType("application/json")
 
 	builder := strings.Builder{}
 
-	builder.WriteString(`{"status":"`)
-	builder.WriteString(state)
-	builder.WriteString(`","data":`)
+	builder.WriteString(`{"status":`)
+	builder.WriteString(strconv.FormatBool(state))
+	builder.WriteString(`,"data":`)
 	builder.WriteString(data)
 	builder.WriteString("}")
 
