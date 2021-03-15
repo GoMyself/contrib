@@ -18,7 +18,7 @@ func New(reddb *redis.Client) {
 	client = reddb
 }
 
-func Set(value []byte, uid uint64, demo bool) (string, error) {
+func Set(value []byte, uid uint64) (string, error) {
 
 	uuid := fmt.Sprintf("TI%d", uid)
 	key  := fmt.Sprintf("%d", Cputicks())
