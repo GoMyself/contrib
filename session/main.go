@@ -58,7 +58,7 @@ func Update(value []byte, uid uint64) bool {
 	}
 
 	pipe.Unlink(ctx, val)
-	pipe.SetNX(ctx, val, value, defaultGCLifetime)
+	pipe.SetNX(ctx, val, value, defaultExpires)
 
 	_, err := pipe.Exec(ctx)
     if err != nil {
