@@ -37,7 +37,7 @@ func Set(value []byte, uid uint64) (string, error) {
 		pipe.Unlink(ctx, val)
 	}
 	*/
-	pipe.Set(ctx, uuid, key, -1)
+	//pipe.Set(ctx, uuid, key, -1)
 	pipe.SetNX(ctx, key, value, defaultGCLifetime)
 
 	_, err := pipe.Exec(ctx)
