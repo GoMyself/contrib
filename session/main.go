@@ -10,8 +10,11 @@ import (
 )
 
 
-var ctx = context.Background()
-var	client *redis.Client
+var (
+	ctx = context.Background()
+	client *redis.Client	
+)
+
 
 
 func New(reddb *redis.Client) {
@@ -20,18 +23,20 @@ func New(reddb *redis.Client) {
 
 func Set(value []byte, uid uint64) (string, error) {
 
-	uuid := fmt.Sprintf("TI%d", uid)
+	//uuid := fmt.Sprintf("TI%d", uid)
 	key  := fmt.Sprintf("%d", Cputicks())
 	
-	val  := client.Get(ctx, uuid).Val()
+	//val  := client.Get(ctx, uuid).Val()
 	pipe := client.TxPipeline()
 
 	defer pipe.Close()
 
+	/*
 	if len(val) > 0 {
 		//同一个用户，一个时间段，只能登录一个
 		pipe.Unlink(ctx, val)
 	}
+	*/
 	pipe.Set(ctx, uuid, key, -1)
 	pipe.SetNX(ctx, key, value, defaultGCLifetime)
 
