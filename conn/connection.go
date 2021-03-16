@@ -9,6 +9,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
     "github.com/jmoiron/sqlx"
     "github.com/go-redis/redis/v8"
+    "github.com/beanstalkd/go-beanstalk"
+    cpool "github.com/silenceper/pool"
 )
 
 var ctx = context.Background()
@@ -86,4 +88,24 @@ func InitES(url []string) *elastic.Client {
 	}
 
 	return client
+}
+
+func InitBeanstalk(beanstalkConn string) cpool.Pool {
+
+    factory    := func() (interface{}, error) { return beanstalk.Dial("tcp", beanstalkConn) }
+    closed     := func(v interface{}) error { return v.(*beanstalk.Conn).Close() }
+    poolConfig := &cpool.Config{
+        InitialCap  : 15,  // 资源池初始连接数
+        MaxIdle     : 50,  // 最大空闲连接数
+        MaxCap      : 100, // 最大并发连接数
+        Factory     : factory,
+        Close       : closed,
+        IdleTimeout : 15 * time.Second,
+    }
+
+    beanPool, err := cpool.NewChannelPool(poolConfig)
+    if err != nil {
+        log.Fatalln(err)
+    }
+    return beanPool
 }
