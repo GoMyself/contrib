@@ -26,22 +26,26 @@ func Set(value []byte, uid uint64) (string, error) {
 	//uuid := fmt.Sprintf("TI%d", uid)
 	key  := fmt.Sprintf("%d", Cputicks())
 	
+	/*
 	//val  := client.Get(ctx, uuid).Val()
 	pipe := client.TxPipeline()
 
 	defer pipe.Close()
 
-	/*
+	
 	if len(val) > 0 {
 		//同一个用户，一个时间段，只能登录一个
 		pipe.Unlink(ctx, val)
 	}
-	*/
+	
 	//pipe.Set(ctx, uuid, key, -1)
 	pipe.SetNX(ctx, key, value, defaultGCLifetime)
 
 	_, err := pipe.Exec(ctx)
+	*/
 
+	_, err := client.SetNX(ctx, key, value, defaultGCLifetime).Result()
+    
 	return key, err
 }
 
