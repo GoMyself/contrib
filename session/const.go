@@ -4,7 +4,7 @@ import "time"
 
 const defaultSessionKeyName = "y"
 const defaultDomain = ""
-const defaultExpires = time.Duration(2) * time.Hour
+const defaultExpires = time.Duration(7200) * time.Second
 
 
 const defaultGCLifetime = time.Duration(60) * time.Second
