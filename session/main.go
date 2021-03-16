@@ -44,7 +44,7 @@ func Set(value []byte, uid uint64) (string, error) {
 	_, err := pipe.Exec(ctx)
 	*/
 
-	_, err := client.SetNX(ctx, key, value, defaultGCLifetime).Result()
+	_, err := client.SetNX(ctx, key, value, defaultExpires).Result()
     
 	return key, err
 }
