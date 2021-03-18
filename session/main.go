@@ -97,3 +97,15 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 		return val, nil
 	}
 }
+
+func GetByToken(token string) ([]byte, error) {
+
+	val, err := client.Get(ctx, token).Bytes()
+	if err == redis.Nil {
+		return nil, errors.New("does not exist")
+	} else if err != nil {
+		return nil, err
+	} else {
+		return val, nil
+	}
+}
