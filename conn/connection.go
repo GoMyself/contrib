@@ -5,12 +5,13 @@ import (
     "log"
     "time"
     "context"
-    "github.com/olivere/elastic/v7"
-	_ "github.com/go-sql-driver/mysql"
     "github.com/jmoiron/sqlx"
     "github.com/go-redis/redis/v8"
+    "github.com/olivere/elastic/v7"
+    _ "github.com/go-sql-driver/mysql"
     "github.com/beanstalkd/go-beanstalk"
     cpool "github.com/silenceper/pool"
+    "github.com/fluent/fluent-logger-golang/fluent"
 )
 
 var ctx = context.Background()
@@ -108,4 +109,23 @@ func InitBeanstalk(beanstalkConn string) cpool.Pool {
         log.Fatalln(err)
     }
     return beanPool
+}
+
+
+func InitFluentd(addr string, port int) *fluent.Fluent {
+
+    c := fluent.Config{
+        FluentPort   : port, 
+        FluentHost   : addr,
+        Async        : true,
+        MaxRetry     : 3 ,
+        AsyncConnect : false,
+    }
+    
+    zlog, err := fluent.New(c)
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    return zlog
 }
