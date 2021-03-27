@@ -1,17 +1,18 @@
 package conn
 
 import (
-	"fmt"
+    "context"
+    "fmt"
+    "github.com/beanstalkd/go-beanstalk"
+    "github.com/fluent/fluent-logger-golang/fluent"
+    "github.com/go-redis/redis/v8"
+    _ "github.com/go-sql-driver/mysql"
+    "github.com/jmoiron/sqlx"
+    "github.com/olivere/elastic/v7"
+    "github.com/panjf2000/ants/v2"
+    cpool "github.com/silenceper/pool"
     "log"
     "time"
-    "context"
-    "github.com/jmoiron/sqlx"
-    "github.com/go-redis/redis/v8"
-    "github.com/olivere/elastic/v7"
-    _ "github.com/go-sql-driver/mysql"
-    "github.com/beanstalkd/go-beanstalk"
-    cpool "github.com/silenceper/pool"
-    "github.com/fluent/fluent-logger-golang/fluent"
 )
 
 var ctx = context.Background()
@@ -128,4 +129,13 @@ func InitFluentd(addr string, port int) *fluent.Fluent {
     }
 
     return zlog
+}
+
+func InitRoutinePool() *ants.Pool {
+    // TODO 现在先写默认值，后续优化为根据配置文件动态更新数量
+    pool, err := ants.NewPool(5000)
+    if err != nil {
+        log.Fatalln(err)
+    }
+    return pool
 }
