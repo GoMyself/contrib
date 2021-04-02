@@ -71,6 +71,16 @@ func Update(value []byte, uid uint64) bool {
 	return true
 }
 
+func Offline(uid uint64) {
+
+	uuid := fmt.Sprintf("TI%d", uid)
+	val := client.Get(ctx,uuid).Val()
+
+	if len(val) > 0 {
+		client.Unlink(ctx, val)
+	}
+}
+
 func Destroy(ctx *fasthttp.RequestCtx) {
 
 	key := string(ctx.Request.Header.Peek("t"))
