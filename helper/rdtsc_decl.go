@@ -5,7 +5,6 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func Cputicks() (t uint64)
 
 var fc = &fasthttp.Client{}
 
