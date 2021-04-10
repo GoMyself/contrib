@@ -120,6 +120,10 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 			if !CheckStringCHNAlnum(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
+		} else if rule == "float" {
+			if !checkFloat(defaultVal) {
+				return errors.New(msg)
+			}
 		}
 
 		switch f.Type().Kind() {

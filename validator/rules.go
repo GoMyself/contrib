@@ -170,7 +170,7 @@ func CheckStringCHNAlnum(str string) bool {
 			r != ' ' && r != '-' && r != '!' && r != '_' &&
 			r != '@' && r != '?' && r != '+' && r != ':' &&
 			r != '.' && r != '/' && r != '(' && r != '\'' &&
-			r != ')' && r != '·' && r != '&' && !unicode.Is(unicode.Han, r){
+			r != ')' && r != '·' && r != '&' && !unicode.Is(unicode.Han, r) {
 			return false
 		}
 	}
@@ -245,7 +245,7 @@ func CheckStringAlnum(s string) bool {
 
 // 检查日期格式"YYYY-MM-DD"
 func CheckDate(str string) bool {
-	
+
 	_, err := time.ParseInLocation("2006-01-02", str, loc)
 	if err != nil {
 		return false
