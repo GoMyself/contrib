@@ -36,7 +36,7 @@ func Set(value []byte, uid uint64) (string, error) {
 		pipe.Unlink(ctx, val)
 	}
 
-	pipe.Set(ctx, uuid, key, -1)
+	pipe.Set(ctx, uuid, key, time.Duration(100) * time.Hour)
 	pipe.SetNX(ctx, key, value, defaultExpires)
 
 	_, err = pipe.Exec(ctx)
