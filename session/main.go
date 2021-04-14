@@ -21,28 +21,28 @@ func New(reddb *redis.Client) {
 
 func Set(value []byte, uid uint64) (string, error) {
 
-	//uuid := fmt.Sprintf("TI%d", uid)
+	uuid := fmt.Sprintf("TI%d", uid)
 	key := fmt.Sprintf("%d", Cputicks())
 
-	/*
-		//val  := client.Get(ctx, uuid).Val()
-		pipe := client.TxPipeline()
+	
+	val, err  := client.Get(ctx, uuid).Result()
+	pipe := client.TxPipeline()
 
-		defer pipe.Close()
+	defer pipe.Close()
 
 
-		if len(val) > 0 {
-			//同一个用户，一个时间段，只能登录一个
-			pipe.Unlink(ctx, val)
-		}
+	if err != redis.Nil && len(val) > 0 {
+		//同一个用户，一个时间段，只能登录一个
+		pipe.Unlink(ctx, val)
+	}
 
-		//pipe.Set(ctx, uuid, key, -1)
-		pipe.SetNX(ctx, key, value, defaultGCLifetime)
+	pipe.Set(ctx, uuid, key, -1)
+	pipe.SetNX(ctx, key, value, defaultExpires)
 
-		_, err := pipe.Exec(ctx)
-	*/
+	_, err = pipe.Exec(ctx)
 
-	_, err := client.SetNX(ctx, key, value, defaultExpires).Result()
+
+	//_, err := client.SetNX(ctx, key, value, defaultExpires).Result()
 
 	return key, err
 }
