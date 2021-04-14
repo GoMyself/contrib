@@ -2,20 +2,18 @@ package session
 
 import (
 	// "log"
+	"context"
 	"errors"
 	"fmt"
-  	"context"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/valyala/fasthttp"
 )
 
-
 var (
-	ctx = context.Background()
-	client *redis.Client	
+	ctx    = context.Background()
+	client *redis.Client
 )
-
-
 
 func New(reddb *redis.Client) {
 	client = reddb
@@ -24,39 +22,39 @@ func New(reddb *redis.Client) {
 func Set(value []byte, uid uint64) (string, error) {
 
 	//uuid := fmt.Sprintf("TI%d", uid)
-	key  := fmt.Sprintf("%d", Cputicks())
-	
+	key := fmt.Sprintf("%d", Cputicks())
+
 	/*
-	//val  := client.Get(ctx, uuid).Val()
-	pipe := client.TxPipeline()
+		//val  := client.Get(ctx, uuid).Val()
+		pipe := client.TxPipeline()
 
-	defer pipe.Close()
+		defer pipe.Close()
 
-	
-	if len(val) > 0 {
-		//同一个用户，一个时间段，只能登录一个
-		pipe.Unlink(ctx, val)
-	}
-	
-	//pipe.Set(ctx, uuid, key, -1)
-	pipe.SetNX(ctx, key, value, defaultGCLifetime)
 
-	_, err := pipe.Exec(ctx)
+		if len(val) > 0 {
+			//同一个用户，一个时间段，只能登录一个
+			pipe.Unlink(ctx, val)
+		}
+
+		//pipe.Set(ctx, uuid, key, -1)
+		pipe.SetNX(ctx, key, value, defaultGCLifetime)
+
+		_, err := pipe.Exec(ctx)
 	*/
 
 	_, err := client.SetNX(ctx, key, value, defaultExpires).Result()
-    
+
 	return key, err
 }
 
 func Update(value []byte, uid uint64) bool {
 
 	uuid := fmt.Sprintf("TI%d", uid)
-	
-	val  := client.Get(ctx, uuid).Val()
+
+	val := client.Get(ctx, uuid).Val()
 	pipe := client.TxPipeline()
 	defer pipe.Close()
-  
+
 	if len(val) == 0 {
 		return false
 	}
@@ -65,20 +63,18 @@ func Update(value []byte, uid uint64) bool {
 	pipe.SetNX(ctx, val, value, defaultExpires)
 
 	_, err := pipe.Exec(ctx)
-    if err != nil {
-    	return false
-    }
+	if err != nil {
+		return false
+	}
 	return true
 }
 
-func Offline(uid uint64) {
+func Offline(sid string) {
 
-	uuid := fmt.Sprintf("TI%d", uid)
-	val := client.Get(ctx,uuid).Val()
-
-	if len(val) > 0 {
-		client.Unlink(ctx, val)
+	if len(sid) == 0 {
+		return
 	}
+	client.Unlink(ctx, sid)
 }
 
 func Destroy(ctx *fasthttp.RequestCtx) {
