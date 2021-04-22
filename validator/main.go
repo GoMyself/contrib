@@ -76,6 +76,10 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 			if !CheckStringDigit(defaultVal) || !checkIntScope(defaultVal, min, max) {
 				return errors.New(msg)
 			}
+		}else if rule == "digitString" {
+			if !CheckStringDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
+				return errors.New(msg)
+			}
 		} else if rule == "sDigit" {
 			if !CheckStringCommaDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
