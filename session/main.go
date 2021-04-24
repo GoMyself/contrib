@@ -5,9 +5,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 	"github.com/go-redis/redis/v8"
 	"github.com/valyala/fasthttp"
+	"time"
 )
 
 var (
@@ -19,9 +19,9 @@ func New(reddb *redis.Client) {
 	client = reddb
 }
 
-func Set(value []byte, uid uint64) (string, error) {
+func Set(value []byte, uid string) (string, error) {
 
-	uuid := fmt.Sprintf("TI%d", uid)
+	uuid := fmt.Sprintf("TI%s", uid)
 	key := fmt.Sprintf("%d", Cputicks())
 
 	
