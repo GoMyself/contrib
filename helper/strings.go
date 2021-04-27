@@ -154,7 +154,7 @@ func GetMD5Hash(text string) string {
 }
 
 
-func StrToTime(value string) time.Time {
+func StrToTime(value string, loc *time.Location) time.Time {
 
 	if value == "" {
 		return time.Time{}
@@ -196,8 +196,7 @@ func StrToTime(value string) time.Time {
 
 	var t time.Time
 	var err error
-	loc, _ := time.LoadLocation("Asia/Shanghai")
-
+	//loc, _ := time.LoadLocation("Asia/Shanghai")
 	for _, layout := range layouts {
 		t, err = time.ParseInLocation(layout, value, loc)
 		if err == nil {
