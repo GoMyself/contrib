@@ -1,16 +1,16 @@
 package helper
 
 import (
-	"fmt"
-	"time"
-	"strconv"
-	"strings"
 	"encoding/hex"
+	"fmt"
 	"github.com/minio/md5-simd"
 	"github.com/shopspring/decimal"
-	"github.com/valyala/fasthttp"	
-	"lukechampine.com/frand"
+	"github.com/valyala/fasthttp"
 	"github.com/wI2L/jettison"
+	"lukechampine.com/frand"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type Response struct {
@@ -53,15 +53,8 @@ func PrintJson(ctx *fasthttp.RequestCtx, state bool, data string) {
 	ctx.SetBody([]byte(builder.String()))
 }
 
-func GenId() uint64 {
-
-	str := fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(20))
-	val, err := strconv.ParseUint(str, 10, 64)
-	if err != nil {
-		return 0
-	}
-
-	return val
+func GenId() string {
+	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(20))
 }
 
 //判断字符是否为数字
