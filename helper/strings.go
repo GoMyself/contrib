@@ -101,6 +101,39 @@ func CtypeAlnum(s string) bool {
 	return true
 }
 
+// 简单隐藏信息
+func Hide(s string) string {
+
+	// 邮箱
+	if strings.Contains(s, "@") {
+		r := strings.Split(s, "@")
+
+		runes := []rune(s)
+		l := len(runes)
+		if l <= 2 {
+			return string(runes[:1]) + "*" + "@" + r[1]
+		}
+
+		for i := 1; i < l-1; i++ {
+			runes[i] = '*'
+		}
+
+		return string(runes) + "@" + r[1]
+	}
+
+	runes := []rune(s)
+	l := len(runes)
+	if l <= 2 {
+		return string(runes[:1]) + "*"
+	}
+
+	for i := 1; i < l-1; i++ {
+		runes[i] = '*'
+	}
+
+	return string(runes)
+}
+
 //获取source的子串,如果start小于0或者end大于source长度则返回""
 //start:开始index，从0开始，包括0
 //end:结束index，以end结束，但不包括end
