@@ -65,7 +65,7 @@ func checkBool(str string) bool {
 }
 
 // 判断是否为float
-func checkFloat(str string) bool {
+func CheckFloat(str string) bool {
 
 	_, err := strconv.ParseFloat(str, 64)
 	if err != nil {
@@ -323,7 +323,7 @@ func CheckUrl(s string) bool {
 func checkOdds(str string) bool {
 	odds := strings.Split(str, ",")
 	for _, r := range odds {
-		if !checkFloat(r) {
+		if !CheckFloat(r) {
 			return false
 		}
 	}

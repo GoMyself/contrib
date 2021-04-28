@@ -125,7 +125,7 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 				return errors.New(msg)
 			}
 		} else if rule == "float" {
-			if !checkFloat(defaultVal) {
+			if !CheckFloat(defaultVal) {
 				return errors.New(msg)
 			}
 		}
