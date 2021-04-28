@@ -1,37 +1,32 @@
 package helper
 
 import (
+	"bytes"
 	"encoding/csv"
-	"errors"
 	"os"
 )
 
-func WriteCsv(data [][]string) error {
+func WriteCsv(data [][]string) (*bytes.Buffer, error) {
 
-	//创建文件
-	f, err := os.Create("test.csv")
-	if err != nil {
-		return errors.New("created csv file failed")
-	}
-	defer f.Close()
+	b := new(bytes.Buffer)
 
 	// 写入UTF-8 BOM
-	_, err = f.WriteString("\xEF\xBB\xBF")
+	_, err := b.WriteString("\xEF\xBB\xBF")
 	if err != nil {
-		return err
+		return b, err
 	}
 
 	//创建一个新的写入文件流
-	w := csv.NewWriter(f)
+	w := csv.NewWriter(b)
 	//写入数据
 	err = w.WriteAll(data)
 	if err != nil {
-		return err
+		return b, err
 	}
 
 	w.Flush()
 
-	return nil
+	return b, nil
 }
 
 func ReadCsv(fileName string) ([][]string, error) {
