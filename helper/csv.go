@@ -3,7 +3,7 @@ package helper
 import (
 	"bytes"
 	"encoding/csv"
-	"os"
+	"io"
 )
 
 func WriteCsv(data [][]string) (*bytes.Buffer, error) {
@@ -29,16 +29,9 @@ func WriteCsv(data [][]string) (*bytes.Buffer, error) {
 	return b, nil
 }
 
-func ReadCsv(fileName string) ([][]string, error) {
+func ReadCsv(fs io.Reader) ([][]string, error) {
 
 	var data [][]string
-
-	// 读取文件
-	fs, err := os.Open(fileName)
-	if err != nil {
-		return data, err
-	}
-	defer fs.Close()
 
 	r := csv.NewReader(fs)
 	content, err := r.ReadAll()
