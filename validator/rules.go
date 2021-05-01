@@ -2,6 +2,7 @@ package validator
 
 import (
 	"fmt"
+	"github.com/shopspring/decimal"
 	"strconv"
 	"strings"
 	"time"
@@ -117,6 +118,31 @@ func checkIntScope(s string, min, max int64) bool {
 	}
 
 	return true
+}
+
+// 判断浮点范围
+func CheckFloatScope(s, min, max string) (decimal.Decimal, bool) {
+
+	fs, err := decimal.NewFromString(s)
+	if err != nil {
+		return fs, false
+	}
+
+	fMin, err := decimal.NewFromString(min)
+	if err != nil {
+		return fs, false
+	}
+
+	fMax, err := decimal.NewFromString(max)
+	if err != nil {
+		return fs, false
+	}
+
+	if fs.Cmp(fMin) == -1 || fMax.Cmp(fs) == -1 {
+		return fs, false
+	}
+
+	return fs, true
 }
 
 // 判断是否全为数字
