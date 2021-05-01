@@ -3,7 +3,7 @@ package helper
 
 import (
     "crypto/hmac"
-    "crypto/sha1"
+    "crypto/sha256"
     "encoding/base32"
     "encoding/binary"
     "time"
@@ -19,7 +19,7 @@ func HMACSHA1(k []byte, c uint64) []byte {
     cb := make([]byte, 8)
     binary.BigEndian.PutUint64(cb, c)
 
-    mac := hmac.New(sha1.New, k)
+    mac := hmac.New(sha256.New, k)
     mac.Write(cb)
 
     return mac.Sum(nil)
