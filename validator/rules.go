@@ -1,7 +1,6 @@
 package validator
 
 import (
-	"fmt"
 	"github.com/shopspring/decimal"
 	"strconv"
 	"strings"
@@ -190,8 +189,8 @@ func CheckStringCHN(str string) bool {
 
 // 判断是不是英文数字或者汉字
 func CheckStringCHNAlnum(str string) bool {
+
 	for _, r := range str {
-		fmt.Println(r)
 		if !isDigit(r) && !isAlpha(r) &&
 			r != ' ' && r != '-' && r != '!' && r != '_' &&
 			r != '@' && r != '?' && r != '+' && r != ':' &&
