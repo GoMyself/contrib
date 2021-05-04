@@ -377,14 +377,18 @@ func CtypeAlnum(s string) bool {
 }
 
 // 判断字符串是不是字母开头
-func FirstIsAlpha(s string) bool {
+func First2IsAlpha(s string) bool {
 
 	if s == "" {
 		return false
 	}
 
 	r := []rune(s)
-	if !isAlpha(r[0]) {
+	if len(r) < 2 {
+		return false
+	}
+
+	if !isAlpha(r[0]) || !isAlpha(r[1]) {
 		return false
 	}
 
