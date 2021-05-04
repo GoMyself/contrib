@@ -71,7 +71,7 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 		}
 
 		switch rule {
-		case  "digit":
+		case "digit":
 			if !CheckStringDigit(defaultVal) || !checkIntScope(defaultVal, min, max) {
 				return errors.New(msg)
 			}
@@ -128,11 +128,14 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 				return errors.New(msg)
 			}
 		case "filter":
+			if !CheckStringLength(defaultVal, int(min), int(max)) {
+				return errors.New(msg)
+			}
+
 			defaultVal = filterInjection(defaultVal)
 		default:
 			break
 		}
-
 
 		switch f.Type().Kind() {
 		case reflect.Bool:
