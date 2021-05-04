@@ -60,8 +60,6 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 			defaultVal = strings.TrimSpace(string(ctx.PostArgs().Peek(name)))
 		}
 
-		//fmt.Println("name = ", string(ctx.PostBody()))
-
 		if defaultVal == "" {
 			if nums > 0 {
 				defaultVal = def
@@ -72,65 +70,69 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 			}
 		}
 
-		if rule == "digit" {
+		switch rule {
+		case  "digit":
 			if !CheckStringDigit(defaultVal) || !checkIntScope(defaultVal, min, max) {
 				return errors.New(msg)
 			}
-		} else if rule == "digitString" {
+		case "digitString":
 			if !CheckStringDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
-		} else if rule == "sDigit" {
+		case "sDigit":
 			if !CheckStringCommaDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
-		} else if rule == "sAlpha" {
+		case "sAlpha":
 			if !CheckStringCommaAlpha(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
-		} else if rule == "url" {
+		case "url":
 			if !CheckUrl(defaultVal) {
 				return errors.New(msg)
 			}
-		} else if rule == "alnum" {
+		case "alnum":
 			if !CheckStringAlnum(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
-		} else if rule == "priv" {
+		case "priv":
 			if !isPriv(defaultVal) {
 				return errors.New(msg)
 			}
-		} else if rule == "dateTime" {
+		case "dateTime":
 			if !CheckDateTime(defaultVal) {
 				return errors.New(msg)
 			}
-		} else if rule == "date" {
+		case "date":
 			if !CheckDate(defaultVal) {
 				return errors.New(msg)
 			}
-		} else if rule == "time" {
+		case "time":
 			if !checkTime(defaultVal) {
 				return errors.New(msg)
 			}
-		} else if rule == "chn" {
+		case "chn":
 			if !CheckStringCHN(defaultVal) {
 				return errors.New(msg)
 			}
-		} else if rule == "module" {
+		case "module":
 			if !CheckStringModule(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
-		} else if rule == "chnAlnum" {
+		case "chnAlnum":
 			if !CheckStringCHNAlnum(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
-		} else if rule == "float" {
+		case "float":
 			if !CheckFloat(defaultVal) {
 				return errors.New(msg)
 			}
-		} else if rule == "filter" {
+		case "filter":
 			defaultVal = filterInjection(defaultVal)
+		default:
+			break
 		}
+
 
 		switch f.Type().Kind() {
 		case reflect.Bool:
