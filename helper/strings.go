@@ -63,7 +63,9 @@ func PrintJson(ctx *fasthttp.RequestCtx, state bool, data string) {
 }
 
 func GenId() string {
-	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(20))
+  	min := 100
+    max := 999
+	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
 }
 
 //判断字符是否为数字
