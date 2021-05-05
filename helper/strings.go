@@ -64,8 +64,8 @@ func PrintJson(ctx *fasthttp.RequestCtx, state bool, data string) {
 
 func GenId() string {
 
-  	var min uint64 = 100
-  	var max uint64 = 999
+  	var min uint64 = 10
+  	var max uint64 = 99
 
 	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
 }
