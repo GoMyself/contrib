@@ -74,8 +74,9 @@ func GenLongId() string {
 
   	var min uint64 = 1000
   	var max uint64 = 9999
-
-	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
+	
+  	id := fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
+    return id[0:18]
 }
 
 //判断字符是否为数字
