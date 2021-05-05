@@ -71,7 +71,7 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 
 		switch rule {
 		case "digit":
-			if !CheckStringDigit(defaultVal) || !checkIntScope(defaultVal, min, max) {
+			if !CheckStringDigit(defaultVal) || !CheckIntScope(defaultVal, min, max) {
 				return errors.New(msg)
 			}
 		case "digitString":

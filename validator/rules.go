@@ -140,7 +140,7 @@ func CheckStringLength(val string, _min, _max int) bool {
 }
 
 // 判断数字范围
-func checkIntScope(s string, min, max int64) bool {
+func CheckIntScope(s string, min, max int64) bool {
 
 	val, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
