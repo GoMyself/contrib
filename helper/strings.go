@@ -70,6 +70,14 @@ func GenId() string {
 	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
 }
 
+func GenLongId() string {
+
+  	var min uint64 = 1000
+  	var max uint64 = 9999
+
+	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
+}
+
 //判断字符是否为数字
 func isDigit(r rune) bool {
 	return '0' <= r && r <= '9'
