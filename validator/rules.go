@@ -280,7 +280,7 @@ func CheckDate(str string) bool {
 
 // 匹配时间 "HH:ii" or "HH:ii:ss"
 func checkTime(str string) bool {
-	//loc, _ := time.LoadLocation("Asia/Shanghai")
+
 	_, err := time.ParseInLocation("15:04:05", str, loc)
 	if err != nil {
 		return false
@@ -290,7 +290,7 @@ func checkTime(str string) bool {
 
 // 检查日期时间格式"YYYY-MM-DD HH:ii:ss"
 func CheckDateTime(str string) bool {
-	//loc, _ := time.LoadLocation("Asia/Shanghai")
+
 	_, err := time.ParseInLocation("2006-01-02 15:04:05", str, loc)
 	if err != nil {
 		return false
@@ -301,12 +301,12 @@ func CheckDateTime(str string) bool {
 func CheckMoney(money string) bool {
 
 	// 金额小数验证
-	_, errm := strconv.Atoi(money)
-	if errm != nil {
+	_, err := strconv.Atoi(money)
+	if err != nil {
 		return false
 	}
-	_, errm = strconv.ParseFloat(money, 64)
-	if errm != nil {
+	_, err = strconv.ParseFloat(money, 64)
+	if err != nil {
 		return false
 	}
 	return true
