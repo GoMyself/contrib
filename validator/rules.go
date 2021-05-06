@@ -384,3 +384,31 @@ func filterInjection(str string) string {
 
 	return strings.NewReplacer(zip(array1, array2)...).Replace(str)
 }
+
+func IsVietnamesePhone(phone string) bool {
+
+	if !CtypeDigit(phone) {
+		return false
+	}
+
+	r := []rune(phone)
+	if len(r) == 10 {
+		// 01 03 05 07 08 09开头
+		if r[0] != '0' {
+			return false
+		}
+		// 01 03 05 07 08 09开头
+		if r[1] != '1' &&  r[1] != '3' &&  r[1] != '5'&&  r[1] != '7'&&  r[1] != '8'&&  r[1] != '9'{
+			return false
+		}
+	}
+
+	if len(r) == 9 {
+		// 2 6 8 9开头
+		if r[0] != '2' &&  r[0] != '6' &&  r[0] != '8'&&  r[0] != '9'{
+			return false
+		}
+	}
+
+	return true
+}
