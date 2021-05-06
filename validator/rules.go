@@ -2,19 +2,17 @@ package validator
 
 import (
 	"github.com/shopspring/decimal"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
 	"unicode"
 	"unicode/utf8"
-  	"net/url"
-	//"fmt"
 )
 
 var (
 	loc, _ = time.LoadLocation("Asia/Shanghai")
 )
-
 
 // 判断字符是否为数字
 func isDigit(r rune) bool {
@@ -364,23 +362,25 @@ func First2IsAlpha(s string) bool {
 
 // 检查url
 func CheckUrl(s string) bool {
-  	u, err := url.Parse(s)
-    return err == nil && u.Scheme != "" && u.Host != ""
+	u, err := url.Parse(s)
+	return err == nil && u.Scheme != "" && u.Host != ""
 }
 
 func zip(a1, a2 []string) []string {
-    r := make([]string, 2*len(a1))
-    for i, e := range a1 {
-        r[i*2] = e
-        r[i*2+1] = a2[i]
-    }
-    return r
+
+	r := make([]string, 2*len(a1))
+	for i, e := range a1 {
+		r[i*2] = e
+		r[i*2+1] = a2[i]
+	}
+
+	return r
 }
 
 func filterInjection(str string) string {
-	
-   	array1 := []string{"<", ">", "&", `"`, " ", "?"}
-    array2 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&iexcl;"}
-                       
-    return strings.NewReplacer(zip(array1, array2)...).Replace(str)
+
+	array1 := []string{"<", ">", "&", `"`, " ", "?"}
+	array2 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&iexcl;"}
+
+	return strings.NewReplacer(zip(array1, array2)...).Replace(str)
 }
