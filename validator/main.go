@@ -126,6 +126,10 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 			if !CheckFloat(defaultVal) {
 				return errors.New(msg)
 			}
+		case "vnphone":
+			if !IsVietnamesePhone(defaultVal) {
+				return errors.New(msg)
+			}
 		case "filter":
 			if !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
