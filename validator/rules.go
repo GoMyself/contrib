@@ -368,3 +368,19 @@ func CheckUrl(s string) bool {
     return err == nil && u.Scheme != "" && u.Host != ""
 }
 
+func zip(a1, a2 []string) []string {
+    r := make([]string, 2*len(a1))
+    for i, e := range a1 {
+        r[i*2] = e
+        r[i*2+1] = a2[i]
+    }
+    return r
+}
+
+func filterInjection(s string) string {
+	
+   	array1 := []string{"<", ">", "&", `"`, " ", "?"}
+    array2 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&iexcl;"}
+                       
+    return strings.NewReplacer(zip(array1, array2)...).Replace(str)
+}
