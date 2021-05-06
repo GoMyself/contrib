@@ -72,8 +72,8 @@ func GenId() string {
 
 func GenLongId() string {
 
-  	var min uint64 = 1000
-  	var max uint64 = 9999
+  	var min uint64 = 100000
+  	var max uint64 = 999999
 	
   	id := fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
     return id[0:18]
