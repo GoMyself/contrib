@@ -7,47 +7,14 @@ import (
 	"time"
 	"unicode"
 	"unicode/utf8"
-
-	"github.com/asaskevich/govalidator"
+  	"net/url"
 	//"fmt"
 )
 
 var (
-	o = []string{
-		"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-		"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-		"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-		"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-	}
-	n = []string{
-		"&#65;", "&#66;", "&#67;", "&#68;", "&#69;", "&#70;", "&#71;", "&#72;", "&#73;", "&#74;", "&#75;", "&#76;", "&#77;",
-		"&#78;", "&#79;", "&#80;", "&#81;", "&#82;", "&#83;", "&#84;", "&#85;", "&#86;", "&#87;", "&#88;", "&#89;", "&#90;",
-		"&#97;", "&#98;", "&#99;", "&#100;", "&#101;", "&#102;", "&#103;", "&#104;", "&#105;", "&#106;", "&#107;", "&#108;", "&#109;",
-		"&#110;", "&#111;", "&#112;", "&#113;", "&#114;", "&#115;", "&#116;", "&#117;", "&#118;", "&#119;", "&#120;", "&#121;", "&#122;",
-	}
-	so = []string{
-		"<", ">", "&", " ", "(", ")",
-	}
-	sn = []string{
-		"&lt;", "&gt;", "&amp;", "&quot;", "&#40;", "&#40;",
-	}
 	loc, _ = time.LoadLocation("Asia/Shanghai")
 )
 
-func init() {
-	genWords("insert")
-	genWords("update")
-	genWords("delete")
-	genWords("alter")
-	genWords("table")
-	genWords("create")
-	genWords("database")
-	genWords("user")
-	genWords("drop")
-	genWords("truncate")
-	genWords("set")
-	genWords("values")
-}
 
 // 判断字符是否为数字
 func isDigit(r rune) bool {
@@ -397,63 +364,7 @@ func First2IsAlpha(s string) bool {
 
 // 检查url
 func CheckUrl(s string) bool {
-	return govalidator.IsURL(s)
+  	u, err := url.Parse(s)
+    return err == nil && u.Scheme != "" && u.Host != ""
 }
 
-func checkOdds(str string) bool {
-	odds := strings.Split(str, ",")
-	for _, r := range odds {
-		if !CheckFloat(r) {
-			return false
-		}
-	}
-	return true
-}
-
-func genWords(s string) {
-
-	so = append(so, s)
-	sn = append(sn, replace(s))
-	r := []rune(s)
-	l := len(r)
-	for i := 0; i < l; i++ {
-		up(s, i)
-	}
-}
-
-func zip(old, new []string) []string {
-
-	r := make([]string, 2*len(old))
-	for i, e := range old {
-		r[i*2] = e
-		r[i*2+1] = new[i]
-	}
-
-	return r
-}
-
-func replace(s string) string {
-	return strings.NewReplacer(zip(o, n)...).Replace(s)
-}
-
-func up(s string, i int) {
-
-	r := []rune(s)
-	l := len(r)
-	if i > l {
-		return
-	}
-
-	for j := i; j < l; j++ {
-		if r[j] >= 'a' && r[j] <= 'z' {
-			r[j] -= 32
-			so = append(so, string(r))
-			sn = append(sn, replace(string(r)))
-		}
-	}
-}
-
-func filterInjection(s string) string {
-
-	return strings.NewReplacer(zip(so, sn)...).Replace(s)
-}
