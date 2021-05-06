@@ -3,7 +3,7 @@ package validator
 import (
 	"github.com/shopspring/decimal"
 	"strconv"
-	//"strings"
+	"strings"
 	"time"
 	"unicode"
 	"unicode/utf8"
@@ -377,7 +377,7 @@ func zip(a1, a2 []string) []string {
     return r
 }
 
-func filterInjection(s string) string {
+func filterInjection(str string) string {
 	
    	array1 := []string{"<", ">", "&", `"`, " ", "?"}
     array2 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&iexcl;"}
