@@ -95,14 +95,14 @@ func InitES(url []string) *elastic.Client {
 	return client
 }
 
-func InitBeanstalk(beanstalkConn string) cpool.Pool {
+func InitBeanstalk(beanstalkConn string, initialCap, maxIdle, maxCap int) cpool.Pool {
 
 	factory := func() (interface{}, error) { return beanstalk.Dial("tcp", beanstalkConn) }
 	closed := func(v interface{}) error { return v.(*beanstalk.Conn).Close() }
 	poolConfig := &cpool.Config{
-		InitialCap:  15,  // 资源池初始连接数
-		MaxIdle:     50,  // 最大空闲连接数
-		MaxCap:      100, // 最大并发连接数
+		InitialCap:  initialCap, // 资源池初始连接数
+		MaxIdle:     maxIdle,    // 最大空闲连接数
+		MaxCap:      maxCap,     // 最大并发连接数
 		Factory:     factory,
 		Close:       closed,
 		IdleTimeout: 15 * time.Second,
