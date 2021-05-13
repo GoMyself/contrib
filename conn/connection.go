@@ -15,6 +15,7 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
+  	"github.com/valyala/gorpc"
 	cpool "github.com/silenceper/pool"
 )
 
@@ -155,4 +156,12 @@ func InitMinio(endpoint, accessKeyID, secretAccessKey string, useSSL bool) *mini
 	}
 
 	return client
+}
+
+func InitRpc(dsn string) *gorpc.Client {
+  
+	c := gorpc.NewTCPClient(dsn)
+	c.Start()
+  	
+  	return c
 }
