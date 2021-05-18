@@ -135,7 +135,7 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 				return errors.New(msg)
 			}
 
-			defaultVal = filterInjection(defaultVal)
+			defaultVal = FilterInjection(defaultVal)
 		default:
 			break
 		}

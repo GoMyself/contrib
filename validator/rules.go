@@ -377,7 +377,7 @@ func zip(a1, a2 []string) []string {
 	return r
 }
 
-func filterInjection(str string) string {
+func FilterInjection(str string) string {
 
 	array1 := []string{"<", ">", "&", `"`, " ", "?"}
 	array2 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&iexcl;"}
