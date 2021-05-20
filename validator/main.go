@@ -137,11 +137,11 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 
 			defaultVal = FilterInjection(defaultVal)
 		case "uname": //会员账号
-			if !CheckUName(defaultVal) {
+			if !CheckUName(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 		case "upwd": //会员密码
-			if !CheckUPassword(defaultVal) {
+			if !CheckUPassword(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 		default:
