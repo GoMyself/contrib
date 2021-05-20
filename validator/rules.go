@@ -46,9 +46,9 @@ func isPriv(s string) bool {
 }
 
 // 检测会员名
-func CheckUName(str string) bool {
+func CheckUName(str string, min, max int) bool {
 
-	if !CtypeAlnum(str) || !First2IsAlpha(str) || !CheckStringLength(str, 4, 9) {
+	if !CtypeAlnum(str) || !First2IsAlpha(str) || !CheckStringLength(str, min, max) {
 		return false
 	}
 
@@ -56,9 +56,9 @@ func CheckUName(str string) bool {
 }
 
 // 检测会员密码
-func CheckUPassword(str string) bool {
+func CheckUPassword(str string, min, max int) bool {
 
-	if !CtypeAlnum(str) || !CheckStringLength(str, 8, 15) {
+	if !CtypeAlnum(str) || !CheckStringLength(str, min, max) {
 		return false
 	}
 
