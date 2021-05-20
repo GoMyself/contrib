@@ -45,12 +45,34 @@ func isPriv(s string) bool {
 	return true
 }
 
+// 检测会员名
+func CheckUName(str string) bool {
+
+	if !CtypeAlnum(str) || !First2IsAlpha(str) || !CheckStringLength(str, 4, 9) {
+		return false
+	}
+
+	return true
+}
+
+// 检测会员密码
+func CheckUPassword(str string) bool {
+
+	if !CtypeAlnum(str) || !CheckStringLength(str, 8, 15) {
+		return false
+	}
+
+	return true
+}
+
 // 匹配值是否为空
 func checkStr(str string) bool {
+
 	n := len(str)
 	if n <= 0 {
 		return false
 	}
+
 	return true
 }
 
@@ -406,22 +428,22 @@ func IsVietnamesePhone(phone string) bool {
 		case '1':
 		case '3': // 032、033、034、035、036、037、038、039
 			switch r[2] {
-			case '0','1':
+			case '0', '1':
 				return false
 			}
 		case '5': // 056、058、059
 			switch r[2] {
-			case '0','1','2','3','4','5','7':
+			case '0', '1', '2', '3', '4', '5', '7':
 				return false
 			}
 		case '7': // 070、079、077、076、078
 			switch r[2] {
-			case '1','2','3','4','5':
+			case '1', '2', '3', '4', '5':
 				return false
 			}
 		case '8': // 081 082 083 084 085
 			switch r[2] {
-			case '0','6','7','8','9':
+			case '0', '6', '7', '8', '9':
 				return false
 			}
 		case '9':
