@@ -419,45 +419,48 @@ func IsVietnamesePhone(phone string) bool {
 		if r[0] != '0' {
 			return false
 		}
-		// 01 03 05 07 08 09开头
-		if r[1] != '1' && r[1] != '3' && r[1] != '5' && r[1] != '7' && r[1] != '8' && r[1] != '9' {
-			return false
-		}
+		/*
+			// 01 03 05 07 08 09开头
+			if r[1] != '1' && r[1] != '3' && r[1] != '5' && r[1] != '7' && r[1] != '8' && r[1] != '9' {
+				return false
+			}
 
-		switch r[1] {
-		case '1':
-		case '3': // 032、033、034、035、036、037、038、039
-			switch r[2] {
-			case '0', '1':
+			switch r[1] {
+			case '1':
+			case '3': // 032、033、034、035、036、037、038、039
+				switch r[2] {
+				case '0', '1':
+					return false
+				}
+			case '5': // 056、058、059
+				switch r[2] {
+				case '0', '1', '2', '3', '4', '5', '7':
+					return false
+				}
+			case '7': // 070、079、077、076、078
+				switch r[2] {
+				case '1', '2', '3', '4', '5':
+					return false
+				}
+			case '8': // 081 082 083 084 085
+				switch r[2] {
+				case '0', '6', '7', '8', '9':
+					return false
+				}
+			case '9':
+			default:
 				return false
 			}
-		case '5': // 056、058、059
-			switch r[2] {
-			case '0', '1', '2', '3', '4', '5', '7':
-				return false
-			}
-		case '7': // 070、079、077、076、078
-			switch r[2] {
-			case '1', '2', '3', '4', '5':
-				return false
-			}
-		case '8': // 081 082 083 084 085
-			switch r[2] {
-			case '0', '6', '7', '8', '9':
-				return false
-			}
-		case '9':
-		default:
-			return false
-		}
+		*/
+		return true
 	}
 
-	if len(r) == 9 {
-		// 2 6 8 9开头
-		if r[0] != '2' && r[0] != '6' && r[0] != '8' && r[0] != '9' {
-			return false
-		}
-	}
+	//if len(r) == 9 {
+	//	// 2 6 8 9开头
+	//	if r[0] != '2' && r[0] != '6' && r[0] != '8' && r[0] != '9' {
+	//		return false
+	//	}
+	//}
 
-	return true
+	return false
 }
