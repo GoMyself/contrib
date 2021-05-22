@@ -30,6 +30,28 @@ func isAlpha(r rune) bool {
 	return false
 }
 
+func CheckStringVName(s string) bool {
+
+	if s == "" {
+		return false
+	}
+	
+	nums := 0
+	for _, r := range s {
+		if r == ' ' {
+			nums++
+		}
+		if (r < 'A' || r > 'Z') && r != ' ' {
+			return false
+		}
+	}
+	
+	if nums < 1 || nums > 4 {
+		return false
+	}
+	return true
+}
+
 func isPriv(s string) bool {
 
 	if s == "" {
