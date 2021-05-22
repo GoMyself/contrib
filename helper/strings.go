@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+/*
 const (
 	TYpeNone = iota
 	TypePhone
@@ -21,6 +22,7 @@ const (
 	TypeRealName
 	TypeEmail
 )
+*/
 
 type Response struct {
 	Status bool        `json:"status"`
@@ -123,75 +125,7 @@ func CtypeAlnum(s string) bool {
 	return true
 }
 
-// 简单隐藏信息
-func Hide(s string, flag int) string {
 
-	switch flag {
-	case TypePhone: //电话号码
-		if len(s)  <= 6{
-			return s
-		}
-
-		runes := []rune(s)
-		l := len(runes)
-		for i := 3; i < l-3; i++ {
-			runes[i] = '*'
-		}
-
-		return string(runes)
-	case TypeBankCardNumber,TypeVirtualCurrencyAddress: //银行卡 虚拟币地址
-		if len(s)  <= 8{
-			return s
-		}
-
-		runes := []rune(s)
-		l := len(runes)
-		for i := 4; i < l-4; i++ {
-			runes[i] = '*'
-		}
-
-		return string(runes)
-	case TypeRealName: //真实姓名
-	    // 越南语姓名
-	    n := strings.IndexAny(s, " ")
-		if n != -1{
-			runes := []rune(s)
-			l := len(runes)
-			for i := n + 1; i < l; i++ {
-				runes[i] = '*'
-			}
-
-			return string(runes)
-		}
-
-		runes := []rune(s)
-		l := len(runes)
-		for i := 1; i < l; i++ {
-			runes[i] = '*'
-		}
-
-		return string(runes)
-	case TypeEmail: 	// 邮箱
-		if !strings.Contains(s, "@") {
-			return s
-		}
-
-		r := strings.Split(s, "@")
-		runes := []rune(r[0])
-		l := len(runes)
-		if l <= 2 {
-			return string(runes[:1]) + "*" + "@" + r[1]
-		}
-
-		for i := 2; i < l; i++ {
-			runes[i] = '*'
-		}
-
-		return string(runes) + "@" + r[1]
-	}
-
-	return s
-}
 
 //获取source的子串,如果start小于0或者end大于source长度则返回""
 //start:开始index，从0开始，包括0
