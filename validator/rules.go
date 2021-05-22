@@ -58,7 +58,9 @@ func CheckUName(str string, min, max int) bool {
 // 检测会员密码
 func CheckUPassword(str string, min, max int) bool {
 
-	if !CtypeAlnum(str) || !CheckStringLength(str, min, max) {
+	if !CtypeAlnum(str) ||
+		!CheckStringLength(str, min, max) ||
+		!IncludeAlpha(str) || !IncludeDigit(str) {
 		return false
 	}
 
@@ -361,6 +363,38 @@ func CtypeAlnum(s string) bool {
 	}
 
 	return true
+}
+
+// 判断是否包含数字
+func IncludeDigit(s string) bool {
+
+	if s == "" {
+		return false
+	}
+
+	for _, r := range s {
+		if isDigit(r) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// 判断是否包含字母
+func IncludeAlpha(s string) bool {
+
+	if s == "" {
+		return false
+	}
+
+	for _, r := range s {
+		if isAlpha(r) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // 判断字符串是不是字母开头
