@@ -144,6 +144,14 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 			if !CheckUPassword(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
+		case "aname": //后台账号
+			if !CheckAName(defaultVal, int(min), int(max)) {
+				return errors.New(msg)
+			}
+		case "apwd": //后台账号密码
+			if !CheckAPassword(defaultVal, int(min), int(max)) {
+				return errors.New(msg)
+			}
 		default:
 			break
 		}

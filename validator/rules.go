@@ -35,7 +35,7 @@ func CheckStringVName(s string) bool {
 	if s == "" {
 		return false
 	}
-	
+
 	nums := 0
 	for _, r := range s {
 		if r == ' ' {
@@ -45,7 +45,7 @@ func CheckStringVName(s string) bool {
 			return false
 		}
 	}
-	
+
 	if nums < 1 || nums > 4 {
 		return false
 	}
@@ -70,7 +70,21 @@ func isPriv(s string) bool {
 // 检测会员名
 func CheckUName(str string, min, max int) bool {
 
-	if !CtypeAlnum(str) || !First2IsAlpha(str) || !CheckStringLength(str, min, max) {
+	if !CtypeAlnum(str) || //数字字母组合
+		!First2IsAlpha(str) || //必须包含字母
+		!CheckStringLength(str, min, max) {
+		return false
+	}
+
+	return true
+}
+
+// 检测后台账号
+func CheckAName(str string, min, max int) bool {
+
+	if !CtypeAlnum(str) || //数字字母组合
+		!IncludeAlpha(str) || //必须包含字母
+		!CheckStringLength(str, min, max) {
 		return false
 	}
 
@@ -80,9 +94,23 @@ func CheckUName(str string, min, max int) bool {
 // 检测会员密码
 func CheckUPassword(str string, min, max int) bool {
 
-	if !CtypeAlnum(str) ||
+	if !CtypeAlnum(str) || //数字字母组合
 		!CheckStringLength(str, min, max) ||
-		!IncludeAlpha(str) || !IncludeDigit(str) {
+		!IncludeAlpha(str) || //必须包含字母
+		!IncludeDigit(str) { //必须包含数字
+		return false
+	}
+
+	return true
+}
+
+// 检测后台密码（会员密码和后台密码暂时规则相同，单独函数方便以后扩展）
+func CheckAPassword(str string, min, max int) bool {
+
+	if !CtypeAlnum(str) || //数字字母组合
+		!CheckStringLength(str, min, max) ||
+		!IncludeAlpha(str) || //必须包含字母
+		!IncludeDigit(str) { //必须包含数字
 		return false
 	}
 
