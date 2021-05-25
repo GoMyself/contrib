@@ -54,7 +54,7 @@ func Update(value []byte, uid uint64) bool {
 	}
 
 	pipe.Unlink(ctx, val)
-	pipe.SetNX(ctx, val, value, defaultExpires)
+	pipe.SetNX(ctx, val, value, renewExpires)
 
 	_, err := pipe.Exec(ctx)
 	if err != nil {
