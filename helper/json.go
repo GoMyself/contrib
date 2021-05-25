@@ -1,8 +1,8 @@
 package helper
 
 import (
-	"github.com/wI2L/jettison"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/wI2L/jettison"
 )
 
 var cjson = jsoniter.ConfigCompatibleWithStandardLibrary
