@@ -94,7 +94,7 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 	defer pipe.Close()
   
   	data   := pipe.Get(ctx, key)
-    _      := pipe.ExpireAt(ctx, key, ctx.Time().Add(30*time.Minute))
+    _       = pipe.ExpireAt(ctx, key, ctx.Time().Add(30*time.Minute))
   	pipe.Exec(ctx)
   	
 	val, err := data.Bytes()
