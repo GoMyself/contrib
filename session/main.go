@@ -1,7 +1,6 @@
 package session
 
 import (
-	// "log"
 	"context"
 	"errors"
 	"fmt"
@@ -24,12 +23,10 @@ func Set(value []byte, uid string) (string, error) {
 	uuid := fmt.Sprintf("TI%s", uid)
 	key := fmt.Sprintf("%d", Cputicks())
 
-	
 	val, err  := client.Get(ctx, uuid).Result()
+
 	pipe := client.TxPipeline()
-
 	defer pipe.Close()
-
 
 	if err != redis.Nil && len(val) > 0 {
 		//同一个用户，一个时间段，只能登录一个
@@ -40,9 +37,6 @@ func Set(value []byte, uid string) (string, error) {
 	pipe.SetNX(ctx, key, value, defaultExpires)
 
 	_, err = pipe.Exec(ctx)
-
-
-	//_, err := client.SetNX(ctx, key, value, defaultExpires).Result()
 
 	return key, err
 }
@@ -66,6 +60,7 @@ func Update(value []byte, uid uint64) bool {
 	if err != nil {
 		return false
 	}
+
 	return true
 }
 
@@ -74,6 +69,7 @@ func Offline(sid string) {
 	if len(sid) == 0 {
 		return
 	}
+
 	client.Unlink(ctx, sid)
 }
 
@@ -83,8 +79,8 @@ func Destroy(ctx *fasthttp.RequestCtx) {
 	if len(key) == 0 {
 		return
 	}
+
 	client.Unlink(ctx, key)
-	//cookie.Delete(ctx, defaultSessionKeyName)
 }
 
 func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
