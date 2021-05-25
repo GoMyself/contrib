@@ -89,11 +89,16 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 	if len(key) == 0 {
 		return nil, errors.New("does not exist")
 	}
-
-	val, err := client.Get(ctx, key).Bytes()
-	if err == redis.Nil {
-		return nil, errors.New("does not exist")
-	} else if err != nil {
+	
+  	pipe := client.TxPipeline()
+	defer pipe.Close()
+  
+  	data   := pipe.Get(ctx, key)
+    _      := pipe.ExpireAt(ctx, key, ctx.Time().Add(30*time.Minute))
+  	pipe.Exec(ctx)
+  	
+	val, err := data.Bytes()
+	if err != nil {
 		return nil, err
 	} else {
 		return val, nil
