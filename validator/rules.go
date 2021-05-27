@@ -218,6 +218,22 @@ func CheckFloatScope(s, min, max string) (decimal.Decimal, bool) {
 	return fs, true
 }
 
+// 判断金额上下边界
+func CheckAmountRange(low, up string) (int, error) {
+
+	fLow, err := decimal.NewFromString(low)
+	if err != nil {
+		return 0, err
+	}
+
+	fUp, err := decimal.NewFromString(up)
+	if err != nil {
+		return 0, err
+	}
+
+	return fUp.Cmp(fLow), nil
+}
+
 // 判断是否全为数字
 func CheckStringDigit(s string) bool {
 
