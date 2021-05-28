@@ -19,7 +19,7 @@ var forwardedForHeader = http.CanonicalHeaderKey("Forwarded-For")
 var forwardedHeader = http.CanonicalHeaderKey("Forwarded")
 
 // Standard headers used by Amazon EC2, Heroku, and others
-var xClientIPHeader = http.CanonicalHeaderKey("X-Client-IP")
+var xClientIPHeader = http.CanonicalHeaderKey("X-Forwarded-For")
 
 // Nginx proxy/FastCGI
 var xRealIPHeader = http.CanonicalHeaderKey("X-Real-IP")
