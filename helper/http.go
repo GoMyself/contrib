@@ -9,7 +9,7 @@ const (
 	apiTimeOut = time.Second * 12
 )
 
-func httpPost(requestBody []byte, requestURI string, headers map[string]string) (int, []byte, error) {
+func HttpPost(requestBody []byte, requestURI string, headers map[string]string) (int, []byte, error) {
 
 	req := fasthttp.AcquireRequest()
 	resp := fasthttp.AcquireResponse()
@@ -34,12 +34,12 @@ func httpPost(requestBody []byte, requestURI string, headers map[string]string) 
 	return resp.StatusCode(), resp.Body(), err
 }
 
-func httpGet(requestURI string) (int, []byte, error) {
+func HttpGet(requestURI string) (int, []byte, error) {
 
 	return fc.GetTimeout(nil, requestURI, apiTimeOut)
 }
 
-func httpGetHeader(requestURI string, headers map[string]string) (int, []byte, error) {
+func HttpGetHeader(requestURI string, headers map[string]string) (int, []byte, error) {
 
 	req := fasthttp.AcquireRequest()
 	resp := fasthttp.AcquireResponse()
