@@ -15,8 +15,8 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
-  	"github.com/valyala/gorpc"
 	cpool "github.com/silenceper/pool"
+	"github.com/valyala/gorpc"
 )
 
 var ctx = context.Background()
@@ -86,9 +86,12 @@ func InitRedis(dsn string, psd string) *redis.Client {
 	return reddb
 }
 
-func InitES(url []string) *elastic.Client {
+func InitES(url []string, username, password string) *elastic.Client {
 
-	client, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(url...))
+	client, err := elastic.NewClient(
+		elastic.SetSniff(false),
+		elastic.SetURL(url...),
+		elastic.SetBasicAuth(username, password))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -159,9 +162,9 @@ func InitMinio(endpoint, accessKeyID, secretAccessKey string, useSSL bool) *mini
 }
 
 func InitRpc(dsn string) *gorpc.Client {
-  
+
 	c := gorpc.NewTCPClient(dsn)
 	c.Start()
-  	
-  	return c
+
+	return c
 }
