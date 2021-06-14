@@ -45,7 +45,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 		}
 	}
 	v := fmt.Sprintf("%s,%s", deviceNo, key)
-	pipe.LPush(ctx, uuid, v, time.Duration(100) * time.Hour)
+	pipe.LPush(ctx, uuid, v)
 	pipe.SetNX(ctx, key, value, defaultExpires)
 
   _, err := pipe.Exec(ctx)
