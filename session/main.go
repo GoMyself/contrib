@@ -18,6 +18,43 @@ func New(reddb *redis.Client) {
 	client = reddb
 }
 
+func AdminSet(value []byte, uid, deviceNo string) (string, error) {
+
+	uuid := fmt.Sprintf("TI%s", uid)
+	key  := fmt.Sprintf("%d", Cputicks())
+
+	results  := client.LRange(ctx, uuid, 0, -1).Val()
+	n        := len(results)
+	pipe := client.TxPipeline()
+	defer pipe.Close()
+
+	if err != redis.Nil && n > 0 {
+		val := strings.SplitN(results[0], ",", 3)
+		if val[0] != deviceNo {
+
+			for _, v := range results {
+				v := strings.SplitN(results[0], ",", 3)
+				pipe.Unlink(ctx, v[1])
+			}
+		}
+	}
+
+	if n > 70 {
+		for _, v := range results {
+			v := strings.SplitN(results[0], ",", 3)
+			pipe.Unlink(ctx, v[1])
+		}
+	}
+	v := fmt.Sprintf("%s,%s", deviceNo, key)
+	pipe.LPush(ctx, uuid, v, time.Duration(100) * time.Hour)
+	pipe.SetNX(ctx, key, value, defaultExpires)
+
+	_, err = pipe.Exec(ctx)
+
+	return key, err
+}
+
+
 func Set(value []byte, uid string) (string, error) {
 
 	uuid := fmt.Sprintf("TI%s", uid)
