@@ -33,14 +33,14 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 		val := strings.SplitN(results[0], ",", 3)
 		if val[0] != deviceNo {
 
-			for _, v := range results {
-				v := strings.SplitN(results[0], ",", 3)
+			for _, val := range results {
+				v := strings.SplitN(val, ",", 3)
 				pipe.Unlink(ctx, v[1])
 			}
 		}
 	} else if n > 70 {
-		for _, v := range results {
-			v := strings.SplitN(results[0], ",", 3)
+		for _, val := range results {
+			v := strings.SplitN(val, ",", 3)
 			pipe.Unlink(ctx, v[1])
 		}
 	}
