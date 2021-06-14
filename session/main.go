@@ -21,7 +21,7 @@ func New(reddb *redis.Client) {
 
 func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 
-	uuid := fmt.Sprintf("TI%s", uid)
+	uuid := fmt.Sprintf("TS%s", uid)
 	key  := fmt.Sprintf("%d", Cputicks())
 
 	results  := client.LRange(ctx, uuid, 0, -1).Val()
