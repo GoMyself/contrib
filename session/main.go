@@ -48,7 +48,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 	pipe.LPush(ctx, uuid, v, time.Duration(100) * time.Hour)
 	pipe.SetNX(ctx, key, value, defaultExpires)
 
-	_, err = pipe.Exec(ctx)
+  _, err := pipe.Exec(ctx)
 
 	return key, err
 }
