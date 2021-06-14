@@ -29,7 +29,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 	pipe := client.TxPipeline()
 	defer pipe.Close()
 
-	if err != redis.Nil && n > 0 {
+	if n > 0 {
 		val := strings.SplitN(results[0], ",", 3)
 		if val[0] != deviceNo {
 
@@ -38,9 +38,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 				pipe.Unlink(ctx, v[1])
 			}
 		}
-	}
-
-	if n > 70 {
+	} else if n > 70 {
 		for _, v := range results {
 			v := strings.SplitN(results[0], ",", 3)
 			pipe.Unlink(ctx, v[1])
