@@ -21,9 +21,27 @@ func New(reddb *redis.Client) {
 
 func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 
-	uuid := fmt.Sprintf("TS%s", uid)
+	uuid := fmt.Sprintf"TD%s", uid)
 	key  := fmt.Sprintf("%d", Cputicks())
 
+
+	val, err  := client.Get(ctx, uuid).Result()
+
+	pipe := client.TxPipeline()
+	defer pipe.Close()
+
+	if err != redis.Nil && len(val) > 0 {
+		//同一个用户，一个时间段，只能登录一个
+		pipe.Unlink(ctx, val)
+	}
+
+	v := fmt.Sprintf("%s,%s", deviceNo, key)
+	pipe.Set(ctx, uuid, v, time.Duration(100) * time.Hour)
+	pipe.SetNX(ctx, key, value, defaultExpires)
+
+	_, err = pipe.Exec(ctx)
+
+	/*
 	results  := client.LRange(ctx, uuid, 0, -1).Val()
 	n        := len(results)
 	pipe := client.TxPipeline()
@@ -49,7 +67,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 	pipe.SetNX(ctx, key, value, defaultExpires)
 
   _, err := pipe.Exec(ctx)
-
+	*/
 	return key, err
 }
 
