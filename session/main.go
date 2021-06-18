@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-  	//"strings"
+  	"strings"
 	"github.com/go-redis/redis/v8"
 	"github.com/valyala/fasthttp"
 	"time"
@@ -32,7 +32,8 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 
 	if err != redis.Nil && len(val) > 0 {
 		//同一个用户，一个时间段，只能登录一个
-		pipe.Unlink(ctx, val)
+      	results := strings.SplitN(val, ",", 3)
+		pipe.Unlink(ctx, results[1])
 	}
 
 	v := fmt.Sprintf("%s,%s", deviceNo, key)
