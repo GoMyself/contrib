@@ -66,19 +66,19 @@ func PrintJson(ctx *fasthttp.RequestCtx, state bool, data string) {
 
 func GenId() string {
 
-  	var min uint64 = 0
-  	var max uint64 = 9
+	var min uint64 = 0
+	var max uint64 = 9
 
-	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
+	return fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max-min)+min)
 }
 
 func GenLongId() string {
 
-  	var min uint64 = 100000
-  	var max uint64 = 999999
-	
-  	id := fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max - min) + min)
-    return id[0:18]
+	var min uint64 = 100000
+	var max uint64 = 999999
+
+	id := fmt.Sprintf("%d%d", Cputicks(), frand.Uint64n(max-min)+min)
+	return id[0:18]
 }
 
 //判断字符是否为数字
@@ -117,6 +117,7 @@ func CtypeAlnum(s string) bool {
 	if s == "" {
 		return false
 	}
+
 	for _, r := range s {
 		if !isDigit(r) && !isAlpha(r) {
 			return false
@@ -124,8 +125,6 @@ func CtypeAlnum(s string) bool {
 	}
 	return true
 }
-
-
 
 //获取source的子串,如果start小于0或者end大于source长度则返回""
 //start:开始index，从0开始，包括0
@@ -160,6 +159,7 @@ func Addslashes(str string) string {
 			tmpRune = append(tmpRune, ch)
 		}
 	}
+
 	return string(tmpRune)
 }
 
@@ -177,6 +177,18 @@ func GetMD5Hash(text string) string {
 	md5Hash.Close()
 
 	return encrypted
+}
+
+// 月份字符串校验
+func CtypeMonth(s string, loc *time.Location) (int64, error) {
+
+	s += "-01 00:00:00"
+	t, err := time.ParseInLocation("2006-01-02 15:04", s, loc)
+	if err != nil {
+		return 0, err
+	}
+
+	return t.Unix(), nil
 }
 
 func StrToTime(value string, loc *time.Location) time.Time {
