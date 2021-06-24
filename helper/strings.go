@@ -179,17 +179,7 @@ func GetMD5Hash(text string) string {
 	return encrypted
 }
 
-// 月份字符串校验
-func CtypeMonth(s string, loc *time.Location) (int64, error) {
 
-	s += "-01 00:00:00"
-	t, err := time.ParseInLocation("2006-01-02 15:04", s, loc)
-	if err != nil {
-		return 0, err
-	}
-
-	return t.Unix(), nil
-}
 
 func StrToTime(value string, loc *time.Location) time.Time {
 
