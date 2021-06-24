@@ -6,7 +6,7 @@ import "time"
 func CtypeMonth(s string, loc *time.Location) (int64, error) {
 
 	s += "-01 00:00:00"
-	t, err := time.ParseInLocation("2006-01-02 15:04", s, loc)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
