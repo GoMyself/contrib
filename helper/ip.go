@@ -1,12 +1,12 @@
 package helper
 
 import (
+	"encoding/binary"
 	"errors"
+	"github.com/valyala/fasthttp"
 	"net"
 	"net/http"
 	"strings"
-	"encoding/binary"
-	"github.com/valyala/fasthttp"
 )
 
 // Should use canonical format of the header key s
@@ -38,12 +38,25 @@ var trueClientIPHeader = http.CanonicalHeaderKey("True-Client-Ip")
 var cidrs []*net.IPNet
 
 func Ip2long(ipAddr string) (uint32, error) {
+
+	if !IsIPv4(ipAddr) {
+		return 0, nil
+	}
+
 	ip := net.ParseIP(ipAddr)
 	if ip == nil {
 		return 0, errors.New("wrong ipAddr format")
 	}
 	ip = ip.To4()
 	return binary.BigEndian.Uint32(ip), nil
+}
+
+func IsIPv4(address string) bool {
+	return strings.Count(address, ":") < 2
+}
+
+func IsIPv6(address string) bool {
+	return strings.Count(address, ":") >= 2
 }
 
 func init() {
