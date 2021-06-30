@@ -13,6 +13,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
+	"github.com/nats-io/nats.go"
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
@@ -167,4 +168,15 @@ func InitRpc(dsn string) *gorpc.Client {
 	c.Start()
 
 	return c
+}
+
+// 创建nats.io链接
+func InitNatsIO(url string) *nats.Conn {
+
+	nc, err := nats.Connect(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return nc
 }
