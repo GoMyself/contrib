@@ -171,9 +171,9 @@ func InitRpc(dsn string) *gorpc.Client {
 }
 
 // 创建nats.io链接
-func InitNatsIO(url string) *nats.Conn {
+func InitNatsIO(url, name, password string) *nats.Conn {
 
-	nc, err := nats.Connect(url)
+	nc, err := nats.Connect(url, nats.UserInfo(name, password))
 	if err != nil {
 		log.Fatalln(err)
 	}
