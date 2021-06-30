@@ -173,7 +173,7 @@ func InitRpc(dsn string) *gorpc.Client {
 // 创建nats.io链接
 func InitNatsIO(url string) *nats.Conn {
 
-	nc, err := nats.Connect(url)
+	nc, err := nats.Connect(url, nats.MaxReconnects(5), nats.ReconnectWait(2 * time.Second))
 	if err != nil {
 		log.Fatalln(err)
 	}
