@@ -164,7 +164,7 @@ func sprint(err error, nums []int, colorized bool) string {
 	if l <= 3 {
 		return ""
 	}
-	frames = frames[1:l-2]
+	frames = frames[1:l-1]
 	expectedRows := len(frames) + 1
 	if withSource {
 		expectedRows = (before+after+3)*len(frames) + 2
