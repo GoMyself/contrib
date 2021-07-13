@@ -64,6 +64,29 @@ func InitRedisSentinel(dsn []string, psd, name string) *redis.Client {
 	return reddb
 }
 
+func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
+
+	reddb := redis.NewClusterClient(&redis.ClusterOptions{
+		Addrs:        dsn,
+		Password:     psd, // no password set
+		DialTimeout:  10 * time.Second,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+		PoolSize:     10,
+		PoolTimeout:  30 * time.Second,
+		MaxRetries:   2,
+		IdleTimeout:  5 * time.Minute,
+	})
+
+	pong, err := reddb.Ping(ctx).Result()
+	if err != nil {
+		log.Fatalf("initRedisSlave failed: %s", err.Error())
+	}
+	fmt.Println(pong, err)
+
+	return reddb
+}
+
 func InitRedis(dsn string, psd string) *redis.Client {
 
 	reddb := redis.NewClient(&redis.Options{
@@ -176,7 +199,7 @@ func InitNatsIO(url, name, password string) *nats.Conn {
 	nc, err := nats.Connect(url,
 		nats.UserInfo(name, password),
 		nats.MaxReconnects(5),
-		nats.ReconnectWait(2 * time.Second))
+		nats.ReconnectWait(2*time.Second))
 	if err != nil {
 		log.Fatalln(err)
 	}
