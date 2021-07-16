@@ -111,3 +111,73 @@ func MonthSET(date string, loc *time.Location) time.Time {
 	t = time.Date(t.Year(), t.Month(), 1, 23, 59, 59, 999999999, loc)
 	return t.AddDate(0, 1, -1)
 }
+
+// 通过时间戳，获取一周的开始时间
+// 默认为当前周的第一天 00：00：00 时间戳
+func WeekTST(timestamp int64, loc *time.Location) time.Time {
+
+	t := time.Now().In(loc)
+	if timestamp > 0 {
+		t = time.Unix(timestamp, 0).In(loc)
+	}
+
+	offset := int(time.Monday - t.Weekday())
+	if offset > 0 {
+		offset = -6
+	}
+
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, loc).AddDate(0, 0, offset)
+}
+
+// 通过时间戳，获取一周的结束时间
+// 默认为当前周周日 23：59：59 时间戳
+func WeekTET(timestamp int64, loc *time.Location) time.Time {
+
+	t := time.Now().In(loc)
+	if timestamp > 0 {
+		t = time.Unix(timestamp, 0).In(loc)
+	}
+
+	offset := 0
+	if t.Weekday() != time.Sunday {
+		offset = int(time.Saturday + 1 - t.Weekday())
+	}
+
+	t = time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, loc)
+	return t.AddDate(0, 0, offset)
+}
+
+// 通过日期字符串，获取一周的开始时间
+// 默认为当前周的第一天 00：00：00 时间戳
+func WeekSST(date string, loc *time.Location) time.Time {
+
+	t := time.Now().In(loc)
+	if date != "" {
+		t = StrToTime(date, loc)
+	}
+
+	offset := int(time.Monday - t.Weekday())
+	if offset > 0 {
+		offset = -6
+	}
+
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, loc).AddDate(0, 0, offset)
+}
+
+// 通过时间戳，获取一周的结束时间
+// 默认为当前周的第一天 23：59：59 时间戳
+func WeekSET(date string, loc *time.Location) time.Time {
+
+	t := time.Now().In(loc)
+	if date != "" {
+		t = StrToTime(date, loc)
+	}
+
+	offset := 0
+	if t.Weekday() != time.Sunday {
+		offset = int(time.Saturday + 1 - t.Weekday())
+	}
+
+	t = time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, loc)
+	return t.AddDate(0, 0, offset)
+}
