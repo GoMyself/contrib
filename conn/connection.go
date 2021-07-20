@@ -3,6 +3,7 @@ package conn
 import (
 	"context"
 	"fmt"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"time"
 
@@ -205,4 +206,29 @@ func InitNatsIO(url, name, password string) *nats.Conn {
 	}
 
 	return nc
+}
+
+// 连接mqtt
+func InitMqttService(addrs []string, clientID, username, password string) mqtt.Client {
+
+	clientOptions := mqtt.NewClientOptions().
+		SetClientID(clientID).
+		SetUsername(username).
+		SetPassword(password).
+		SetCleanSession(false).
+		SetAutoReconnect(true).
+		SetKeepAlive(120 * time.Second).
+		SetPingTimeout(10 * time.Second).
+		SetWriteTimeout(10 * time.Second).
+		SetMaxReconnectInterval(10 * time.Second)
+
+	for _, v := range addrs {
+		clientOptions.AddBroker(v)
+	}
+
+	client := mqtt.NewClient(clientOptions)
+	if conn := client.Connect(); conn.WaitTimeout(time.Duration(10)*time.Second) && conn.Wait() && conn.Error() != nil {
+		log.Fatalf("token: %s", conn.Error())
+	}
+	return client
 }
