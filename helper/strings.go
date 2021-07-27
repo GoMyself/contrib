@@ -179,7 +179,11 @@ func GetMD5Hash(text string) string {
 	return encrypted
 }
 
+func TimeToISO8601(t time.Time, loc *time.Location) string {
 
+	tm := t.In(loc)
+	return tm.Format(time.RFC3339)
+}
 
 func StrToTime(value string, loc *time.Location) time.Time {
 
