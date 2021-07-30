@@ -182,7 +182,9 @@ func GetMD5Hash(text string) string {
 func TimeToISO8601(t time.Time, loc *time.Location) string {
 
 	tm := t.In(loc)
-	return tm.Format(time.RFC3339)
+	s := tm.Format(time.RFC3339Nano)
+	s = strings.Replace(s[:len(s)-5], "+", "Z", 1)
+	return s
 }
 
 func StrToTime(value string, loc *time.Location) time.Time {
