@@ -208,6 +208,14 @@ func InitNatsIO(url, name, password string) *nats.Conn {
 	return nc
 }
 
+var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
+	fmt.Println("Connected")
+}
+
+var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
+	fmt.Printf("Connect lost: %v", err)
+}
+
 // 连接mqtt
 func InitMqttService(addrs []string, clientID, username, password string) mqtt.Client {
 
@@ -226,6 +234,10 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 		clientOptions.AddBroker(v)
 	}
 
+  
+    clientOptions.OnConnect = connectHandler
+    clientOptions.OnConnectionLost = connectLostHandler
+  
 	client := mqtt.NewClient(clientOptions)
 	if conn := client.Connect(); conn.WaitTimeout(time.Duration(10)*time.Second) && conn.Wait() && conn.Error() != nil {
 		log.Fatalf("token: %s", conn.Error())
