@@ -227,7 +227,7 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 		SetAutoReconnect(true).
 		SetKeepAlive(120 * time.Second).
 		SetPingTimeout(10 * time.Second).
-		SetWriteTimeout(10 * time.Second).
+		SetWriteTimeout(5 * time.Second).
 		SetMaxReconnectInterval(10 * time.Second)
 
 	for _, v := range addrs {
