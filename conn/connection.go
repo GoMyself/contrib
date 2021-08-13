@@ -2,10 +2,8 @@ package conn
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	_ "github.com/taosdata/driver-go/taosSql"
 	"log"
 	"time"
 
@@ -41,20 +39,6 @@ func InitDB(dsn string, maxIdleConn, maxOpenConn int) *sqlx.DB {
 	}
 
 	return db
-}
-
-//TDengine不支持ping方法，所以使用open，不能使用Connect
-func InitTD(dsn string, maxIdleConn, maxOpenConn int) *sql.DB {
-
-	tdb, err := sql.Open("taosSql", dsn)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	tdb.SetMaxOpenConns(maxOpenConn)
-	tdb.SetMaxIdleConns(maxIdleConn)
-	tdb.SetConnMaxLifetime(time.Second * 30)
-	return tdb
 }
 
 func InitRedisSentinel(dsn []string, psd, name string) *redis.Client {
