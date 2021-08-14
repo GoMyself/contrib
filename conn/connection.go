@@ -51,7 +51,7 @@ func InitRedisSentinel(dsn []string, psd, name string) *redis.Client {
 		DialTimeout:   10 * time.Second,
 		ReadTimeout:   30 * time.Second,
 		WriteTimeout:  30 * time.Second,
-		PoolSize:      10,
+		PoolSize:      500,
 		PoolTimeout:   30 * time.Second,
 		MaxRetries:    2,
 		IdleTimeout:   5 * time.Minute,
@@ -73,7 +73,7 @@ func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
 		DialTimeout:  10 * time.Second,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
-		PoolSize:     10,
+		PoolSize:     500,
 		PoolTimeout:  30 * time.Second,
 		MaxRetries:   2,
 		IdleTimeout:  5 * time.Minute,
@@ -97,7 +97,7 @@ func InitRedis(dsn string, psd string) *redis.Client {
 		DialTimeout:  10 * time.Second,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
-		PoolSize:     10,
+		PoolSize:     500,
 		PoolTimeout:  30 * time.Second,
 		MaxRetries:   2,
 		IdleTimeout:  5 * time.Minute,
@@ -234,10 +234,9 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 		clientOptions.AddBroker(v)
 	}
 
-  
-    clientOptions.OnConnect = connectHandler
-    clientOptions.OnConnectionLost = connectLostHandler
-  
+	clientOptions.OnConnect = connectHandler
+	clientOptions.OnConnectionLost = connectLostHandler
+
 	client := mqtt.NewClient(clientOptions)
 	if conn := client.Connect(); conn.WaitTimeout(time.Duration(10)*time.Second) && conn.Wait() && conn.Error() != nil {
 		log.Fatalf("token: %s", conn.Error())
