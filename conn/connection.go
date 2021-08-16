@@ -223,7 +223,7 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 		SetClientID(clientID).
 		SetUsername(username).
 		SetPassword(password).
-		SetCleanSession(true).
+		SetCleanSession(false).
 		SetAutoReconnect(true).
 		SetKeepAlive(120 * time.Second).
 		SetPingTimeout(10 * time.Second).
