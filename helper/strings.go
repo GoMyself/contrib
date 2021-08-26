@@ -8,6 +8,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"github.com/wI2L/jettison"
 	"lukechampine.com/frand"
+	"math/rand"
 	"strconv"
 	"strings"
 	"time"
@@ -256,4 +257,16 @@ func TrimStr(val decimal.Decimal) string {
 	}
 
 	return sDigit[0] + "." + sDigit[1][:3]
+}
+
+func RandomKey(length int) string {
+
+	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	bytes := []byte(str)
+	var result []byte
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i := 0; i < length; i++ {
+		result = append(result, bytes[r.Intn(len(bytes))])
+	}
+	return string(result)
 }
