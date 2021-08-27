@@ -9,6 +9,7 @@ import (
 	"github.com/wI2L/jettison"
 	"lukechampine.com/frand"
 	"math/rand"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -226,17 +227,20 @@ func StrToTime(value string, loc *time.Location) time.Time {
 		time.StampMilli,
 		time.StampMicro,
 		time.StampNano,
+		http.TimeFormat,
 	}
 
-	var t time.Time
-	var err error
-	//loc, _ := time.LoadLocation("Asia/Shanghai")
+	var (
+		t   time.Time
+		err error
+	)
 	for _, layout := range layouts {
 		t, err = time.ParseInLocation(layout, value, loc)
 		if err == nil {
 			return t
 		}
 	}
+
 	return t
 }
 
