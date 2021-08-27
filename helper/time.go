@@ -6,56 +6,56 @@ import (
 )
 
 
-func MonthOfStart(s string, loc *time.Location) (time.Time, error) {
+func MonthOfStart(s string, loc *time.Location) (int64, error) {
 
     t, err := time.Parse(http.TimeFormat, s)
     if err != nil {
-        return t, err
+        return 0, err
     }
 
 
     y, m, _ := t.In(loc).Date()
 
     n := time.Date(y, m, 1, 0, 0, 0, 0, loc)
-    return n, nil
+    return n.In(loc).Unix(), nil
 }
 
-func MonthOfEnd(s string, loc *time.Location) (time.Time, error) {
+func MonthOfEnd(s string, loc *time.Location) (int64, error) {
 
     t, err := time.Parse(http.TimeFormat, s)
     if err != nil {
-        return t, err
+        return 0, err
     }
 
     y, m, _ := t.In(loc).Date()
     n := time.Date(y, m+1, 0, 0, 0, 0, 0, loc)
 
-    return n, nil
+    return n.In(loc).Unix(), nil
 }
 
-func DayOfStart(s string, loc *time.Location) (time.Time, error) {
+func DayOfStart(s string, loc *time.Location) (int64, error) {
 
     t, err := time.Parse(http.TimeFormat, s)
     if err != nil {
-        return t, err
+        return 0, err
     }
 
     y, m, d := t.In(loc).Date()
 
     n := time.Date(y, m, d, 0, 0, 0, 0, loc)
-    return n, nil
+    return n.In(loc).Unix(), nil
 }
 
-func DayOfEnd(s string, loc *time.Location) (time.Time, error) {
+func DayOfEnd(s string, loc *time.Location) (int64, error) {
 
     t, err := time.Parse(http.TimeFormat, s)
     if err != nil {
-        return t, err
+        return 0, err
     }
 
     y, m, d := t.In(loc).Date()
     n := time.Date(y, m, d, 23, 59, 59, 0, loc)
-    return n, nil
+    return n.In(loc).Unix(), nil
 }
 
 
