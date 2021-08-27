@@ -5,6 +5,30 @@ import (
 	"time"
 )
 
+
+func DayOfStart(s string, loc *time.Location) (time.Time, error) {
+
+    t, err := time.Parse(http.TimeFormat, s)
+    if err != nil {
+        return t, err
+    }
+
+    n := time.Date(t.In(loc).Year(), t.In(loc).Month(), t.In(loc).Day(), 0, 0, 0, 0, loc)
+    return n, nil
+}
+
+func DayOfEnd(s string, loc *time.Location) (time.Time, error) {
+
+    t, err := time.Parse(http.TimeFormat, s)
+    if err != nil {
+        return t, err
+    }
+
+    n := time.Date(t.In(loc).Year(), t.In(loc).Month(), t.In(loc).Day(), 23, 59, 59, 0, loc)
+    return n, nil
+}
+
+
 // 月份字符串校验
 func CtypeMonth(s string, loc *time.Location) (int64, error) {
 
