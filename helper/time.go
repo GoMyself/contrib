@@ -1,6 +1,9 @@
 package helper
 
-import "time"
+import (
+	"net/http"
+	"time"
+)
 
 // 月份字符串校验
 func CtypeMonth(s string, loc *time.Location) (int64, error) {
@@ -180,4 +183,59 @@ func WeekSET(date string, loc *time.Location) time.Time {
 
 	t = time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 999999999, loc)
 	return t.AddDate(0, 0, offset)
+}
+
+func StrToTime(value string, loc *time.Location) time.Time {
+
+	if value == "" {
+		return time.Time{}
+	}
+	layouts := []string{
+		"2006-01-02 15:04:05 -0700 MST",
+		"2006-01-02 15:04:05 -0700",
+		"2006-01-02 15:04:05",
+		"2006-01-02 15:04",
+		"2006/01/02 15:04:05 -0700 MST",
+		"2006/01/02 15:04:05 -0700",
+		"2006/01/02 15:04:05",
+		"2006-01-02 -0700 MST",
+		"2006-01-02 -0700",
+		"2006-01-02",
+		"2006/01/02 -0700 MST",
+		"2006/01/02 -0700",
+		"2006/01/02",
+		"2006-01-02 15:04:05 -0700 -0700",
+		"2006/01/02 15:04:05 -0700 -0700",
+		"2006-01-02 -0700 -0700",
+		"2006/01/02 -0700 -0700",
+		time.ANSIC,
+		time.UnixDate,
+		time.RubyDate,
+		time.RFC822,
+		time.RFC822Z,
+		time.RFC850,
+		time.RFC1123,
+		time.RFC1123Z,
+		time.RFC3339,
+		time.RFC3339Nano,
+		time.Kitchen,
+		time.Stamp,
+		time.StampMilli,
+		time.StampMicro,
+		time.StampNano,
+		http.TimeFormat,
+	}
+
+	var (
+		t   time.Time
+		err error
+	)
+	for _, layout := range layouts {
+		t, err = time.ParseInLocation(layout, value, loc)
+		if err == nil {
+			return t
+		}
+	}
+
+	return t
 }

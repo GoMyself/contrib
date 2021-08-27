@@ -9,7 +9,6 @@ import (
 	"github.com/wI2L/jettison"
 	"lukechampine.com/frand"
 	"math/rand"
-	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -179,69 +178,6 @@ func GetMD5Hash(text string) string {
 	md5Hash.Close()
 
 	return encrypted
-}
-
-func TimeToISO8601(t time.Time, loc *time.Location) string {
-
-	tm := t.In(loc)
-	s := tm.Format(time.RFC3339Nano)
-	s = strings.Replace(s[:len(s)-5], "+", "Z", 1)
-	return s
-}
-
-func StrToTime(value string, loc *time.Location) time.Time {
-
-	if value == "" {
-		return time.Time{}
-	}
-	layouts := []string{
-		"2006-01-02 15:04:05 -0700 MST",
-		"2006-01-02 15:04:05 -0700",
-		"2006-01-02 15:04:05",
-		"2006-01-02 15:04",
-		"2006/01/02 15:04:05 -0700 MST",
-		"2006/01/02 15:04:05 -0700",
-		"2006/01/02 15:04:05",
-		"2006-01-02 -0700 MST",
-		"2006-01-02 -0700",
-		"2006-01-02",
-		"2006/01/02 -0700 MST",
-		"2006/01/02 -0700",
-		"2006/01/02",
-		"2006-01-02 15:04:05 -0700 -0700",
-		"2006/01/02 15:04:05 -0700 -0700",
-		"2006-01-02 -0700 -0700",
-		"2006/01/02 -0700 -0700",
-		time.ANSIC,
-		time.UnixDate,
-		time.RubyDate,
-		time.RFC822,
-		time.RFC822Z,
-		time.RFC850,
-		time.RFC1123,
-		time.RFC1123Z,
-		time.RFC3339,
-		time.RFC3339Nano,
-		time.Kitchen,
-		time.Stamp,
-		time.StampMilli,
-		time.StampMicro,
-		time.StampNano,
-		http.TimeFormat,
-	}
-
-	var (
-		t   time.Time
-		err error
-	)
-	for _, layout := range layouts {
-		t, err = time.ParseInLocation(layout, value, loc)
-		if err == nil {
-			return t
-		}
-	}
-
-	return t
 }
 
 func TrimStr(val decimal.Decimal) string {
