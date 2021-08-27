@@ -6,6 +6,33 @@ import (
 )
 
 
+func MonthOfStart(s string, loc *time.Location) (time.Time, error) {
+
+    t, err := time.Parse(http.TimeFormat, s)
+    if err != nil {
+        return t, err
+    }
+
+
+    y, m, _ := t.In(loc).Date()
+
+    n := time.Date(y, m, 1, 0, 0, 0, 0, loc)
+    return n, nil
+}
+
+func MonthOfEnd(s string, loc *time.Location) (time.Time, error) {
+
+    t, err := time.Parse(http.TimeFormat, s)
+    if err != nil {
+        return t, err
+    }
+
+    y, m, _ := t.In(loc).Date()
+    n := time.Date(y, m+1, 0, 0, 0, 0, 0, loc)
+
+    return n, nil
+}
+
 func DayOfStart(s string, loc *time.Location) (time.Time, error) {
 
     t, err := time.Parse(http.TimeFormat, s)
@@ -13,7 +40,9 @@ func DayOfStart(s string, loc *time.Location) (time.Time, error) {
         return t, err
     }
 
-    n := time.Date(t.In(loc).Year(), t.In(loc).Month(), t.In(loc).Day(), 0, 0, 0, 0, loc)
+    y, m, d := t.In(loc).Date()
+
+    n := time.Date(y, m, d, 0, 0, 0, 0, loc)
     return n, nil
 }
 
@@ -24,7 +53,8 @@ func DayOfEnd(s string, loc *time.Location) (time.Time, error) {
         return t, err
     }
 
-    n := time.Date(t.In(loc).Year(), t.In(loc).Month(), t.In(loc).Day(), 23, 59, 59, 0, loc)
+    y, m, d := t.In(loc).Date()
+    n := time.Date(y, m, d, 23, 59, 59, 0, loc)
     return n, nil
 }
 
