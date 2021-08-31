@@ -1,10 +1,9 @@
 package helper
 
 import (
-	"time"
 	"github.com/valyala/fasthttp"
+	"time"
 )
-
 
 var fc = &fasthttp.Client{}
 
