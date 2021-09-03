@@ -1,97 +1,122 @@
 package helper
 
 import (
+	"errors"
+	"merchant/platform"
 	"net/http"
 	"time"
 )
 
+func WeekOfEnd(s string, loc *time.Location) (int64, error) {
 
-func WeekOfEnd(s string, loc *time.Location) (int64, error)  {
+	t, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
 
-    t, err := time.Parse(http.TimeFormat, s)
-    if err != nil {
-        return 0, err
-    }
+	offset := 0
+	if t.Weekday() != time.Sunday {
+		offset = int(time.Saturday + 1 - t.Weekday())
+	}
 
-    offset := 0
-    if t.Weekday() != time.Sunday {
-        offset = int(time.Saturday + 1 - t.Weekday())
-    }
-
-    y, m, d := t.In(loc).Date()
-    n       := time.Date(y, m, d, 23, 59, 59, 0, loc).AddDate(0, 0, offset)
-    return n.In(loc).Unix(), nil
+	y, m, d := t.In(loc).Date()
+	n := time.Date(y, m, d, 23, 59, 59, 0, loc).AddDate(0, 0, offset)
+	return n.In(loc).Unix(), nil
 }
 
 func WeekOfStart(s string, loc *time.Location) (int64, error) {
 
-    t, err := time.Parse(http.TimeFormat, s)
-    if err != nil {
-        return 0, err
-    }
+	t, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
 
-    offset := int(time.Monday - t.Weekday())
-    if offset > 0 {
-        offset = -6
-    }
+	offset := int(time.Monday - t.Weekday())
+	if offset > 0 {
+		offset = -6
+	}
 
-    y, m, d := t.In(loc).Date()
-    n       := time.Date(y, m, d, 0, 0, 0, 0, loc).AddDate(0, 0, offset)
-    return n.In(loc).Unix(), nil
+	y, m, d := t.In(loc).Date()
+	n := time.Date(y, m, d, 0, 0, 0, 0, loc).AddDate(0, 0, offset)
+	return n.In(loc).Unix(), nil
 }
 
 func MonthOfStart(s string, loc *time.Location) (int64, error) {
 
-    t, err := time.Parse(http.TimeFormat, s)
-    if err != nil {
-        return 0, err
-    }
+	t, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
 
+	y, m, _ := t.In(loc).Date()
 
-    y, m, _ := t.In(loc).Date()
-
-    n := time.Date(y, m, 1, 0, 0, 0, 0, loc)
-    return n.In(loc).Unix(), nil
+	n := time.Date(y, m, 1, 0, 0, 0, 0, loc)
+	return n.In(loc).Unix(), nil
 }
 
 func MonthOfEnd(s string, loc *time.Location) (int64, error) {
 
-    t, err := time.Parse(http.TimeFormat, s)
-    if err != nil {
-        return 0, err
-    }
+	t, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
 
-    y, m, _ := t.In(loc).Date()
-    n := time.Date(y, m+1, 0, 0, 0, 0, 0, loc)
+	y, m, _ := t.In(loc).Date()
+	n := time.Date(y, m+1, 0, 0, 0, 0, 0, loc)
 
-    return n.In(loc).Unix(), nil
+	return n.In(loc).Unix(), nil
 }
 
 func DayOfStart(s string, loc *time.Location) (int64, error) {
 
-    t, err := time.Parse(http.TimeFormat, s)
-    if err != nil {
-        return 0, err
-    }
+	t, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
 
-    y, m, d := t.In(loc).Date()
+	y, m, d := t.In(loc).Date()
 
-    n := time.Date(y, m, d, 0, 0, 0, 0, loc)
-    return n.In(loc).Unix(), nil
+	n := time.Date(y, m, d, 0, 0, 0, 0, loc)
+	return n.In(loc).Unix(), nil
 }
 
 func DayOfEnd(s string, loc *time.Location) (int64, error) {
 
-    t, err := time.Parse(http.TimeFormat, s)
-    if err != nil {
-        return 0, err
-    }
+	t, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
 
-    y, m, d := t.In(loc).Date()
-    n := time.Date(y, m, d, 23, 59, 59, 0, loc)
-    return n.In(loc).Unix(), nil
+	y, m, d := t.In(loc).Date()
+	n := time.Date(y, m, d, 23, 59, 59, 0, loc)
+	return n.In(loc).Unix(), nil
 }
 
+func DayOfStartMs(s string, loc *time.Location) (int64, error) {
+
+	st, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
+
+	y, m, d := st.In(loc).Date()
+	st = time.Date(y, m, d, 0, 0, 0, 0, loc)
+
+	return st.UnixNano() / 1e6, nil
+}
+
+func DayOfEndMs(s string, loc *time.Location) (int64, error) {
+
+	st, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, errors.New(platform.DateTimeErr)
+	}
+
+	y, m, d := st.In(loc).Date()
+	st = time.Date(y, m, d, 23, 59, 59, 999999999, loc)
+
+	return st.UnixNano() / 1e6, nil
+}
 
 // 月份字符串校验
 func CtypeMonth(s string, loc *time.Location) (int64, error) {
