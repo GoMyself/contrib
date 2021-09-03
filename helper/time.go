@@ -1,8 +1,6 @@
 package helper
 
 import (
-	"errors"
-	"merchant/platform"
 	"net/http"
 	"time"
 )
@@ -11,7 +9,7 @@ func WeekOfEnd(s string, loc *time.Location) (int64, error) {
 
 	t, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	offset := 0
@@ -28,7 +26,7 @@ func WeekOfStart(s string, loc *time.Location) (int64, error) {
 
 	t, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	offset := int(time.Monday - t.Weekday())
@@ -45,7 +43,7 @@ func MonthOfStart(s string, loc *time.Location) (int64, error) {
 
 	t, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	y, m, _ := t.In(loc).Date()
@@ -58,7 +56,7 @@ func MonthOfEnd(s string, loc *time.Location) (int64, error) {
 
 	t, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	y, m, _ := t.In(loc).Date()
@@ -71,7 +69,7 @@ func DayOfStart(s string, loc *time.Location) (int64, error) {
 
 	t, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	y, m, d := t.In(loc).Date()
@@ -84,7 +82,7 @@ func DayOfEnd(s string, loc *time.Location) (int64, error) {
 
 	t, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	y, m, d := t.In(loc).Date()
@@ -96,7 +94,7 @@ func DayOfStartMs(s string, loc *time.Location) (int64, error) {
 
 	st, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	y, m, d := st.In(loc).Date()
@@ -109,7 +107,7 @@ func DayOfEndMs(s string, loc *time.Location) (int64, error) {
 
 	st, err := time.Parse(http.TimeFormat, s)
 	if err != nil {
-		return 0, errors.New(platform.DateTimeErr)
+		return 0, err
 	}
 
 	y, m, d := st.In(loc).Date()
