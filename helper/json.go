@@ -1,17 +1,15 @@
 package helper
 
 import (
-	jsoniter "github.com/json-iterator/go"
-	"github.com/wI2L/jettison"
+	"github.com/goccy/go-json"
 )
 
-var cjson = jsoniter.ConfigCompatibleWithStandardLibrary
 
 func JsonMarshal(v interface{}) ([]byte, error) {
 
-	return jettison.Marshal(v)
+	return json.Marshal(v)
 }
 
 func JsonUnmarshal(data []byte, v interface{}) error {
-	return cjson.Unmarshal(data, v)
+	return json.Unmarshal(data, v)
 }
