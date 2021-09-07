@@ -116,6 +116,26 @@ func DayOfEndMs(s string, loc *time.Location) (int64, error) {
 	return st.UnixNano() / 1e6, nil
 }
 
+func GMTToLoc(s string, loc *time.Location) (int64, error) {
+
+	st, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, err
+	}
+
+	return st.In(loc).Unix(), nil
+}
+
+func GMTToLocMs(s string, loc *time.Location) (int64, error) {
+
+	st, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, err
+	}
+
+	return st.In(loc).UnixNano() / 1e6, nil
+}
+
 // 月份字符串校验
 func CtypeMonth(s string, loc *time.Location) (int64, error) {
 
