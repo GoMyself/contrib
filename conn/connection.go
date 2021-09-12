@@ -6,7 +6,7 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"time"
-
+	"strings"
 	"github.com/beanstalkd/go-beanstalk"
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"github.com/go-redis/redis/v8"
@@ -239,7 +239,7 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 
 	client := mqtt.NewClient(clientOptions)
 	if conn := client.Connect(); conn.WaitTimeout(time.Duration(10)*time.Second) && conn.Wait() && conn.Error() != nil {
-		log.Fatalf("token: %s", conn.Error())
+		log.Fatalf("token: %s-%s", strings.Join(addrs, ","), conn.Error())
 	}
 	return client
 }
