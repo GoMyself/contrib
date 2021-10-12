@@ -3,11 +3,8 @@ package conn
 import (
 	"context"
 	"fmt"
-	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"log"
-	"time"
-	"strings"
 	"github.com/beanstalkd/go-beanstalk"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
@@ -19,6 +16,9 @@ import (
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
 	"github.com/valyala/gorpc"
+	"log"
+	"strings"
+	"time"
 )
 
 var ctx = context.Background()
@@ -41,13 +41,13 @@ func InitDB(dsn string, maxIdleConn, maxOpenConn int) *sqlx.DB {
 	return db
 }
 
-func InitRedisSentinel(dsn []string, psd, name string) *redis.Client {
+func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 
 	reddb := redis.NewFailoverClient(&redis.FailoverOptions{
 		MasterName:    name,
 		SentinelAddrs: dsn,
 		Password:      psd, // no password set
-		DB:            0,   // use default DB
+		DB:            db,  // use default DB
 		DialTimeout:   10 * time.Second,
 		ReadTimeout:   30 * time.Second,
 		WriteTimeout:  30 * time.Second,
