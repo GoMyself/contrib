@@ -50,17 +50,17 @@ func NewShardConnFactory(cfg *ShardConfig) (*ShardConnFactory, error) {
 	if factory.cfg.HashFn == nil {
 		factory.cfg.HashFn = crc32.ChecksumIEEE
 	}
-	if cfg.DistributeType == DistributeByKetama {
-		servers := make([]*hashkit.Server, 0)
-		for idx, shard := range factory.shards {
-			servers = append(servers, &hashkit.Server{
-				Name:   shard.cfg.Master,
-				Weight: 1,
-				Index:  uint32(idx),
-			})
-		}
-		factory.hash = hashkit.NewKetama(servers, factory.cfg.HashFn)
-	}
+	//if cfg.DistributeType == DistributeByKetama {
+	//	servers := make([]*hashkit.Server, 0)
+	//	for idx, shard := range factory.shards {
+	//		servers = append(servers, &hashkit.Server{
+	//			Name:   shard.cfg.Master,
+	//			Weight: 1,
+	//			Index:  uint32(idx),
+	//		})
+	//	}
+	//	factory.hash = hashkit.NewKetama(servers, factory.cfg.HashFn)
+	//}
 	return factory, nil
 }
 

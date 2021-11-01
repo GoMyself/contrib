@@ -175,12 +175,12 @@ func (p *Pool) WithMaster(key ...string) (*redis.Client, error) {
 	return p.connFactory.getMasterConn(key...)
 }
 
-func (p *Pool) Pipeline() (redis.Pipeliner, error) {
-	if _, ok := p.connFactory.(*ShardConnFactory); ok {
-		return nil, errShardPoolUnSupported
-	}
+func (p *Pool) Pipeline() redis.Pipeliner {
+	//if _, ok := p.connFactory.(*ShardConnFactory); ok {
+	//	return nil, errShardPoolUnSupported
+	//}
 	conn, _ := p.connFactory.getMasterConn()
-	return conn.Pipeline(), nil
+	return conn.Pipeline()
 }
 
 func (p *Pool) Pipelined(fn func(redis.Pipeliner) error) ([]redis.Cmder, error) {
@@ -191,12 +191,12 @@ func (p *Pool) Pipelined(fn func(redis.Pipeliner) error) ([]redis.Cmder, error) 
 	return conn.Pipelined(ctx, fn)
 }
 
-func (p *Pool) TxPipeline() (redis.Pipeliner, error) {
-	if _, ok := p.connFactory.(*ShardConnFactory); ok {
-		return nil, errShardPoolUnSupported
-	}
+func (p *Pool) TxPipeline() redis.Pipeliner {
+	//if _, ok := p.connFactory.(*ShardConnFactory); ok {
+	//	return nil, errShardPoolUnSupported
+	//}
 	conn, _ := p.connFactory.getMasterConn()
-	return conn.TxPipeline(), nil
+	return conn.TxPipeline()
 }
 
 func (p *Pool) TxPipelined(fn func(redis.Pipeliner) error) ([]redis.Cmder, error) {

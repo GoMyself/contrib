@@ -17,14 +17,14 @@ var _ = Describe("Pool", func() {
 
 	BeforeEach(func() {
 		haConfig := &HAConfig{
-			Master: "127.0.0.1:8379",
+			//Master: "127.0.0.1:8379",
 			Slaves: []string{
 				"127.0.0.1:8380",
 				"127.0.0.1:8381",
 			},
 		}
 		haConfig1 := &HAConfig{
-			Master: "127.0.0.1:8382",
+			//Master: "127.0.0.1:8382",
 			Slaves: []string{
 				"127.0.0.1:8383",
 			},
