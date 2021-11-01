@@ -21,12 +21,15 @@ const (
 )
 
 type HAConfig struct {
-	Master           string         // the address of the master, e.g. "127.0.0.1:6379"
-	Slaves           []string       // list of slaves, e.g. ["127.0.0.1:6379", "127.0.0.1:6380"]
-	Password         string         // the password of the master
-	ReadonlyPassword string         // the passsword of slaves
-	Options          *redis.Options // redis options
-	PollType         int            // the slave polling type
+	Master           []string               // the address of the sentinel, e.g.  ["127.0.0.1:26379"]
+	Name             string                 // the name of sentinel
+	Password         string                 // the password of the sentinel
+	Slaves           []string               // list of slaves, e.g. ["127.0.0.1:6379", "127.0.0.1:6380"]
+	ReadonlyPassword string                 // the passsword of slaves
+	DB               int                    // the db of ha
+	Options          *redis.FailoverOptions // redis sentinel options
+	SlaveOptions     *redis.Options         // redis slave options
+	PollType         int                    // the slave polling type
 
 	AutoEjectHost      bool          // eject the failure host or not
 	ServerFailureLimit int32         // eject if reached `ServerFailureLimit` times of failure
@@ -79,9 +82,11 @@ func NewHAConnFactory(cfg *HAConfig) (*HAConnFactory, error) {
 	factory := new(HAConnFactory)
 	factory.cfg = cfg
 	options := cfg.Options
-	options.Addr = cfg.Master
+	options.MasterName = cfg.Name
+	options.SentinelAddrs = cfg.Master
 	options.Password = cfg.Password
-	factory.master = newClient(redis.NewClient(options), 0)
+	options.DB = cfg.DB
+	factory.master = newClient(redis.NewFailoverClient(options), 0)
 	factory.slaves = newClientPool(cfg)
 	return factory, nil
 }
@@ -108,7 +113,7 @@ func (cfg *HAConfig) init() error {
 		cfg.PollType = PollByRoundRobin
 	}
 	if cfg.Options == nil {
-		cfg.Options = &redis.Options{}
+		cfg.Options = &redis.FailoverOptions{}
 	}
 	cfg.weights = make([]int64, len(cfg.Slaves))
 	for i, slave := range cfg.Slaves {
@@ -164,7 +169,7 @@ func newClientPool(cfg *HAConfig) *clientPool {
 		slavePassword = cfg.ReadonlyPassword
 	}
 	if len(cfg.Slaves) == 0 {
-		cfg.Slaves = append(cfg.Slaves, cfg.Master)
+		//cfg.Slaves = append(cfg.Slaves, cfg.Master)
 	}
 
 	pool := &clientPool{
@@ -178,7 +183,7 @@ func newClientPool(cfg *HAConfig) *clientPool {
 		rand:   rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 	pool.slaves = make([]*client, len(cfg.Slaves))
-	options := cfg.Options
+	options := cfg.SlaveOptions
 	for i, slave := range cfg.Slaves {
 		slaveOptions := *options
 		slaveOptions.Addr = slave

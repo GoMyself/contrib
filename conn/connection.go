@@ -41,22 +41,23 @@ func InitDB(dsn string, maxIdleConn, maxOpenConn int) *sqlx.DB {
 	return db
 }
 
-func InitRedisHAPool() *Pool {
+func InitRedisHAPool(mdsn, sdsn []string, psd, rpsd, name string, db int) *Pool {
 
-	pool, err := NewHA(&HAConfig{
-		Master: "127.0.0.1:6379",
-		Slaves: []string{
-			"127.0.0.1:6380",
-			"127.0.0.1:6381",
-		},
-		Password:         "", // set master password
-		ReadonlyPassword: "", // use password if no set
+	ha, err := NewHA(&HAConfig{
+		Name:             name, // sentinel master name
+		Master:           mdsn, // sentinel addresses
+		Slaves:           sdsn, // slave addresses
+		DB:               db,   //ha db
+		Password:         psd,  // sentinel password
+		ReadonlyPassword: rpsd, // slave password
 	})
+	pong, err := ha.Ping().Result()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalf("initRedisSentinel failed: %s", err.Error())
 	}
+	fmt.Println(pong, err)
 
-	return pool
+	return ha
 }
 
 func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
