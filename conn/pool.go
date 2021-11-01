@@ -175,6 +175,14 @@ func (p *Pool) WithMaster(key ...string) (*redis.Client, error) {
 	return p.connFactory.getMasterConn(key...)
 }
 
+func (p *Pool) Do(args ...interface{}) *redis.Cmd {
+	conn, err := p.connFactory.getMasterConn()
+	if err != nil {
+		return newErrorCmd(err)
+	}
+	return conn.Do(ctx, args...)
+}
+
 func (p *Pool) Pipeline() redis.Pipeliner {
 	//if _, ok := p.connFactory.(*ShardConnFactory); ok {
 	//	return nil, errShardPoolUnSupported
