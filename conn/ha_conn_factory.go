@@ -86,6 +86,9 @@ func NewHAConnFactory(cfg *HAConfig) (*HAConnFactory, error) {
 	options.SentinelAddrs = cfg.Master
 	options.Password = cfg.Password
 	options.DB = cfg.DB
+	if cfg.SlaveOptions == nil {
+		cfg.SlaveOptions = &redis.Options{}
+	}
 	factory.master = newClient(redis.NewFailoverClient(options), 0)
 	factory.slaves = newClientPool(cfg)
 	return factory, nil
