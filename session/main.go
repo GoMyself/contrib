@@ -4,81 +4,81 @@ import (
 	"context"
 	"errors"
 	"fmt"
-  	"strings"
 	"github.com/go-redis/redis/v8"
 	"github.com/valyala/fasthttp"
+	"strings"
 	"time"
 )
 
 var (
 	ctx    = context.Background()
 	client *redis.Client
+	prefix string //站点前缀
 )
 
-func New(reddb *redis.Client) {
+func New(reddb *redis.Client, name string) {
 	client = reddb
+	prefix = name
 }
 
 func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 
 	uuid := fmt.Sprintf("TD%s", uid)
-	key  := fmt.Sprintf("%d", Cputicks())
+	key := fmt.Sprintf("%d", Cputicks())
 
-
-	val, err  := client.Get(ctx, uuid).Result()
+	val, err := client.Get(ctx, uuid).Result()
 
 	pipe := client.TxPipeline()
 	defer pipe.Close()
 
 	if err != redis.Nil && len(val) > 0 {
 		//同一个用户，一个时间段，只能登录一个
-      	results := strings.SplitN(val, ",", 3)
+		results := strings.SplitN(val, ",", 3)
 		pipe.Unlink(ctx, results[1])
 	}
 
 	v := fmt.Sprintf("%s,%s", deviceNo, key)
-	pipe.Set(ctx, uuid, v, time.Duration(100) * time.Hour)
+	pipe.Set(ctx, uuid, v, time.Duration(100)*time.Hour)
 	pipe.SetNX(ctx, key, value, defaultExpires)
 
 	_, err = pipe.Exec(ctx)
 
 	/*
-	results  := client.LRange(ctx, uuid, 0, -1).Val()
-	n        := len(results)
-	pipe := client.TxPipeline()
-	defer pipe.Close()
+			results  := client.LRange(ctx, uuid, 0, -1).Val()
+			n        := len(results)
+			pipe := client.TxPipeline()
+			defer pipe.Close()
 
-	if n > 0 {
-		val := strings.SplitN(results[0], ",", 3)
-		if val[0] != deviceNo {
+			if n > 0 {
+				val := strings.SplitN(results[0], ",", 3)
+				if val[0] != deviceNo {
 
-			for _, val := range results {
-				v := strings.SplitN(val, ",", 3)
-				pipe.Unlink(ctx, v[1])
+					for _, val := range results {
+						v := strings.SplitN(val, ",", 3)
+						pipe.Unlink(ctx, v[1])
+					}
+				}
+			} else if n > 70 {
+				for _, val := range results {
+					v := strings.SplitN(val, ",", 3)
+					pipe.Unlink(ctx, v[1])
+				}
 			}
-		}
-	} else if n > 70 {
-		for _, val := range results {
-			v := strings.SplitN(val, ",", 3)
-			pipe.Unlink(ctx, v[1])
-		}
-	}
-	v := fmt.Sprintf("%s,%s", deviceNo, key)
-	pipe.LPush(ctx, uuid, v)
-	pipe.SetNX(ctx, key, value, defaultExpires)
+			v := fmt.Sprintf("%s,%s", deviceNo, key)
+			pipe.LPush(ctx, uuid, v)
+			pipe.SetNX(ctx, key, value, defaultExpires)
 
-  _, err := pipe.Exec(ctx)
+		  _, err := pipe.Exec(ctx)
 	*/
 	return key, err
 }
 
-
 func Set(value []byte, uid string) (string, error) {
 
 	uuid := fmt.Sprintf("TI%s", uid)
-	key := fmt.Sprintf("%d", Cputicks())
+	key := fmt.Sprintf("%s:%d", prefix, Cputicks())
 
-	val, err  := client.Get(ctx, uuid).Result()
+	val, err := client.Get(ctx, uuid).Result()
 
 	pipe := client.TxPipeline()
 	defer pipe.Close()
@@ -88,7 +88,7 @@ func Set(value []byte, uid string) (string, error) {
 		pipe.Unlink(ctx, val)
 	}
 
-	pipe.Set(ctx, uuid, key, time.Duration(100) * time.Hour)
+	pipe.Set(ctx, uuid, key, time.Duration(100)*time.Hour)
 	pipe.SetNX(ctx, key, value, defaultExpires)
 
 	_, err = pipe.Exec(ctx)
@@ -144,14 +144,14 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 	if len(key) == 0 {
 		return nil, errors.New("does not exist")
 	}
-	
-  	pipe := client.TxPipeline()
+
+	pipe := client.TxPipeline()
 	defer pipe.Close()
-  
-  	data   := pipe.Get(ctx, key)
-    _       = pipe.ExpireAt(ctx, key, ctx.Time().Add(30*time.Minute))
-  	pipe.Exec(ctx)
-  	
+
+	data := pipe.Get(ctx, key)
+	_ = pipe.ExpireAt(ctx, key, ctx.Time().Add(30*time.Minute))
+	pipe.Exec(ctx)
+
 	val, err := data.Bytes()
 	if err != nil {
 		return nil, err
