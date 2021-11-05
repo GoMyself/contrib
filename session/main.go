@@ -23,7 +23,8 @@ func New(reddb *redis.Client, name string) {
 }
 
 // 站点配置
-func NewSites(sites map[string]int) {
+func NewSites(reddb *redis.Client,sites map[string]int) {
+	client = reddb
 	sitesConfig = sites
 }
 
