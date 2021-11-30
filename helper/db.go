@@ -26,3 +26,21 @@ func EnumFields(obj interface{}) []interface{} {
 
 	return fields
 }
+
+func EnumRedisFields(obj interface{}) []string {
+
+	rt := reflect.TypeOf(obj)
+	if rt.Kind() != reflect.Struct {
+		return nil
+	}
+
+	var fields []string
+	for i := 0; i < rt.NumField(); i++ {
+		f := rt.Field(i)
+		if field := f.Tag.Get("db"); field != "" && field != "-" {
+			fields = append(fields, field)
+		}
+	}
+
+	return fields
+}

@@ -107,12 +107,12 @@ func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
 	return reddb
 }
 
-func InitRedis(dsn string, psd string) *redis.Client {
+func InitRedis(dsn string, psd string, db int) *redis.Client {
 
 	reddb := redis.NewClient(&redis.Options{
 		Addr:         dsn,
 		Password:     psd, // no password set
-		DB:           0,   // use default DB
+		DB:           db,  // use default DB
 		DialTimeout:  10 * time.Second,
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 30 * time.Second,
