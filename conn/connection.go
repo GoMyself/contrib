@@ -2,7 +2,6 @@ package conn
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"github.com/beanstalkd/go-beanstalk"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -16,7 +15,6 @@ import (
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
-	_ "github.com/taosdata/driver-go/v2/taosSql"
 	"github.com/valyala/gorpc"
 	"log"
 	"strings"
@@ -244,15 +242,4 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 		log.Fatalf("token: %s-%s", strings.Join(addrs, ","), conn.Error())
 	}
 	return client
-}
-
-// 初始化tdengine
-func InitTD(dsn string) *sql.DB {
-
-	db, err := sql.Open("taosSql", dsn)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	return db
 }
