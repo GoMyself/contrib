@@ -11,27 +11,18 @@ import (
 )
 
 var (
-	ctx         = context.Background()
-	client      *redis.Client
-	prefix      string //站点前缀
-	sitesConfig = map[string]int{}
+	ctx    = context.Background()
+	client *redis.Client
 )
 
-func New(reddb *redis.Client, name string) {
+func New(reddb *redis.Client) {
 	client = reddb
-	prefix = name
-}
-
-// 站点配置
-func NewSites(reddb *redis.Client,sites map[string]int) {
-	client = reddb
-	sitesConfig = sites
 }
 
 func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 
 	uuid := fmt.Sprintf("TD%s", uid)
-	key := fmt.Sprintf("%s:%d", prefix, Cputicks())
+	key := fmt.Sprintf("%d", Cputicks())
 
 	val, err := client.Get(ctx, uuid).Result()
 
@@ -83,7 +74,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 func Set(value []byte, uid string) (string, error) {
 
 	uuid := fmt.Sprintf("TI%s", uid)
-	key := fmt.Sprintf("%s:%d", prefix, Cputicks())
+	key := fmt.Sprintf("%d", Cputicks())
 
 	val, err := client.Get(ctx, uuid).Result()
 
@@ -152,17 +143,9 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 		return nil, errors.New("does not exist")
 	}
 
-	ts := strings.Split(key, ":")
-	if len(ts) != 2 {
-		return nil, errors.New("does not exist")
-	}
-
 	pipe := client.TxPipeline()
 	defer pipe.Close()
 
-	if db, ok := sitesConfig[ts[0]]; ok {
-		pipe.Do(ctx, "select", db)
-	}
 	data := pipe.Get(ctx, key)
 	_ = pipe.ExpireAt(ctx, key, ctx.Time().Add(30*time.Minute))
 	pipe.Exec(ctx)
