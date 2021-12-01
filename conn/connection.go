@@ -16,10 +16,9 @@ import (
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
-	_ "github.com/taosdata/driver-go/taosSql"
+	_ "github.com/taosdata/driver-go/v2/taosSql"
 	"github.com/valyala/gorpc"
 	"log"
-	"os"
 	"strings"
 	"time"
 )
