@@ -11,12 +11,15 @@ import (
 )
 
 var (
-	ctx    = context.Background()
-	client *redis.Client
+  	prefix  string
+	ctx      = context.Background()
+	client   *redis.Client
 )
 
-func New(reddb *redis.Client) {
-	client = reddb
+func New(reddb *redis.Client, p string) {
+	
+  	client = reddb
+  	prefix = p
 }
 
 func AdminSet(value []byte, uid, deviceNo string) (string, error) {
@@ -74,7 +77,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 func Set(value []byte, uid string) (string, error) {
 
 	uuid := fmt.Sprintf("TI%s", uid)
-	key := fmt.Sprintf("%d", Cputicks())
+  	key := fmt.Sprintf("%s:%d", prefix, Cputicks())
 
 	val, err := client.Get(ctx, uuid).Result()
 
