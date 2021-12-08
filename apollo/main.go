@@ -8,12 +8,11 @@ import (
 	"context"
 	"github.com/pelletier/go-toml"
 	"github.com/coreos/etcd/clientv3"
-	jsoniter "github.com/goccy/go-json"
+	"github.com/goccy/go-json"
 )
 
 var (
 	conn           *clientv3.Client
-	cjson          = jsoniter.ConfigCompatibleWithStandardLibrary
 	dialTimeout    = 5 * time.Second
 	requestTimeout = 8 * time.Second
 )
@@ -57,7 +56,7 @@ func Parse(key string, v interface{}) error {
 		return fmt.Errorf("No more '%s'", key)
 	}
 
-	return cjson.Unmarshal(gr.Kvs[0].Value, v)
+	return json.Unmarshal(gr.Kvs[0].Value, v)
 }
 
 func ParseText(key string) (map[string]map[string]interface{}, error) {
@@ -72,7 +71,7 @@ func ParseText(key string) (map[string]map[string]interface{}, error) {
   	recs := map[string]map[string]interface{}{}
 	config, err := toml.LoadBytes(gr.Kvs[0].Value)
 	if err != nil {
-		return recs, errors.New(FormatErr)
+		return recs, err
 	}
 
 	keys := config.Keys()
