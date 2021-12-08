@@ -6,9 +6,9 @@ import (
 
 	//"errors"
 	"context"
-
+	"github.com/pelletier/go-toml"
 	"github.com/coreos/etcd/clientv3"
-	jsoniter "github.com/json-iterator/go"
+	jsoniter "github.com/goccy/go-json"
 )
 
 var (
@@ -35,6 +35,19 @@ func Close() {
 	conn.Close()
 }
 
+func isDigit(s string) bool {
+
+	if s == "" {
+		return false
+	}
+	for _, r := range s {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
+}
+
 func Parse(key string, v interface{}) error {
 
 	ctx, _ := context.WithTimeout(context.Background(), requestTimeout)
@@ -47,7 +60,7 @@ func Parse(key string, v interface{}) error {
 	return cjson.Unmarshal(gr.Kvs[0].Value, v)
 }
 
-func ParseText(key string) ([]byte, error) {
+func ParseText(key string) (map[string]map[string]interface{}, error) {
 
 	ctx, _ := context.WithTimeout(context.Background(), requestTimeout)
 	kv := clientv3.NewKV(conn)
@@ -56,5 +69,22 @@ func ParseText(key string) ([]byte, error) {
 		return nil, fmt.Errorf("No more '%s'", key)
 	}
 
-	return gr.Kvs[0].Value, nil
+  	recs := map[string]map[string]interface{}{}
+	config, err := toml.LoadBytes(gr.Kvs[0].Value)
+	if err != nil {
+		return recs, errors.New(FormatErr)
+	}
+
+	keys := config.Keys()
+	for _, val := range keys {
+
+		if isDigit(val) {
+
+			tree := config.Get(val).(*toml.Tree)
+			recs[val] = tree.ToMap()
+		}
+    }
+  
+	return recs, nil
 }
+
