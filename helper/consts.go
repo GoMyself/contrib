@@ -1,6 +1,11 @@
 package helper
 
+
+
 const (
+  	Failure                        = "2000" //失败
+	Pending                        = "2001" //待处理
+	Processing                     = "2002" //处理中
 	Success                        = "1000" //成功
 	Degrade                        = "1001" //被降级过滤的请求
 	AreaLimit                      = "1002" //地理区域限制
