@@ -1,3 +1,5 @@
+package helper
+
 const (
 	Success                        = "1000" //成功
 	Degrade                        = "1001" //被降级过滤的请求
