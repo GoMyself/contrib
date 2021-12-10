@@ -6,9 +6,9 @@ import (
 
 	//"errors"
 	"context"
-	"github.com/pelletier/go-toml"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/goccy/go-json"
+	"github.com/pelletier/go-toml"
 )
 
 var (
@@ -68,7 +68,7 @@ func ParseText(key string) (map[string]map[string]interface{}, error) {
 		return nil, fmt.Errorf("No more '%s'", key)
 	}
 
-  	recs := map[string]map[string]interface{}{}
+	recs := map[string]map[string]interface{}{}
 	config, err := toml.LoadBytes(gr.Kvs[0].Value)
 	if err != nil {
 		return recs, err
@@ -82,8 +82,35 @@ func ParseText(key string) (map[string]map[string]interface{}, error) {
 			tree := config.Get(val).(*toml.Tree)
 			recs[val] = tree.ToMap()
 		}
-    }
-  
+	}
+
 	return recs, nil
 }
 
+func ParseSText(key string) (map[string]map[string]interface{}, error) {
+
+	ctx, _ := context.WithTimeout(context.Background(), requestTimeout)
+	kv := clientv3.NewKV(conn)
+	gr, _ := kv.Get(ctx, key)
+	if gr == nil || len(gr.Kvs) == 0 {
+		return nil, fmt.Errorf("No more '%s'", key)
+	}
+
+	recs := map[string]map[string]interface{}{}
+	config, err := toml.LoadBytes(gr.Kvs[0].Value)
+	if err != nil {
+		return recs, err
+	}
+
+	keys := config.Keys()
+	for _, val := range keys {
+
+		//if isDigit(val) {
+
+		tree := config.Get(val).(*toml.Tree)
+		recs[val] = tree.ToMap()
+		//}
+	}
+
+	return recs, nil
+}
