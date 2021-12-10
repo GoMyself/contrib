@@ -102,39 +102,37 @@ func isPrivateAddress(address string) (bool, error) {
 // FromRequest returns client's real public IP address from http request headers.
 func FromRequest(ctx *fasthttp.RequestCtx) string {
 	/*
-  	xClientIP := ctx.Request.Header.Peek(xClientIPHeader)
-	if xClientIP != nil {
-		return string(xClientIP)
-	}
+		  	xClientIP := ctx.Request.Header.Peek(xClientIPHeader)
+			if xClientIP != nil {
+				return string(xClientIP)
+			}
 
-	xForwardedFor := ctx.Request.Header.Peek(xForwardedForHeader)
-	if xForwardedFor != nil {
-		requestIP, err := retrieveForwardedIP(string(xForwardedFor))
-		if err == nil {
-			return requestIP
-		}
-	}
-  	*/
-  
-	if ip, err := fromForwardedHeaders(ctx); err == nil {		
-      	
-      	requestIP, err := retrieveForwardedIP(ip)
+			xForwardedFor := ctx.Request.Header.Peek(xForwardedForHeader)
+			if xForwardedFor != nil {
+				requestIP, err := retrieveForwardedIP(string(xForwardedFor))
+				if err == nil {
+					return requestIP
+				}
+			}
+	*/
+
+	if ip, err := fromForwardedHeaders(ctx); err == nil {
+
+		requestIP, err := retrieveForwardedIP(ip)
 		if err == nil {
 			return requestIP
 		}
 		//return ip
 	}
-  
+
 	if ip, err := fromSpecialHeaders(ctx); err == nil {
-      	
-      	requestIP, err := retrieveForwardedIP(ip)
+
+		requestIP, err := retrieveForwardedIP(ip)
 		if err == nil {
 			return requestIP
 		}
-		return ip
+		//return ip
 	}
-
-	
 
 	var remoteIP string
 	remoteAddr := ctx.RemoteAddr().String()
