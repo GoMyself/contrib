@@ -116,11 +116,21 @@ func FromRequest(ctx *fasthttp.RequestCtx) string {
 	}
   	*/
   
-	if ip, err := fromForwardedHeaders(ctx); err == nil {
-		return ip
+	if ip, err := fromForwardedHeaders(ctx); err == nil {		
+      	
+      	requestIP, err := retrieveForwardedIP(ip)
+		if err == nil {
+			return requestIP
+		}
+		//return ip
 	}
   
 	if ip, err := fromSpecialHeaders(ctx); err == nil {
+      	
+      	requestIP, err := retrieveForwardedIP(ip)
+		if err == nil {
+			return requestIP
+		}
 		return ip
 	}
 
