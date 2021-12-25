@@ -13,14 +13,14 @@ import (
 var (
 	loc, _ = time.LoadLocation("Asia/Shanghai")
 	cu     = map[int]string{
-		1: "A1",
-		2: "B1",
-		3: "C1",
+		0: "A1",
+		1: "B1",
+		2: "C1",
 	}
 	ca = map[int]string{
-		1: "A",
-		2: "B",
-		3: "C",
+		0: "A",
+		1: "B",
+		2: "C",
 	}
 )
 
