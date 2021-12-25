@@ -12,6 +12,16 @@ import (
 
 var (
 	loc, _ = time.LoadLocation("Asia/Shanghai")
+	cu     = map[int]string{
+		1: "A1",
+		2: "B1",
+		3: "C1",
+	}
+	ca = map[int]string{
+		1: "A",
+		2: "B",
+		3: "C",
+	}
 )
 
 // 判断字符是否为数字
@@ -79,11 +89,54 @@ func CheckUName(str string, min, max int) bool {
 	return true
 }
 
+// 检测信用盘会员名格式
+func CheckCUName(str string, level, min, max int) bool {
+
+	// 层级不支持
+	prefix, ok := cu[level]
+	if !ok {
+		return false
+	}
+
+	if !CtypeAlnum(str) || //数字字母组合
+		!strings.HasPrefix(str, prefix) || //必须包含层级会员前缀
+		!CheckStringLength(str, min, max) {
+		return false
+	}
+
+	return true
+}
+
 // 检测后台账号
 func CheckAName(str string, min, max int) bool {
 
 	if !CtypeAlnum(str) || //数字字母组合
-		!IncludeAlpha(str) || //必须包含字母
+		!First2IsAlpha(str) || //必须包含字母
+		!CheckStringLength(str, min, max) {
+		return false
+	}
+
+	return true
+}
+
+// 检测信用盘代理名格式
+func CheckCAName(str string, level, min, max int) bool {
+
+	// 层级不支持
+	uPrefix, ok := cu[level]
+	if !ok {
+		return false
+	}
+
+	// 层级不支持
+	aPrefix, ok := ca[level]
+	if !ok {
+		return false
+	}
+
+	if !CtypeAlnum(str) || //数字字母组合
+		!strings.HasPrefix(str, aPrefix) || //必须包含层级代理前缀
+		strings.HasPrefix(str, uPrefix) || //不能包含层级会员前缀
 		!CheckStringLength(str, min, max) {
 		return false
 	}
