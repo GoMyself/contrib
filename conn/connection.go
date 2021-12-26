@@ -195,10 +195,10 @@ func InitRpc(dsn string) *gorpc.Client {
 }
 
 // 创建nats.io链接
-func InitNatsIO(url, name, password string) *nats.Conn {
+func InitNatsIO(urls []string, name, password string) *nats.Conn {
 
 	opts := nats.Options{
-		Url:            url,
+		Servers:        urls,
 		User:           name,
 		Password:       password,
 		AllowReconnect: true,
