@@ -23,9 +23,9 @@ var (
 		"c": true,
 	}
 	cu = map[int]string{
-		1: "a1",
-		2: "b1",
-		3: "c1",
+		0: "a1",
+		1: "b1",
+		2: "c1",
 	}
 	ca = map[int]string{
 		0: "a",
