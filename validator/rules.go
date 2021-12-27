@@ -177,7 +177,7 @@ func CheckACAName(str string, level, min, max int) bool {
 	str = strings.ToLower(str)
 	// 层级不支持
 	uPrefix, ok := cu[level]
-	if ok {
+	if !ok {
 		return false
 	}
 
