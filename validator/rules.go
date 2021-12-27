@@ -114,6 +114,7 @@ func CheckAName(str string, min, max int) bool {
 // 检测信用盘会员名格式
 func CheckCUName(str string, min, max int) bool {
 
+	str = strings.ToLower(str)
 	if !CheckStringLength(str, min, max) {
 		return false
 	}
@@ -133,6 +134,7 @@ func CheckCUName(str string, min, max int) bool {
 // 检测添加信用盘会员名格式
 func CheckACUName(str string, level, min, max int) bool {
 
+	str = strings.ToLower(str)
 	// 层级不支持
 	prefix, ok := cu[level]
 	if !ok {
@@ -151,6 +153,7 @@ func CheckACUName(str string, level, min, max int) bool {
 // 检测添加信用盘代理名格式
 func CheckCAName(str string, min, max int) bool {
 
+	str = strings.ToLower(str)
 	if !CheckStringLength(str, min, max) {
 		return false
 	}
@@ -171,6 +174,7 @@ func CheckCAName(str string, min, max int) bool {
 // 检测添加信用盘代理名格式
 func CheckACAName(str string, level, min, max int) bool {
 
+	str = strings.ToLower(str)
 	// 层级不支持
 	uPrefix, ok := cu[level]
 	if ok {
