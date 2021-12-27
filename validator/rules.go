@@ -114,14 +114,16 @@ func CheckAName(str string, min, max int) bool {
 // 检测信用盘会员名格式
 func CheckCUName(str string, min, max int) bool {
 
+	if !CheckStringLength(str, min, max) {
+		return false
+	}
 	// 前缀不正确
 	_, ok := cuprefix[str[:2]]
 	if !ok {
 		return false
 	}
 
-	if !CtypeAlnum(str) || //数字字母组合
-		!CheckStringLength(str, min, max) {
+	if !CtypeAlnum(str) { //数字字母组合
 		return false
 	}
 
@@ -149,14 +151,17 @@ func CheckACUName(str string, level, min, max int) bool {
 // 检测添加信用盘代理名格式
 func CheckCAName(str string, min, max int) bool {
 
+	if !CheckStringLength(str, min, max) {
+		return false
+	}
+
 	// 前缀不正确
 	_, ok := caprefix[str[:1]]
 	if !ok {
 		return false
 	}
 
-	if !CtypeAlnum(str) || //数字字母组合
-		!CheckStringLength(str, min, max) {
+	if !CtypeAlnum(str) { //数字字母组合
 		return false
 	}
 
