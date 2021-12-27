@@ -13,24 +13,24 @@ import (
 var (
 	loc, _   = time.LoadLocation("Asia/Shanghai")
 	cuprefix = map[string]bool{
-		"A1": true,
-		"B1": true,
-		"C1": true,
+		"a1": true,
+		"b1": true,
+		"c1": true,
 	}
 	caprefix = map[string]bool{
-		"A": true,
-		"B": true,
-		"C": true,
+		"a": true,
+		"b": true,
+		"c": true,
 	}
 	cu = map[int]string{
-		1: "A1",
-		2: "B1",
-		3: "C1",
+		1: "a1",
+		2: "b1",
+		3: "c1",
 	}
 	ca = map[int]string{
-		0: "A",
-		1: "B",
-		2: "C",
+		0: "a",
+		1: "b",
+		2: "c",
 	}
 )
 
