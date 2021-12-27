@@ -143,7 +143,11 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 
 	key := string(ctx.Request.Header.Peek("t"))
 	if len(key) == 0 {
-		return nil, errors.New("does not exist")
+      	
+      	key = string(ctx.QueryArgs().Peek("t"))
+      	if len(key) == 0 {
+			return nil, errors.New("does not exist")
+        }
 	}
 
 	pipe := client.TxPipeline()
