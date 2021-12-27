@@ -11,8 +11,18 @@ import (
 )
 
 var (
-	loc, _ = time.LoadLocation("Asia/Shanghai")
-	cu     = map[int]string{
+	loc, _   = time.LoadLocation("Asia/Shanghai")
+	cuprefix = map[string]bool{
+		"A1": true,
+		"B1": true,
+		"C1": true,
+	}
+	caprefix = map[string]bool{
+		"A": true,
+		"B": true,
+		"C": true,
+	}
+	cu = map[int]string{
 		1: "A1",
 		2: "B1",
 		3: "C1",
@@ -89,8 +99,37 @@ func CheckUName(str string, min, max int) bool {
 	return true
 }
 
+// 检测后台账号
+func CheckAName(str string, min, max int) bool {
+
+	if !CtypeAlnum(str) || //数字字母组合
+		!First2IsAlpha(str) || //必须包含字母
+		!CheckStringLength(str, min, max) {
+		return false
+	}
+
+	return true
+}
+
 // 检测信用盘会员名格式
-func CheckCUName(str string, level, min, max int) bool {
+func CheckCUName(str string, min, max int) bool {
+
+	// 前缀不正确
+	_, ok := cuprefix[str[:2]]
+	if !ok {
+		return false
+	}
+
+	if !CtypeAlnum(str) || //数字字母组合
+		!CheckStringLength(str, min, max) {
+		return false
+	}
+
+	return true
+}
+
+// 检测添加信用盘会员名格式
+func CheckACUName(str string, level, min, max int) bool {
 
 	// 层级不支持
 	prefix, ok := cu[level]
@@ -107,11 +146,16 @@ func CheckCUName(str string, level, min, max int) bool {
 	return true
 }
 
-// 检测后台账号
-func CheckAName(str string, min, max int) bool {
+// 检测添加信用盘代理名格式
+func CheckCAName(str string, min, max int) bool {
+
+	// 前缀不正确
+	_, ok := caprefix[str[:1]]
+	if !ok {
+		return false
+	}
 
 	if !CtypeAlnum(str) || //数字字母组合
-		!First2IsAlpha(str) || //必须包含字母
 		!CheckStringLength(str, min, max) {
 		return false
 	}
@@ -119,12 +163,12 @@ func CheckAName(str string, min, max int) bool {
 	return true
 }
 
-// 检测信用盘代理名格式
-func CheckCAName(str string, level, min, max int) bool {
+// 检测添加信用盘代理名格式
+func CheckACAName(str string, level, min, max int) bool {
 
 	// 层级不支持
 	uPrefix, ok := cu[level]
-	if !ok {
+	if ok {
 		return false
 	}
 
