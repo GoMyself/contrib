@@ -60,9 +60,22 @@ func httpDoTimeout(requestBody []byte, method string, requestURI string, headers
 func write(fields map[string]string, flags string) error {
 
 	var b strings.Builder
-
-	b.WriteString("INSERT INTO zlog (ts, filename, content, fn, flags, id, project) VALUES(")
-	b.WriteString(fmt.Sprintf("%d,", time.Now().UnixMilli()))
+	
+	t := time.Now()
+	b.WriteString("INSERT INTO zlog_")
+	b.WriteString(t.Format("01-02"))
+	b.WriteString(" USING zlog TAGS (")
+	b.WriteByte('"')
+	b.WriteString(fields["id"])
+	b.WriteByte('"')
+	b.WriteByte(',')
+	b.WriteByte('"')
+	b.WriteString(fields["project"])
+	b.WriteByte('"')
+	b.WriteByte(')')
+	
+	b.WriteString(" VALUES(")
+	b.WriteString(fmt.Sprintf("%d,", t.UnixMilli()))
 	b.WriteByte('"')
 	b.WriteString(fields["filename"])
 	b.WriteByte('"')
@@ -78,22 +91,21 @@ func write(fields map[string]string, flags string) error {
 	b.WriteByte('"')
 	b.WriteString(flags)
 	b.WriteByte('"')
-	b.WriteByte(',')
-	b.WriteByte('"')
-	b.WriteString(fields["id"])
-	b.WriteByte('"')
-	b.WriteByte(',')
-	b.WriteByte('"')
-	b.WriteString(fields["project"])
-	b.WriteByte('"')
 	b.WriteByte(')')
 	
 	fmt.Println("b = ", b.String())
 	headers := map[string]string{
 		"Authorization": "Basic " + internalToken,
 	}
-	httpDoTimeout([]byte(b.String()), "POST", "/rest/sql", headers)
-
+	body, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", "/rest/sql", headers)
+	if err != nil {
+		return err
+	}
+	if statusCode != fasthttp.StatusOK {
+		return fmt.Errorf(("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
+	}
+	
+				  fmt.Println("body = ", string(body))
 	return nil
 }
 
