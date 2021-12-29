@@ -61,7 +61,7 @@ func write(fields map[string]string, flags string) error {
 
 	var b strings.Builder
 
-	b.WriteString("INSERT INTO tb_name (ts, filename, content, fn, flags, id, project) VALUES(")
+	b.WriteString("INSERT INTO zlog (ts, filename, content, fn, flags, id, project) VALUES(")
 	b.WriteString(fmt.Sprintf("%d,", time.Now().UnixMilli()))
 	b.WriteByte('"')
 	b.WriteString(fields["filename"])
