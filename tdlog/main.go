@@ -63,7 +63,7 @@ func write(fields map[string]string, flags string) error {
 	
 	t := time.Now()
 	b.WriteString("INSERT INTO zlog_")
-	b.WriteString(t.Format("01-02"))
+	b.WriteString(t.Format("0102"))
 	b.WriteString(" USING zlog TAGS (")
 	b.WriteByte('"')
 	b.WriteString(fields["id"])
