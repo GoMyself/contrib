@@ -97,7 +97,7 @@ func write(fields map[string]string, flags string) error {
 	headers := map[string]string{
 		"Authorization": "Basic " + internalToken,
 	}
-	body, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", "/rest/sql", headers)
+	body, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", internalUrl+"/rest/sql", headers)
 	if err != nil {
 		return err
 	}
