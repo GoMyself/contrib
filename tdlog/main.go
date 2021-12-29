@@ -102,10 +102,10 @@ func write(fields map[string]string, flags string) error {
 		return err
 	}
 	if statusCode != fasthttp.StatusOK {
-		return fmt.Errorf(("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
+		return fmt.Errorf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
 	}
 	
-				  fmt.Println("body = ", string(body))
+	fmt.Println("body = ", string(body))
 	return nil
 }
 
