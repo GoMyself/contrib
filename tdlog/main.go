@@ -76,7 +76,7 @@ func write(fields map[string]string, flags string) error {
 	b.WriteByte('"')
 	b.WriteByte(',')
 	b.WriteByte('"')
-	b.WriteString(fields["flags"])
+	b.WriteString(flags)
 	b.WriteByte('"')
 	b.WriteByte(',')
 	b.WriteByte('"')
