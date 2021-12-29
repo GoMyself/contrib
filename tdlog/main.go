@@ -86,7 +86,8 @@ func write(fields map[string]string, flags string) error {
 	b.WriteByte('"')
 	b.WriteString(fields["project"])
 	b.WriteByte('"')
-
+	b.WriteByte(')')
+	
 	fmt.Println("b = ", b.String())
 	headers := map[string]string{
 		"Authorization": "Basic " + internalToken,
