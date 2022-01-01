@@ -11,15 +11,15 @@ import (
 )
 
 var (
-  	prefix  string
-	ctx      = context.Background()
-	client   *redis.Client
+	prefix string
+	ctx    = context.Background()
+	client *redis.Client
 )
 
 func New(reddb *redis.Client, p string) {
-	
-  	client = reddb
-  	prefix = p
+
+	client = reddb
+	prefix = p
 }
 
 func AdminSet(value []byte, uid, deviceNo string) (string, error) {
@@ -77,7 +77,7 @@ func AdminSet(value []byte, uid, deviceNo string) (string, error) {
 func Set(value []byte, uid string) (string, error) {
 
 	uuid := fmt.Sprintf("TI%s", uid)
-  	key := fmt.Sprintf("%s:%d", prefix, Cputicks())
+	key := fmt.Sprintf("%s:%d", prefix, Cputicks())
 
 	val, err := client.Get(ctx, uuid).Result()
 
@@ -120,13 +120,31 @@ func Update(value []byte, uid uint64) bool {
 	return true
 }
 
-func Offline(sid string) {
+func Offline(uids []string) {
 
-	if len(sid) == 0 {
+	if len(uids) == 0 {
 		return
 	}
 
-	client.Unlink(ctx, sid)
+	var (
+		uuids []string
+		sKeys []string
+	)
+	for _, uid := range uids {
+		uuids = append(uuids, fmt.Sprintf("TI%s", uid))
+	}
+	keys, err := client.MGet(ctx, uuids...).Result()
+	if err != nil {
+		return
+	}
+
+	for _, key := range keys {
+		if k, ok := key.(string); ok {
+			sKeys = append(sKeys, k)
+		}
+	}
+
+	client.Unlink(ctx, sKeys...)
 }
 
 func Destroy(ctx *fasthttp.RequestCtx) {
@@ -143,11 +161,11 @@ func Get(ctx *fasthttp.RequestCtx) ([]byte, error) {
 
 	key := string(ctx.Request.Header.Peek("t"))
 	if len(key) == 0 {
-      	
-      	key = string(ctx.QueryArgs().Peek("t"))
-      	if len(key) == 0 {
+
+		key = string(ctx.QueryArgs().Peek("t"))
+		if len(key) == 0 {
 			return nil, errors.New("does not exist")
-        }
+		}
 	}
 
 	pipe := client.TxPipeline()
