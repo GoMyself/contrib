@@ -144,7 +144,7 @@ func Offline(uids []string) {
 		}
 	}
 
-	client.Unlink(ctx, sKeys...)
+	fmt.Println(client.Unlink(ctx, sKeys...).Err())
 }
 
 func Destroy(ctx *fasthttp.RequestCtx) {
