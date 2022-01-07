@@ -62,9 +62,7 @@ func write(fields map[string]string, flags string) error {
 	var b strings.Builder
 	
 	t := time.Now()
-	b.WriteString("INSERT INTO zlog_")
-	b.WriteString(t.Format("0102"))
-	b.WriteString(" USING zlog TAGS (")
+	b.WriteString("INSERT INTO zlog(")
 	b.WriteByte('"')
 	b.WriteString(fields["id"])
 	b.WriteByte('"')
@@ -75,7 +73,7 @@ func write(fields map[string]string, flags string) error {
 	b.WriteByte(')')
 	
 	b.WriteString(" VALUES(")
-	b.WriteString(fmt.Sprintf("%d,", t.UnixMilli()))
+	b.WriteString(t.Format("2006-02-01 15:04:05.000"))
 	b.WriteByte('"')
 	b.WriteString(fields["filename"])
 	b.WriteByte('"')
