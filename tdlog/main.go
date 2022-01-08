@@ -83,7 +83,7 @@ func write(fields map[string]string, flags string) error {
 	
 	b.WriteString("INSERT INTO zlog (ts, filename, content, fn, flags, id, project) VALUES(")
 	b.WriteByte('"')
-	b.WriteString(t.Format("2006-02-01 15:04:05.000"))
+	b.WriteString(t.Format("2006-01-02 15:04:05.000"))
 	b.WriteByte('"')
 	b.WriteByte(',')
 	b.WriteByte('"')
