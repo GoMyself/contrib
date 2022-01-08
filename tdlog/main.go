@@ -57,6 +57,24 @@ func httpDoTimeout(requestBody []byte, method string, requestURI string, headers
 	return resp.Body(), resp.StatusCode(), err
 }
 
+//字符串特殊字符转译
+func addslashes(str string) string {
+
+	tmpRune := []rune{}
+	strRune := []rune(str)
+	for _, ch := range strRune {
+		switch ch {
+		case []rune{'\\'}[0], []rune{'"'}[0], []rune{'\''}[0]:
+			tmpRune = append(tmpRune, []rune{'\\'}[0])
+			tmpRune = append(tmpRune, ch)
+		default:
+			tmpRune = append(tmpRune, ch)
+		}
+	}
+
+	return string(tmpRune)
+}
+
 func write(fields map[string]string, flags string) error {
 
 	var b strings.Builder
@@ -75,11 +93,11 @@ func write(fields map[string]string, flags string) error {
 	b.WriteString(" VALUES(")
 	b.WriteString(t.Format("2006-02-01 15:04:05.000"))
 	b.WriteByte('"')
-	b.WriteString(fields["filename"])
+	b.WriteString(addslashes(fields["filename"]))
 	b.WriteByte('"')
 	b.WriteByte(',')
 	b.WriteByte('"')
-	b.WriteString(fields["content"])
+	b.WriteString(addslashes(fields["content"]))
 	b.WriteByte('"')
 	b.WriteByte(',')
 	b.WriteByte('"')
