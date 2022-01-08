@@ -63,72 +63,78 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 		if defaultVal == "" {
 			if nums > 0 {
 				defaultVal = def
-			} else if rule == "none" {
-				continue
+			}
+
+			if required == "1" {
+				if rule == "none" {
+					continue
+				} else {
+					return errors.New(name + " not found")
+				}
 			} else {
-				return errors.New(name + " not found")
+				continue
 			}
 		}
 
 		switch rule {
 		case "digit":
-			if required == "1" && (!CheckStringDigit(defaultVal) || !CheckIntScope(defaultVal, min, max)) {
+			if !CheckStringDigit(defaultVal) || !CheckIntScope(defaultVal, min, max) {
 				return errors.New(msg)
 			}
 		case "digitString":
-			if required == "1" && (!CheckStringDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max))) {
+			if !CheckStringDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 		case "sDigit":
-			if required == "1" && (!CheckStringCommaDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max))) {
+			if !CheckStringCommaDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 		case "sAlpha":
-			if required == "1" && (!CheckStringCommaAlpha(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max))) {
+			if !CheckStringCommaAlpha(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 		case "url":
-			if required == "1" && (!CheckUrl(defaultVal)) {
+			if !CheckUrl(defaultVal) {
 				return errors.New(msg)
 			}
 		case "alnum":
-			if required == "1" && (!CheckStringAlnum(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max))) {
+			if !CheckStringAlnum(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 		case "priv":
-			if required == "1" && !isPriv(defaultVal) {
+			if !isPriv(defaultVal) {
 				return errors.New(msg)
 			}
 		case "dateTime":
-			if required == "1" && !CheckDateTime(defaultVal) {
+			if !CheckDateTime(defaultVal) {
 				return errors.New(msg)
 			}
 		case "date":
-			if required == "1" && !CheckDate(defaultVal) {
+			if !CheckDate(defaultVal) {
 				return errors.New(msg)
 			}
 		case "time":
-			if required == "1" && !checkTime(defaultVal) {
+			if !checkTime(defaultVal) {
 				return errors.New(msg)
 			}
 		case "chn":
-			if required == "1" && !CheckStringCHN(defaultVal) {
+			if !CheckStringCHN(defaultVal) {
 				return errors.New(msg)
 			}
 		case "module":
-			if required == "1" && (!CheckStringModule(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max))) {
+			if !CheckStringModule(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 		case "float":
-			if required == "1" && !CheckFloat(defaultVal) {
+			if !CheckFloat(defaultVal) {
 				return errors.New(msg)
 			}
 		case "vnphone":
-			if required == "1" && !IsVietnamesePhone(defaultVal) {
+			if !IsVietnamesePhone(defaultVal) {
 				return errors.New(msg)
 			}
 		case "filter":
-			if required == "1" && !CheckStringLength(defaultVal, int(min), int(max)) {
+			if !CheckStringLength(defaultVal, int(min), int(max)) {
 				return errors.New(msg)
 			}
 
