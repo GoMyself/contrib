@@ -86,6 +86,7 @@ func write(fields map[string]string, flags string) error {
 	b.WriteString(t.Format("2006-02-01 15:04:05.000"))
 	b.WriteByte('"')
 	b.WriteByte(',')
+	b.WriteByte('"')
 	b.WriteString(addslashes(fields["filename"]))
 	b.WriteByte('"')
 	b.WriteByte(',')
