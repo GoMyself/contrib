@@ -112,6 +112,46 @@ func write(fields map[string]string, flags string) error {
 	b.WriteByte('"')
 	b.WriteByte(')')
 	
+	//fmt.Println("b = ", b.String())
+	headers := map[string]string{
+		"Authorization": "Basic " + internalToken,
+	}
+	_, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", internalUrl, headers)
+	if err != nil {
+		return err
+	}
+	if statusCode != fasthttp.StatusOK {
+		return fmt.Errorf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
+	}
+	
+	//fmt.Println("body = ", string(body))
+	return nil
+}
+
+func Login(fields map[string]string) error {
+
+	var b strings.Builder
+	
+	t := time.Now()
+	
+	b.WriteString("INSERT INTO login (ts, uid, username, ip) VALUES(")
+	b.WriteByte('"')
+	b.WriteString(t.Format("2006-01-02 15:04:05.000"))
+	b.WriteByte('"')
+	b.WriteByte(',')
+	b.WriteByte('"')
+	b.WriteString(fields["uid"])
+	b.WriteByte('"')
+	b.WriteByte(',')
+	b.WriteByte('"')
+	b.WriteString(fields["username"])
+	b.WriteByte('"')
+	b.WriteByte(',')
+	b.WriteByte('"')
+	b.WriteString(fields["ip"])
+	b.WriteByte('"')
+	b.WriteByte(')')
+	
 	fmt.Println("b = ", b.String())
 	headers := map[string]string{
 		"Authorization": "Basic " + internalToken,
