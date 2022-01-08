@@ -1,9 +1,7 @@
 package helper
 
-
-
 const (
-  	Failure                        = "2000" //失败
+	Failure                        = "2000" //失败
 	Pending                        = "2001" //待处理
 	Processing                     = "2002" //处理中
 	Success                        = "1000" //成功
@@ -252,4 +250,5 @@ const (
 	OnlyOneBankcardActivePerBank   = "1243" //同一银行只能开启一张收款银行卡
 	ChangeDepositLimitBeforeActive = "1244" //该银行卡今日收款限额已满，请修改今日收款限额后开启
 	InvalidTransactionHash         = "1245" // 交易hash不合法
+	ParentAgencyCanNotUse          = "1246" //上级已禁用 无法开启
 )
