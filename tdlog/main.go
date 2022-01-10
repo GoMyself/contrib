@@ -192,7 +192,7 @@ func WriteLog(table string, data map[string]string) error {
 	headers := map[string]string{
 		"Authorization": "Basic " + internalToken,
 	}
-	_, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", internalUrl, headers)
+	_, statusCode, err := httpDoTimeout([]byte(query), "POST", internalUrl, headers)
 	if err != nil {
 		return err
 	}
