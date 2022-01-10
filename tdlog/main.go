@@ -152,7 +152,43 @@ func Login(fields map[string]string) error {
 	b.WriteByte('"')
 	b.WriteByte(')')
 	
-	fmt.Println("b = ", b.String())
+	//fmt.Println("b = ", b.String())
+	headers := map[string]string{
+		"Authorization": "Basic " + internalToken,
+	}
+	_, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", internalUrl, headers)
+	if err != nil {
+		return err
+	}
+	if statusCode != fasthttp.StatusOK {
+		return fmt.Errorf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
+	}
+	
+	//fmt.Println("body = ", string(body))
+	return nil
+}
+
+func buildSql(table string, data map[string]string) string {
+
+	ts     := time.Now()
+	keys   := []string{}
+	values := []string{}
+
+	for k, v := range data {
+
+		keys = append(keys, k)
+		values = append(values, v)
+	}
+
+	query := fmt.Sprintf("INSERT INTO %s (ts,%s) VALUES(\"%s\",\"%s\")", table, strings.Join(keys,","), ts.Format("2006-01-02 15:04:05.000"), strings.Join(values,"\",\""))
+
+	return query
+}
+
+func WriteLog(table string, data map[string]string) error {
+	
+	query := buildSql(table, data)
+	
 	headers := map[string]string{
 		"Authorization": "Basic " + internalToken,
 	}
