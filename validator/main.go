@@ -60,95 +60,99 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 			defaultVal = strings.TrimSpace(string(ctx.PostArgs().Peek(name)))
 		}
 
+		check := true //默认需要校验
 		if defaultVal == "" {
 			if nums > 0 {
 				defaultVal = def
 			}
 
+			// 不是必选参数，且没有默认值
 			if required != "0" && defaultVal == "" {
 				if rule == "none" {
-					continue
+					check = false
 				} else {
 					return errors.New(name + " not found")
 				}
 			} else {
-				continue
+				check = false
 			}
 		}
 
-		switch rule {
-		case "digit":
-			if !CheckStringDigit(defaultVal) || !CheckIntScope(defaultVal, min, max) {
-				return errors.New(msg)
-			}
-		case "digitString":
-			if !CheckStringDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
-			}
-		case "sDigit":
-			if !CheckStringCommaDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
-			}
-		case "sAlpha":
-			if !CheckStringCommaAlpha(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
-			}
-		case "url":
-			if !CheckUrl(defaultVal) {
-				return errors.New(msg)
-			}
-		case "alnum":
-			if !CheckStringAlnum(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
-			}
-		case "priv":
-			if !isPriv(defaultVal) {
-				return errors.New(msg)
-			}
-		case "dateTime":
-			if !CheckDateTime(defaultVal) {
-				return errors.New(msg)
-			}
-		case "date":
-			if !CheckDate(defaultVal) {
-				return errors.New(msg)
-			}
-		case "time":
-			if !checkTime(defaultVal) {
-				return errors.New(msg)
-			}
-		case "chn":
-			if !CheckStringCHN(defaultVal) {
-				return errors.New(msg)
-			}
-		case "module":
-			if !CheckStringModule(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
-			}
-		case "float":
-			if !CheckFloat(defaultVal) {
-				return errors.New(msg)
-			}
-		case "vnphone":
-			if !IsVietnamesePhone(defaultVal) {
-				return errors.New(msg)
-			}
-		case "filter":
-			if !CheckStringLength(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
-			}
+		if check {
+			switch rule {
+			case "digit":
+				if !CheckStringDigit(defaultVal) || !CheckIntScope(defaultVal, min, max) {
+					return errors.New(msg)
+				}
+			case "digitString":
+				if !CheckStringDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
+			case "sDigit":
+				if !CheckStringCommaDigit(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
+			case "sAlpha":
+				if !CheckStringCommaAlpha(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
+			case "url":
+				if !CheckUrl(defaultVal) {
+					return errors.New(msg)
+				}
+			case "alnum":
+				if !CheckStringAlnum(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
+			case "priv":
+				if !isPriv(defaultVal) {
+					return errors.New(msg)
+				}
+			case "dateTime":
+				if !CheckDateTime(defaultVal) {
+					return errors.New(msg)
+				}
+			case "date":
+				if !CheckDate(defaultVal) {
+					return errors.New(msg)
+				}
+			case "time":
+				if !checkTime(defaultVal) {
+					return errors.New(msg)
+				}
+			case "chn":
+				if !CheckStringCHN(defaultVal) {
+					return errors.New(msg)
+				}
+			case "module":
+				if !CheckStringModule(defaultVal) || !CheckStringLength(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
+			case "float":
+				if !CheckFloat(defaultVal) {
+					return errors.New(msg)
+				}
+			case "vnphone":
+				if !IsVietnamesePhone(defaultVal) {
+					return errors.New(msg)
+				}
+			case "filter":
+				if !CheckStringLength(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
 
-			defaultVal = FilterInjection(defaultVal)
-		case "uname": //会员账号
-			if !CheckUName(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
+				defaultVal = FilterInjection(defaultVal)
+			case "uname": //会员账号
+				if !CheckUName(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
+			case "upwd": //会员密码
+				if !CheckUPassword(defaultVal, int(min), int(max)) {
+					return errors.New(msg)
+				}
+			default:
+				break
 			}
-		case "upwd": //会员密码
-			if !CheckUPassword(defaultVal, int(min), int(max)) {
-				return errors.New(msg)
-			}
-		default:
-			break
 		}
 
 		switch f.Type().Kind() {
