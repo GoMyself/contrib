@@ -66,7 +66,7 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 				defaultVal = def
 			}
 
-			// 不是必选参数，且没有默认值
+			// 是必选参数，且没有默认值
 			if required != "0" && defaultVal == "" {
 				if rule == "none" {
 					check = false
