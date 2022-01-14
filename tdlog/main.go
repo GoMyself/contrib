@@ -177,7 +177,7 @@ func buildSql(table string, data map[string]string) string {
 	for k, v := range data {
 
 		keys = append(keys, k)
-		values = append(values, v)
+		values = append(values, addslashes(v))
 	}
 
 	query := fmt.Sprintf("INSERT INTO %s (ts,%s) VALUES(\"%s\",\"%s\")", table, strings.Join(keys,","), ts.Format("2006-01-02 15:04:05.000"), strings.Join(values,"\",\""))
