@@ -65,7 +65,7 @@ func Bind(ctx *fasthttp.RequestCtx, objs interface{}) error {
 				defaultVal = def
 			}
 
-			if required != "0" {
+			if required != "0" && defaultVal == "" {
 				if rule == "none" {
 					continue
 				} else {
