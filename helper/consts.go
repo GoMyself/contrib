@@ -251,4 +251,6 @@ const (
 	ChangeDepositLimitBeforeActive = "1244" //该银行卡今日收款限额已满，请修改今日收款限额后开启
 	InvalidTransactionHash         = "1245" // 交易hash不合法
 	ParentAgencyCanNotUse          = "1246" //上级已禁用 无法开启
+	RebateOutOfRange               = "1247" //返水范围错误
+
 )
