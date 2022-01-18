@@ -7,7 +7,7 @@ import (
 
 func WeekOfEnd(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse(http.TimeFormat, s)
+	t, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
@@ -24,7 +24,7 @@ func WeekOfEnd(s string, loc *time.Location) (int64, error) {
 
 func WeekOfStart(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse(http.TimeFormat, s)
+	t, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
@@ -41,7 +41,7 @@ func WeekOfStart(s string, loc *time.Location) (int64, error) {
 
 func MonthOfStart(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse(http.TimeFormat, s)
+	t, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
@@ -54,7 +54,7 @@ func MonthOfStart(s string, loc *time.Location) (int64, error) {
 
 func MonthOfEnd(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse(http.TimeFormat, s)
+	t, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
@@ -67,7 +67,7 @@ func MonthOfEnd(s string, loc *time.Location) (int64, error) {
 
 func DayOfStart(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse(http.TimeFormat, s)
+	t, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
@@ -80,7 +80,7 @@ func DayOfStart(s string, loc *time.Location) (int64, error) {
 
 func DayOfEnd(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse(http.TimeFormat, s)
+	t, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
@@ -92,7 +92,7 @@ func DayOfEnd(s string, loc *time.Location) (int64, error) {
 
 func DayOfStartMs(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse(http.TimeFormat, s)
+	st, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
@@ -105,7 +105,7 @@ func DayOfStartMs(s string, loc *time.Location) (int64, error) {
 
 func DayOfEndMs(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse(http.TimeFormat, s)
+	st, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
