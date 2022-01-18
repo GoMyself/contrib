@@ -126,6 +126,16 @@ func GMTToLoc(s string, loc *time.Location) (int64, error) {
 	return st.In(loc).Unix(), nil
 }
 
+func TimeToLoc(s string, loc *time.Location) (int64, error) {
+
+	st, err := time.Parse("2006-01-02 15:04:05", s)
+	if err != nil {
+		return 0, err
+	}
+
+	return st.In(loc).Unix(), nil
+}
+
 func UTCToLoc(s string, loc *time.Location) (int64, error) {
 
 	st, err := time.Parse(time.RFC3339, s)
@@ -139,6 +149,16 @@ func UTCToLoc(s string, loc *time.Location) (int64, error) {
 func GMTToLocMs(s string, loc *time.Location) (int64, error) {
 
 	st, err := time.Parse(http.TimeFormat, s)
+	if err != nil {
+		return 0, err
+	}
+
+	return st.In(loc).UnixNano() / 1e6, nil
+}
+
+func TimeToLocMs(s string, loc *time.Location) (int64, error) {
+
+	st, err := time.Parse("2006-01-02 15:04:05", s)
 	if err != nil {
 		return 0, err
 	}
