@@ -118,22 +118,22 @@ func DayOfEndMs(s string, loc *time.Location) (int64, error) {
 
 func GMTToLoc(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse(http.TimeFormat, s)
+	st, err := time.ParseInLocation(http.TimeFormat, s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	return st.In(loc).Unix(), nil
+	return st.Unix(), nil
 }
 
 func TimeToLoc(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse("2006-01-02 15:04:05", s)
+	st, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	return st.In(loc).Unix(), nil
+	return st.Unix(), nil
 }
 
 func UTCToLoc(s string, loc *time.Location) (int64, error) {
@@ -148,22 +148,22 @@ func UTCToLoc(s string, loc *time.Location) (int64, error) {
 
 func GMTToLocMs(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse(http.TimeFormat, s)
+	st, err := time.ParseInLocation(http.TimeFormat, s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	return st.In(loc).UnixNano() / 1e6, nil
+	return st.UnixMilli(), nil
 }
 
 func TimeToLocMs(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse("2006-01-02 15:04:05", s)
+	st, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	return st.In(loc).UnixNano() / 1e6, nil
+	return st.UnixMilli(), nil
 }
 
 func UTCToLocMs(s string, loc *time.Location) (int64, error) {
