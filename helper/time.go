@@ -7,7 +7,7 @@ import (
 
 func WeekOfEnd(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
@@ -17,14 +17,14 @@ func WeekOfEnd(s string, loc *time.Location) (int64, error) {
 		offset = int(time.Saturday + 1 - t.Weekday())
 	}
 
-	y, m, d := t.In(loc).Date()
+	y, m, d := t.Date()
 	n := time.Date(y, m, d, 23, 59, 59, 0, loc).AddDate(0, 0, offset)
-	return n.In(loc).Unix(), nil
+	return n.Unix(), nil
 }
 
 func WeekOfStart(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
@@ -34,86 +34,83 @@ func WeekOfStart(s string, loc *time.Location) (int64, error) {
 		offset = -6
 	}
 
-	y, m, d := t.In(loc).Date()
+	y, m, d := t.Date()
 	n := time.Date(y, m, d, 0, 0, 0, 0, loc).AddDate(0, 0, offset)
-	return n.In(loc).Unix(), nil
+	return n.Unix(), nil
 }
 
 func MonthOfStart(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	y, m, _ := t.In(loc).Date()
-
+	y, m, _ := t.Date()
 	n := time.Date(y, m, 1, 0, 0, 0, 0, loc)
-	return n.In(loc).Unix(), nil
+	return n.Unix(), nil
 }
 
 func MonthOfEnd(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	y, m, _ := t.In(loc).Date()
+	y, m, _ := t.Date()
 	n := time.Date(y, m+1, 0, 0, 0, 0, 0, loc)
-
-	return n.In(loc).Unix(), nil
+	return n.Unix(), nil
 }
 
 func DayOfStart(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	y, m, d := t.In(loc).Date()
-
+	y, m, d := t.Date()
 	n := time.Date(y, m, d, 0, 0, 0, 0, loc)
-	return n.In(loc).Unix(), nil
+	return n.Unix(), nil
 }
 
 func DayOfEnd(s string, loc *time.Location) (int64, error) {
 
-	t, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	y, m, d := t.In(loc).Date()
+	y, m, d := t.Date()
 	n := time.Date(y, m, d, 23, 59, 59, 0, loc)
-	return n.In(loc).Unix(), nil
+	return n.Unix(), nil
 }
 
 func DayOfStartMs(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	y, m, d := st.In(loc).Date()
-	st = time.Date(y, m, d, 0, 0, 0, 0, loc)
+	y, m, d := t.Date()
+	t = time.Date(y, m, d, 0, 0, 0, 0, loc)
 
-	return st.UnixNano() / 1e6, nil
+	return t.UnixMilli(), nil
 }
 
 func DayOfEndMs(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse("2006-01-02 15:04:05", s)
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	y, m, d := st.In(loc).Date()
-	st = time.Date(y, m, d, 23, 59, 59, 999999999, loc)
+	y, m, d := t.Date()
+	t = time.Date(y, m, d, 23, 59, 59, 999999999, loc)
 
-	return st.UnixNano() / 1e6, nil
+	return t.UnixMilli(), nil
 }
 
 func GMTToLoc(s string, loc *time.Location) (int64, error) {
@@ -138,12 +135,12 @@ func TimeToLoc(s string, loc *time.Location) (int64, error) {
 
 func UTCToLoc(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse(time.RFC3339, s)
+	st, err := time.ParseInLocation(time.RFC3339, s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	return st.In(loc).Unix(), nil
+	return st.Unix(), nil
 }
 
 func GMTToLocMs(s string, loc *time.Location) (int64, error) {
@@ -168,12 +165,12 @@ func TimeToLocMs(s string, loc *time.Location) (int64, error) {
 
 func UTCToLocMs(s string, loc *time.Location) (int64, error) {
 
-	st, err := time.Parse(time.RFC3339, s)
+	st, err := time.ParseInLocation(time.RFC3339, s, loc)
 	if err != nil {
 		return 0, err
 	}
 
-	return st.In(loc).UnixNano() / 1e6, nil
+	return st.UnixMilli(), nil
 }
 
 // 月份字符串校验
