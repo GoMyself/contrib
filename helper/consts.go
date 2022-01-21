@@ -253,4 +253,5 @@ const (
 	ParentAgencyCanNotUse          = "1246" //上级已禁用 无法开启
 	RebateOutOfRange               = "1247" //返水范围错误
 	WithdrawPwdExist               = "1248" //提款密码重复设置
+	SetWithdrawPwdFirst            = "1249" //请先设置提款密码
 )
