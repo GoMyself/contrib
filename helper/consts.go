@@ -255,4 +255,5 @@ const (
 	WithdrawPwdExist               = "1248" //提款密码重复设置
 	SetWithdrawPwdFirst            = "1249" //请先设置提款密码
 	WPwdCanNotSameWithPwd          = "1250" //提款密码不能和登录密码相同
+	WithdrawPwdMismatch            = "1251" //提款密码错误
 )
