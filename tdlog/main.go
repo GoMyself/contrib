@@ -1,61 +1,18 @@
 package tdlog
 
 import (
-	"crypto/tls"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
-	"github.com/valyala/fasthttp"
+	"github.com/nats-io/nats.go"
 )
-
-var fc = &fasthttp.Client{
-	Name:                     "TDlog",
-	NoDefaultUserAgentHeader: true,
-	TLSConfig:                &tls.Config{InsecureSkipVerify: true},
-	MaxConnsPerHost:          2000,
-	MaxIdleConnDuration:      5 * time.Second,
-	MaxConnDuration:          5 * time.Second,
-	ReadTimeout:              5 * time.Second,
-	WriteTimeout:             5 * time.Second,
-	MaxConnWaitTimeout:       5 * time.Second,
-}
 
 var (
-	timeout       time.Duration
-	internalUrl   string
-	internalToken string
+	timeout time.Duration
+	conn    *nats.Conn
 )
-
-func httpDoTimeout(requestBody []byte, method string, requestURI string, headers map[string]string) ([]byte, int, error) {
-
-	req := fasthttp.AcquireRequest()
-	resp := fasthttp.AcquireResponse()
-
-	defer func() {
-		fasthttp.ReleaseResponse(resp)
-		fasthttp.ReleaseRequest(req)
-	}()
-
-	req.SetRequestURI(requestURI)
-	req.Header.SetMethod(method)
-
-	switch method {
-	case "POST":
-		req.SetBody(requestBody)
-	}
-
-	if headers != nil {
-		for k, v := range headers {
-			req.Header.Set(k, v)
-		}
-	}
-
-	// time.Second * 30
-	err := fc.DoTimeout(req, resp, timeout)
-
-	return resp.Body(), resp.StatusCode(), err
-}
 
 //字符串特殊字符转译
 func addslashes(str string) string {
@@ -78,9 +35,9 @@ func addslashes(str string) string {
 func write(fields map[string]string, flags string) error {
 
 	var b strings.Builder
-	
+
 	t := time.Now()
-	
+
 	b.WriteString("INSERT INTO zlog (ts, filename, content, fn, flags, id, project) VALUES(")
 	b.WriteByte('"')
 	b.WriteString(t.Format("2006-01-02 15:04:05.000"))
@@ -98,7 +55,7 @@ func write(fields map[string]string, flags string) error {
 	b.WriteString(fields["fn"])
 	b.WriteByte('"')
 	b.WriteByte(',')
-	
+
 	b.WriteByte('"')
 	b.WriteString(flags)
 	b.WriteByte('"')
@@ -111,29 +68,17 @@ func write(fields map[string]string, flags string) error {
 	b.WriteString(fields["project"])
 	b.WriteByte('"')
 	b.WriteByte(')')
-	
-	//fmt.Println("b = ", b.String())
-	headers := map[string]string{
-		"Authorization": "Basic " + internalToken,
-	}
-	_, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", internalUrl, headers)
-	if err != nil {
-		return err
-	}
-	if statusCode != fasthttp.StatusOK {
-		return fmt.Errorf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
-	}
-	
-	//fmt.Println("body = ", string(body))
-	return nil
+
+	err := conn.Publish("zlog", []byte(b.String()))
+	return err
 }
 
 func Login(fields map[string]string) error {
 
 	var b strings.Builder
-	
+
 	t := time.Now()
-	
+
 	b.WriteString("INSERT INTO login (ts, uid, username, ip) VALUES(")
 	b.WriteByte('"')
 	b.WriteString(t.Format("2006-01-02 15:04:05.000"))
@@ -151,27 +96,16 @@ func Login(fields map[string]string) error {
 	b.WriteString(fields["ip"])
 	b.WriteByte('"')
 	b.WriteByte(')')
-	
-	//fmt.Println("b = ", b.String())
-	headers := map[string]string{
-		"Authorization": "Basic " + internalToken,
-	}
-	_, statusCode, err := httpDoTimeout([]byte(b.String()), "POST", internalUrl, headers)
-	if err != nil {
-		return err
-	}
-	if statusCode != fasthttp.StatusOK {
-		return fmt.Errorf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
-	}
-	
-	//fmt.Println("body = ", string(body))
-	return nil
+
+	err := conn.Publish("zlog", []byte(b.String()))
+	return err
+
 }
 
 func buildSql(table string, data map[string]string) string {
 
-	ts     := time.Now()
-	keys   := []string{}
+	ts := time.Now()
+	keys := []string{}
 	values := []string{}
 
 	for k, v := range data {
@@ -180,34 +114,43 @@ func buildSql(table string, data map[string]string) string {
 		values = append(values, addslashes(v))
 	}
 
-	query := fmt.Sprintf("INSERT INTO %s (ts,%s) VALUES(\"%s\",\"%s\")", table, strings.Join(keys,","), ts.Format("2006-01-02 15:04:05.000"), strings.Join(values,"\",\""))
+	query := fmt.Sprintf("INSERT INTO %s (ts,%s) VALUES(\"%s\",\"%s\")", table, strings.Join(keys, ","), ts.Format("2006-01-02 15:04:05.000"), strings.Join(values, "\",\""))
 
 	return query
 }
 
 func WriteLog(table string, data map[string]string) error {
-	
+
 	query := buildSql(table, data)
-	
-	headers := map[string]string{
-		"Authorization": "Basic " + internalToken,
-	}
-	_, statusCode, err := httpDoTimeout([]byte(query), "POST", internalUrl, headers)
-	if err != nil {
-		return err
-	}
-	if statusCode != fasthttp.StatusOK {
-		return fmt.Errorf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
-	}
-	
-	//fmt.Println("body = ", string(body))
-	return nil
+
+	err := conn.Publish("zlog", []byte(query))
+	return err
 }
 
-func New(url, token string) {
-	internalUrl = url
-	internalToken = token
-	timeout = 5 * time.Second
+func InitNatsIO(urls []string, name, password string) *nats.Conn {
+
+	opts := nats.Options{
+		Servers:        urls,
+		User:           name,
+		Password:       password,
+		AllowReconnect: true,
+		MaxReconnect:   10,
+		ReconnectWait:  5 * time.Second,
+		Timeout:        1 * time.Second,
+		FlusherTimeout: 5 * time.Second,
+	}
+
+	nc, err := opts.Connect()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return nc
+}
+
+func New(urls []string, name, password string) {
+
+	conn = InitNatsIO(urls, name, password)
 }
 
 func Info(fields map[string]string) error {
