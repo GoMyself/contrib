@@ -252,5 +252,5 @@ const (
 	InvalidTransactionHash         = "1245" // 交易hash不合法
 	ParentAgencyCanNotUse          = "1246" //上级已禁用 无法开启
 	RebateOutOfRange               = "1247" //返水范围错误
-
+	WithdrawPwdExist               = "1248" //提款密码重复设置
 )
