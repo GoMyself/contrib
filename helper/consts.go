@@ -258,4 +258,5 @@ const (
 	WithdrawPwdMismatch            = "1251" //提款密码错误
 	NotDirectSubordinate           = "1252" //不是直属下级
 	UsedCoPlanEditNotAllow         = "1253" //使用中的佣金方案不允许修改
+	BallQuotaOutOfRange            = "1254" //单号码额度不足
 )
