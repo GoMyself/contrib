@@ -6,7 +6,6 @@ import (
 	"github.com/minio/md5-simd"
 	"github.com/shopspring/decimal"
 	"github.com/valyala/fasthttp"
-	"github.com/wI2L/jettison"
 	"lukechampine.com/frand"
 	"math/rand"
 	"strconv"
@@ -40,7 +39,7 @@ func Print(ctx *fasthttp.RequestCtx, state bool, data interface{}) {
 		Data:   data,
 	}
 
-	bytes, err := jettison.Marshal(res)
+	bytes, err := JsonMarshal(res)
 	if err != nil {
 		ctx.SetBody([]byte(err.Error()))
 		return
