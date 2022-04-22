@@ -259,4 +259,5 @@ const (
 	NotDirectSubordinate           = "1252" //不是直属下级
 	UsedCoPlanEditNotAllow         = "1253" //使用中的佣金方案不允许修改
 	BallQuotaOutOfRange            = "1254" //单号码额度不足
+	MemberHaveSubAlready           = "1255" //当前会员已有下级
 )
