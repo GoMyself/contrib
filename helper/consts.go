@@ -262,4 +262,5 @@ const (
 	VncpIssueExpires               = "1255" //彩票期号过期
 	MemberHaveSubAlready           = "1256" //当前会员已有下级
 	IsAgentSubAlready              = "1257" //已经是当前代理下级
+	TransferApplyExist             = "1258" //转代记录已存在
 )
