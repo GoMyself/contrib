@@ -263,4 +263,5 @@ const (
 	MemberHaveSubAlready           = "1256" //当前会员已有下级
 	IsAgentSubAlready              = "1257" //已经是当前代理下级
 	TransferApplyExist             = "1258" //转代记录已存在
+	RecordExpired                  = "1259" //站内信记录已过期
 )
