@@ -264,4 +264,5 @@ const (
 	IsAgentSubAlready              = "1257" //已经是当前代理下级
 	TransferApplyExist             = "1258" //转代记录已存在
 	RecordExpired                  = "1259" //站内信记录已过期
+	ZaloExist                      = "1260" //zalo已存在
 )
