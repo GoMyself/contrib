@@ -265,4 +265,5 @@ const (
 	TransferApplyExist             = "1258" //转代记录已存在
 	RecordExpired                  = "1259" //站内信记录已过期
 	ZaloExist                      = "1260" //zalo已存在
+	AddressFMTErr                  = "1261" //收货地址格式错误
 )
