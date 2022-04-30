@@ -266,4 +266,5 @@ const (
 	RecordExpired                  = "1259" //站内信记录已过期
 	ZaloExist                      = "1260" //zalo已存在
 	AddressFMTErr                  = "1261" //收货地址格式错误
+	ZaloBindAlreadyErr             = "1262" //已经绑定zalo，请勿重复绑定
 )
