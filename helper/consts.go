@@ -267,4 +267,5 @@ const (
 	ZaloExist                      = "1260" //zalo已存在
 	AddressFMTErr                  = "1261" //收货地址格式错误
 	ZaloBindAlreadyErr             = "1262" //已经绑定zalo，请勿重复绑定
+	ZaloFMTErr                     = "1263" //zalo格式错误
 )
