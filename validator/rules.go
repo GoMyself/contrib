@@ -32,6 +32,90 @@ var (
 		1: "b",
 		2: "c",
 	}
+	phoneMp = map[string]bool{
+		//Viettel 086,096,097,098,032,033,034,035,036,037,038,039
+		"086": true,
+		"096": true,
+		"097": true,
+		"098": true,
+		"032": true,
+		"033": true,
+		"034": true,
+		"035": true,
+		"036": true,
+		"037": true,
+		"038": true,
+		"039": true,
+		//Vina Phone 091,094,083,084,085,081,082,088
+		"091": true,
+		"094": true,
+		"083": true,
+		"084": true,
+		"085": true,
+		"081": true,
+		"082": true,
+		"088": true,
+		//Mobifone 089,090,093,070,079,077,076,078
+		"089": true,
+		"090": true,
+		"093": true,
+		"070": true,
+		"079": true,
+		"077": true,
+		"076": true,
+		"078": true,
+		//Vietnamobile 092, 056, 058
+		"092": true,
+		"056": true,
+		"058": true,
+		//Gmobie 099, 059
+		"099": true,
+		"059": true,
+		// Itelecom 087
+		"087": true,
+	}
+	zaloMp = map[string]bool{
+		//Viettel 086,096,097,098,032,033,034,035,036,037,038,039
+		"86": true,
+		"96": true,
+		"97": true,
+		"98": true,
+		"32": true,
+		"33": true,
+		"34": true,
+		"35": true,
+		"36": true,
+		"37": true,
+		"38": true,
+		"39": true,
+		//Vina Phone 091,094,083,084,085,081,082,088
+		"91": true,
+		"94": true,
+		"83": true,
+		"84": true,
+		"85": true,
+		"81": true,
+		"82": true,
+		"88": true,
+		//Mobifone 089,090,093,070,079,077,076,078
+		"89": true,
+		"90": true,
+		"93": true,
+		"70": true,
+		"79": true,
+		"77": true,
+		"76": true,
+		"78": true,
+		//Vietnamobile 092, 056, 058
+		"92": true,
+		"56": true,
+		"58": true,
+		//Gmobie 099, 059
+		"99": true,
+		"59": true,
+		// Itelecom 087
+		"87": true,
+	}
 )
 
 // 判断字符是否为数字
@@ -627,54 +711,38 @@ func IsVietnamesePhone(phone string) bool {
 		return false
 	}
 
-	r := []rune(phone)
-	if len(r) == 10 {
-		// 01 03 05 07 08 09开头
-		if r[0] != '0' {
-			return false
-		}
-		/*
-			// 01 03 05 07 08 09开头
-			if r[1] != '1' && r[1] != '3' && r[1] != '5' && r[1] != '7' && r[1] != '8' && r[1] != '9' {
-				return false
-			}
+	if len(phone) != 10 && len(phone) != 11 {
+		return false
+	}
 
-			switch r[1] {
-			case '1':
-			case '3': // 032、033、034、035、036、037、038、039
-				switch r[2] {
-				case '0', '1':
-					return false
-				}
-			case '5': // 056、058、059
-				switch r[2] {
-				case '0', '1', '2', '3', '4', '5', '7':
-					return false
-				}
-			case '7': // 070、079、077、076、078
-				switch r[2] {
-				case '1', '2', '3', '4', '5':
-					return false
-				}
-			case '8': // 081 082 083 084 085
-				switch r[2] {
-				case '0', '6', '7', '8', '9':
-					return false
-				}
-			case '9':
-			default:
-				return false
-			}
-		*/
+	if !strings.HasPrefix(phone, "0") {
+		return false
+	}
+
+	if _, ok := phoneMp[phone[:2]]; ok {
 		return true
 	}
 
-	//if len(r) == 9 {
-	//	// 2 6 8 9开头
-	//	if r[0] != '2' && r[0] != '6' && r[0] != '8' && r[0] != '9' {
-	//		return false
-	//	}
-	//}
+	return false
+}
+
+func IsVietnameseZalo(zalo string) bool {
+
+	if !CtypeDigit(zalo) {
+		return false
+	}
+
+	if len(zalo) != 10 && len(zalo) != 9 {
+		return false
+	}
+
+	if strings.HasPrefix(zalo, "0") {
+		return false
+	}
+
+	if _, ok := phoneMp[zalo[:1]]; ok {
+		return true
+	}
 
 	return false
 }
