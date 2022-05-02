@@ -740,7 +740,7 @@ func IsVietnameseZalo(zalo string) bool {
 		return false
 	}
 
-	if _, ok := phoneMp[zalo[:1]]; ok {
+	if _, ok := zaloMp[zalo[:1]]; ok {
 		return true
 	}
 
