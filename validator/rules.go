@@ -719,7 +719,7 @@ func IsVietnamesePhone(phone string) bool {
 		return false
 	}
 
-	if _, ok := phoneMp[phone[:2]]; ok {
+	if _, ok := phoneMp[phone[:3]]; ok {
 		return true
 	}
 
@@ -740,7 +740,7 @@ func IsVietnameseZalo(zalo string) bool {
 		return false
 	}
 
-	if _, ok := zaloMp[zalo[:1]]; ok {
+	if _, ok := zaloMp[zalo[:2]]; ok {
 		return true
 	}
 
