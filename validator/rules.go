@@ -719,7 +719,8 @@ func IsVietnamesePhone(phone string) bool {
 		return false
 	}
 
-	if _, ok := phoneMp[phone[:3]]; ok {
+	prefix := phone[:3]
+	if _, ok := phoneMp[prefix]; ok {
 		return true
 	}
 
@@ -740,7 +741,8 @@ func IsVietnameseZalo(zalo string) bool {
 		return false
 	}
 
-	if _, ok := zaloMp[zalo[:2]]; ok {
+	prefix := zalo[:2]
+	if _, ok := zaloMp[prefix]; ok {
 		return true
 	}
 
