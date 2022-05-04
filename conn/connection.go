@@ -9,13 +9,10 @@ import (
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/minio/minio-go/v7"
-	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/nats-io/nats.go"
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
-	"github.com/valyala/gorpc"
 	"log"
 	"strings"
 	"time"
@@ -171,28 +168,6 @@ func InitRoutinePool() *ants.Pool {
 	return pool
 }
 
-func InitMinio(endpoint, accessKeyID, secretAccessKey string, useSSL bool) *minio.Client {
-
-	// Initialize minio client object.
-	client, err := minio.New(endpoint, &minio.Options{
-		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
-		Secure: useSSL,
-	})
-
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	return client
-}
-
-func InitRpc(dsn string) *gorpc.Client {
-
-	c := gorpc.NewTCPClient(dsn)
-	c.Start()
-
-	return c
-}
 
 // 创建nats.io链接
 func InitNatsIO(urls []string, name, password string) *nats.Conn {
