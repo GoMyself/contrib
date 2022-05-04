@@ -203,8 +203,9 @@ func InitNatsIO(urls []string, name, password string) *nats.Conn {
 		Password:       password,
 		AllowReconnect: true,
 		MaxReconnect:   10,
+		PingInterval : 5 * time.Second,
 		ReconnectWait:  5 * time.Second,
-		Timeout:        1 * time.Second,
+		Timeout:        5 * time.Second,
 	}
 
 	nc, err := opts.Connect()
