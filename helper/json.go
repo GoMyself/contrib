@@ -2,8 +2,10 @@ package helper
 
 import (
 	"fmt"
-	"github.com/goccy/go-json"
+	jsoniter "github.com/json-iterator/go"
 )
+
+var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 func JsonMarshal(v interface{}) ([]byte, error) {
 	fmt.Println("JsonMarshal", v)
