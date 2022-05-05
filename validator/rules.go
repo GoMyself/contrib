@@ -175,7 +175,7 @@ func isPriv(s string) bool {
 func CheckUName(str string, min, max int) bool {
 
 	if !CtypeAlnum(str) || //数字字母组合
-		!First2IsAlpha(str) || //必须包含字母
+		!FirstIsAlpha(str) || //必须包含字母
 		!CheckStringLength(str, min, max) {
 		return false
 	}
@@ -187,7 +187,7 @@ func CheckUName(str string, min, max int) bool {
 func CheckAName(str string, min, max int) bool {
 
 	if !CtypeAlnum(str) || //数字字母组合
-		!First2IsAlpha(str) || //必须包含字母
+		!FirstIsAlpha(str) || //必须包含字母
 		!CheckStringLength(str, min, max) {
 		return false
 	}
@@ -654,7 +654,7 @@ func IncludeAlpha(s string) bool {
 }
 
 // 判断字符串是不是字母开头
-func First2IsAlpha(s string) bool {
+func FirstIsAlpha(s string) bool {
 
 	if s == "" {
 		return false
@@ -665,7 +665,7 @@ func First2IsAlpha(s string) bool {
 		return false
 	}
 
-	if !isAlpha(r[0]) || !isAlpha(r[1]) {
+	if !isAlpha(r[0]) {
 		return false
 	}
 
