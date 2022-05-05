@@ -3,6 +3,7 @@ package helper
 import (
 	"encoding/hex"
 	"fmt"
+	"unicode"
 	"github.com/minio/md5-simd"
 	"github.com/shopspring/decimal"
 	"github.com/valyala/fasthttp"
@@ -81,18 +82,17 @@ func GenLongId() string {
 	return id[0:18]
 }
 
-//判断字符是否为数字
-func isDigit(r rune) bool {
-	return '0' <= r && r <= '9'
-}
 
-//判断字符是否为英文字符
-func isAlpha(r rune) bool {
 
-	if r >= 'A' && r <= 'Z' {
-		return true
-	} else if r >= 'a' && r <= 'z' {
-		return true
+func CtypePunct(s string) bool {
+
+	if s == "" {
+		return false
+	}
+	for _, r := range s {
+		if unicode.IsPunct(r) || unicode.IsSpace(r) {
+			return true
+		}
 	}
 	return false
 }
@@ -104,7 +104,7 @@ func CtypeDigit(s string) bool {
 		return false
 	}
 	for _, r := range s {
-		if !isDigit(r) {
+		if !unicode.IsDigit(r) {
 			return false
 		}
 	}
@@ -119,7 +119,7 @@ func CtypeAlnum(s string) bool {
 	}
 
 	for _, r := range s {
-		if !isDigit(r) && !isAlpha(r) {
+		if !unicode.IsDigit(r) && !unicode.IsLetter(r) {
 			return false
 		}
 	}
