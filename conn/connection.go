@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/beanstalkd/go-beanstalk"
-	mqtt "github.com/eclipse/paho.mqtt.golang"
+	//mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
@@ -55,7 +55,32 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 	})
 	pong, err := reddb.Ping(ctx).Result()
 	if err != nil {
-		log.Fatalf("initRedisSentinel failed: %s", err.Error())
+		log.Fatalf("InitRedisSentinel failed: %s", err.Error())
+	}
+	fmt.Println(pong, err)
+
+	return reddb
+}
+
+func InitRedisClusterRead(dsn []string, psd string) *redis.ClusterClient {
+
+	reddb := redis.NewClusterClient(&redis.ClusterOptions{
+		Addrs:        dsn,
+		Password:     psd, // no password set
+		DialTimeout:  10 * time.Second,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+		PoolSize:     500,
+		PoolTimeout:  30 * time.Second,
+		MaxRetries:   2,
+		IdleTimeout:  5 * time.Minute,
+		SlaveOnly : true,
+		RouteByLatency : true,
+	})
+
+	pong, err := reddb.Ping(ctx).Result()
+	if err != nil {
+		log.Fatalf("InitRedisClusterRead failed: %s", err.Error())
 	}
 	fmt.Println(pong, err)
 
@@ -85,6 +110,7 @@ func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
 	return reddb
 }
 
+/*
 func InitRedis(dsn string, psd string, db int) *redis.Client {
 
 	reddb := redis.NewClient(&redis.Options{
@@ -107,6 +133,7 @@ func InitRedis(dsn string, psd string, db int) *redis.Client {
 
 	return reddb
 }
+*/
 
 func InitES(url []string, username, password string) *elastic.Client {
 
@@ -191,6 +218,7 @@ func InitNatsIO(urls []string, name, password string) *nats.Conn {
 	return nc
 }
 
+/*
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
 	fmt.Println("Connected")
 }
@@ -226,3 +254,5 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 	}
 	return client
 }
+*/
+
