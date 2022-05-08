@@ -14,7 +14,7 @@ import (
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
 	"log"
-	"strings"
+	//"strings"
 	"time"
 )
 
@@ -62,30 +62,32 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 	return reddb
 }
 
-func InitRedisClusterRead(dsn []string, psd string) *redis.ClusterClient {
+func InitRedisSentinelRead(dsn []string, psd, name string, db int) *redis.Client {
 
-	reddb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs:        dsn,
-		Password:     psd, // no password set
-		DialTimeout:  10 * time.Second,
-		ReadTimeout:  30 * time.Second,
-		WriteTimeout: 30 * time.Second,
-		PoolSize:     500,
-		PoolTimeout:  30 * time.Second,
-		MaxRetries:   2,
-		IdleTimeout:  5 * time.Minute,
+	reddb := redis.NewFailoverClient(&redis.FailoverOptions{
+		MasterName:    name,
+		SentinelAddrs: dsn,
+		Password:      psd, // no password set
+		DB:            db,  // use default DB
+		DialTimeout:   10 * time.Second,
+		ReadTimeout:   30 * time.Second,
+		WriteTimeout:  30 * time.Second,
+		PoolSize:      500,
+		PoolTimeout:   30 * time.Second,
+		MaxRetries:    2,
+		IdleTimeout:   5 * time.Minute,
 		SlaveOnly : true,
 		RouteByLatency : true,
 	})
-
 	pong, err := reddb.Ping(ctx).Result()
 	if err != nil {
-		log.Fatalf("InitRedisClusterRead failed: %s", err.Error())
+		log.Fatalf("InitRedisSentinelRead failed: %s", err.Error())
 	}
 	fmt.Println(pong, err)
 
 	return reddb
 }
+
 
 func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
 
