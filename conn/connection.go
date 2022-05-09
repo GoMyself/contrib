@@ -64,7 +64,7 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 
 func InitRedisSentinelRead(dsn []string, psd, name string, db int) *redis.Client {
 
-	reddb := redis.NewFailoverClient(&redis.FailoverOptions{
+	reddb := redis.NewFailoverClusterClient(&redis.FailoverOptions{
 		MasterName:    name,
 		SentinelAddrs: dsn,
 		Password:      psd, // no password set
