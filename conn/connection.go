@@ -62,7 +62,7 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 	return reddb
 }
 
-func InitRedisSentinelRead(dsn []string, psd, name string, db int) *redis.Client {
+func InitRedisSentinelRead(dsn []string, psd, name string, db int) *redis.ClusterClient {
 
 	reddb := redis.NewFailoverClusterClient(&redis.FailoverOptions{
 		MasterName:    name,
