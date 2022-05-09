@@ -691,16 +691,16 @@ func zip(a1, a2 []string) []string {
 
 func UnFilter(str string) string {
 
-	array2 := []string{"<", ">", "&", `"`, " ", "?"}
-	array1 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&iexcl;"}
+	array2 := []string{"<", ">", "&", `"`, " "}
+	array1 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;"}
 
 	return strings.NewReplacer(zip(array1, array2)...).Replace(str)
 }
 
 func FilterInjection(str string) string {
 
-	array1 := []string{"<", ">", "&", `"`, " ", "?"}
-	array2 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;", "&iexcl;"}
+	array1 := []string{"<", ">", "&", `"`, " "}
+	array2 := []string{"&lt;", "&gt;", "&amp;", "&quot;", "&nbsp;"}
 
 	return strings.NewReplacer(zip(array1, array2)...).Replace(str)
 }
