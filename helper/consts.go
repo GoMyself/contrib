@@ -268,4 +268,5 @@ const (
 	AddressFMTErr                  = "1261" //收货地址格式错误
 	ZaloBindAlreadyErr             = "1262" //已经绑定zalo，请勿重复绑定
 	ZaloFMTErr                     = "1263" //zalo格式错误
+	PayServerErr                   = "1264" //三方支付服务请求失败 
 )
