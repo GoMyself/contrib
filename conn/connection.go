@@ -13,12 +13,31 @@ import (
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
+	_ "github.com/taosdata/driver-go/v2/taosSql"
 	"log"
 	//"strings"
 	"time"
 )
 
 var ctx = context.Background()
+
+func InitTD(dsn string, maxIdleConn, maxOpenConn int) *sqlx.DB {
+
+	db, err := sqlx.Connect("taosRestful", dsn)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	db.SetMaxOpenConns(maxOpenConn)
+	db.SetMaxIdleConns(maxIdleConn)
+	db.SetConnMaxLifetime(time.Second * 30)
+	err = db.Ping()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return db
+}
 
 func InitDB(dsn string, maxIdleConn, maxOpenConn int) *sqlx.DB {
 
