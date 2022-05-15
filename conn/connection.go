@@ -13,7 +13,7 @@ import (
 	"github.com/olivere/elastic/v7"
 	"github.com/panjf2000/ants/v2"
 	cpool "github.com/silenceper/pool"
-	_ "github.com/taosdata/driver-go/v2/taosSql"
+	_ "github.com/taosdata/driver-go/v2/taosRestful"
 	"log"
 	//"strings"
 	"time"
