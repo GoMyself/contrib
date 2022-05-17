@@ -237,7 +237,7 @@ func InitNatsIO(urls []string, name, password string) *nats.Conn {
 		log.Fatalln(err)
 	}
 	*/
-	nc, err := nats.Connect("nats://1A1hWrDmcKDP:vFlg6hQzD#uu@10.170.0.9:4242")
+	nc, err := nats.Connect("nats://10.170.0.9:4242")
 	if err != nil {
 		log.Fatalln(err)
 	}
