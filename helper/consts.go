@@ -270,4 +270,6 @@ const (
 	ZaloFMTErr                     = "1263" //zalo格式错误
 	PayServerErr                   = "1264" //三方支付服务请求失败
 	LoseAmountUnreached            = "1265" //负盈利未达标
+	DepositAmountUnreached         = "1266" //存款未达标
+	ApplyTurnErr                   = "1267" //申请顺序错误
 )
