@@ -271,5 +271,6 @@ const (
 	PayServerErr                   = "1264" //三方支付服务请求失败
 	LoseAmountUnreached            = "1265" //负盈利未达标
 	DepositAmountUnreached         = "1266" //存款未达标
-	ApplyTurnErr                   = "1267" //您未完成流水活动，请完成再申请
+	ApplyTurnErr                   = "1267" //活动申请顺序错误
+	PreTaskUnFinishErr             = "1268" //您未完成流水活动，请完成再申请
 )
