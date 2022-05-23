@@ -274,4 +274,5 @@ const (
 	ApplyTurnErr                   = "1267" //活动申请顺序错误
 	PreTaskUnFinishErr             = "1268" //您未完成流水活动，请完成再申请
 	BankcardValidErr               = "1269" //银行卡真伪验证错误
+	ThisTypeCanOnlyOpenOneErr      = "1270" //同类活动同时只能开启一个
 )
