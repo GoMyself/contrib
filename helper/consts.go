@@ -275,4 +275,5 @@ const (
 	PreTaskUnFinishErr             = "1268" //您未完成流水活动，请完成再申请
 	BankcardValidErr               = "1269" //银行卡真伪验证错误
 	ThisTypeCanOnlyOpenOneErr      = "1270" //同类活动同时只能开启一个
+	RegLimitExceed                 = "1271" //单设备注册超过最大值
 )
