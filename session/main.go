@@ -122,29 +122,29 @@ func Update(value []byte, uid uint64) bool {
 
 func Offline(uids []string) {
 
-	if len(uids) == 0 {
-		return
-	}
-
-	var (
-		uuids []string
-		sKeys []string
-	)
-	for _, uid := range uids {
-		uuids = append(uuids, fmt.Sprintf("TI%s", uid))
-	}
-	keys, err := client.MGet(ctx, uuids...).Result()
-	if err != nil {
-		return
-	}
-
-	for _, key := range keys {
-		if k, ok := key.(string); ok {
-			sKeys = append(sKeys, k)
-		}
-	}
-
-	fmt.Println(client.Unlink(ctx, sKeys...).Err())
+	//if len(uids) == 0 {
+	//	return
+	//}
+	//
+	//var (
+	//	uuids []string
+	//	sKeys []string
+	//)
+	//for _, uid := range uids {
+	//	uuids = append(uuids, fmt.Sprintf("TI%s", uid))
+	//}
+	//keys, err := client.MGet(ctx, uuids...).Result()
+	//if err != nil {
+	//	return
+	//}
+	//
+	//for _, key := range keys {
+	//	if k, ok := key.(string); ok {
+	//		sKeys = append(sKeys, k)
+	//	}
+	//}
+	//
+	//fmt.Println(client.Unlink(ctx, sKeys...).Err())
 }
 
 func Destroy(ctx *fasthttp.RequestCtx) {
