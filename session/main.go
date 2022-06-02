@@ -13,10 +13,10 @@ import (
 var (
 	prefix string
 	ctx    = context.Background()
-	client *redis.Client
+	client *redis.ClusterClient
 )
 
-func New(reddb *redis.Client, p string) {
+func New(reddb *redis.ClusterClient, p string) {
 
 	client = reddb
 	prefix = p
