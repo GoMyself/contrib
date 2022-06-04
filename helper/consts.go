@@ -277,4 +277,5 @@ const (
 	ThisTypeCanOnlyOpenOneErr      = "1270" //同类活动同时只能开启一个
 	RegLimitExceed                 = "1271" //单设备注册超过最大值
 	PromoExpired                   = "1272" //活动已过期
+	FirstDailyWithdrawNeedVerify   = "1273" //每日第一笔提款需要短信验证
 )
