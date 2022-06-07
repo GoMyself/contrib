@@ -278,4 +278,5 @@ const (
 	RegLimitExceed                 = "1271" //单设备注册超过最大值
 	PromoExpired                   = "1272" //活动已过期
 	FirstDailyWithdrawNeedVerify   = "1273" //每日第一笔提款需要短信验证
+	MemberRebateModDisable         = "1274" //禁止编辑代理返水比例
 )
