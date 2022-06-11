@@ -1,6 +1,12 @@
 package helper
 
 const (
+	ServiceHttp = 1
+	ServiceRPC  = 2
+	ServiceTask = 3
+)
+
+const (
 	Failure                        = "2000" //失败
 	Pending                        = "2001" //待处理
 	Processing                     = "2002" //处理中
