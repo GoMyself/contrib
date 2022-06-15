@@ -82,4 +82,6 @@ const (
 	TransactionRebateFishing         = 648 //捕鱼返水
 	TransactionRebateLott            = 649 //电游返水
 	TransactionRebateCGLottery       = 650 //彩票返点
+	TransactionDepositFee            = 651 //存款手续费
+	TransactionDepositBonus          = 652 //存款优惠
 )
