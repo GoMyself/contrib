@@ -286,4 +286,5 @@ const (
 	FirstDailyWithdrawNeedVerify   = "1273" //每日第一笔提款需要短信验证
 	MemberRebateModDisable         = "1274" //禁止编辑代理返水比例
 	SubPermissionEqualErr          = "1275" //上下级权限相同
+	MustApplyAfter12Pm             = "1276" //请下午12点以后再申请
 )
