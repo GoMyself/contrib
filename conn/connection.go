@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/beanstalkd/go-beanstalk"
+	"github.com/meilisearch/meilisearch-go"
+
 	//mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"github.com/go-redis/redis/v8"
@@ -84,19 +86,19 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 func InitRedisSentinelRead(dsn []string, psd, name string, db int) *redis.ClusterClient {
 
 	reddb := redis.NewFailoverClusterClient(&redis.FailoverOptions{
-		MasterName:    name,
-		SentinelAddrs: dsn,
-		Password:      psd, // no password set
-		DB:            db,  // use default DB
-		DialTimeout:   10 * time.Second,
-		ReadTimeout:   30 * time.Second,
-		WriteTimeout:  30 * time.Second,
-		PoolSize:      500,
-		PoolTimeout:   30 * time.Second,
-		MaxRetries:    2,
-		IdleTimeout:   5 * time.Minute,
-		SlaveOnly : true,
-		RouteByLatency : true,
+		MasterName:     name,
+		SentinelAddrs:  dsn,
+		Password:       psd, // no password set
+		DB:             db,  // use default DB
+		DialTimeout:    10 * time.Second,
+		ReadTimeout:    30 * time.Second,
+		WriteTimeout:   30 * time.Second,
+		PoolSize:       500,
+		PoolTimeout:    30 * time.Second,
+		MaxRetries:     2,
+		IdleTimeout:    5 * time.Minute,
+		SlaveOnly:      true,
+		RouteByLatency: true,
 	})
 	pong, err := reddb.Ping(ctx).Result()
 	if err != nil {
@@ -106,7 +108,6 @@ func InitRedisSentinelRead(dsn []string, psd, name string, db int) *redis.Cluste
 
 	return reddb
 }
-
 
 func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
 
@@ -131,30 +132,19 @@ func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
 	return reddb
 }
 
-/*
-func InitRedis(dsn string, psd string, db int) *redis.Client {
+func InitMeiliSearch(url, key string) *meilisearch.Client {
 
-	reddb := redis.NewClient(&redis.Options{
-		Addr:         dsn,
-		Password:     psd, // no password set
-		DB:           db,  // use default DB
-		DialTimeout:  10 * time.Second,
-		ReadTimeout:  30 * time.Second,
-		WriteTimeout: 30 * time.Second,
-		PoolSize:     500,
-		PoolTimeout:  30 * time.Second,
-		MaxRetries:   2,
-		IdleTimeout:  5 * time.Minute,
+	client := meilisearch.NewClient(meilisearch.ClientConfig{
+		Host:   url,
+		APIKey: key,
 	})
-	pong, err := reddb.Ping(ctx).Result()
+	_, err := client.GetKeys()
 	if err != nil {
-		log.Fatalf("initRedisSlave failed: %s", err.Error())
+		log.Fatalf("InitMeiliSearch failed: %s", err.Error())
 	}
-	fmt.Println(pong, err)
 
-	return reddb
+	return client
 }
-*/
 
 func InitES(url []string, username, password string) *elastic.Client {
 
@@ -216,18 +206,16 @@ func InitRoutinePool() *ants.Pool {
 	return pool
 }
 
-
 // 创建nats.io链接
 func InitNatsIO(urls []string, name, password string) *nats.Conn {
-	
-	
+
 	opts := nats.Options{
 		Servers:        urls,
 		User:           name,
 		Password:       password,
 		AllowReconnect: true,
 		MaxReconnect:   10,
-		PingInterval : 5 * time.Second,
+		PingInterval:   5 * time.Second,
 		ReconnectWait:  5 * time.Second,
 		Timeout:        5 * time.Second,
 	}
@@ -237,12 +225,12 @@ func InitNatsIO(urls []string, name, password string) *nats.Conn {
 		log.Fatalln(err)
 	}
 	/*
-	nc, err := nats.Connect("nats://10.170.0.9:4242")
-	if err != nil {
-		log.Fatalln(err)
-	}
+		nc, err := nats.Connect("nats://10.170.0.9:4242")
+		if err != nil {
+			log.Fatalln(err)
+		}
 	*/
-	
+
 	return nc
 }
 
@@ -283,4 +271,3 @@ func InitMqttService(addrs []string, clientID, username, password string) mqtt.C
 	return client
 }
 */
-
