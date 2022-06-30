@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/beanstalkd/go-beanstalk"
+	"github.com/ip2location/ip2location-go/v9"
 	"github.com/meilisearch/meilisearch-go"
 
 	//mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -232,6 +233,16 @@ func InitNatsIO(urls []string, name, password string) *nats.Conn {
 	*/
 
 	return nc
+}
+
+func InitIpDB(path string) *ip2location.DB {
+
+	db, err := ip2location.OpenDB(path)
+	if err != nil {
+		log.Fatalf("initIPBin failed: %s", err.Error())
+	}
+
+	return db
 }
 
 /*
