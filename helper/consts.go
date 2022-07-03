@@ -287,4 +287,5 @@ const (
 	MemberRebateModDisable         = "1274" //禁止编辑代理返水比例
 	SubPermissionEqualErr          = "1275" //上下级权限相同
 	MustApplyAfter1AM              = "1276" //请下在1点以后再申请
+	DeleteBankcardInBlackListErr   = "1277" //不允许删除黑名单中的银行卡
 )
