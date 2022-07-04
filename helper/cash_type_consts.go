@@ -84,6 +84,7 @@ const (
 	TransactionRebateCGLottery       = 650 //彩票返点
 	TransactionDepositFee            = 651 //存款手续费
 	TransactionDepositBonus          = 652 //存款优惠
+	TransactionReturnBet             = 653 //返本金(和)
 )
 
 var CashTypes = map[int]bool{
@@ -169,4 +170,5 @@ var CashTypes = map[int]bool{
 	TransactionRebateCGLottery:       true, //彩票返点
 	TransactionDepositFee:            true, //存款手续费
 	TransactionDepositBonus:          true, //存款优惠
+	TransactionReturnBet:             true, //返本金(和)
 }
