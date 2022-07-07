@@ -84,6 +84,29 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 	return reddb
 }
 
+func InitRedis(dsn string, psd string, db int) *redis.Client {
+
+	reddb := redis.NewClient(&redis.Options{
+		Username:     dsn,
+		Password:     psd, // no password set
+		DB:           db,  // use default DB
+		DialTimeout:  10 * time.Second,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+		PoolSize:     500,
+		PoolTimeout:  30 * time.Second,
+		MaxRetries:   2,
+		IdleTimeout:  5 * time.Minute,
+	})
+	pong, err := reddb.Ping(ctx).Result()
+	if err != nil {
+		log.Fatalf("InitRedis failed: %s", err.Error())
+	}
+	fmt.Println(pong, err)
+
+	return reddb
+}
+
 func InitRedisSentinelRead(dsn []string, psd, name string, db int) *redis.ClusterClient {
 
 	reddb := redis.NewFailoverClusterClient(&redis.FailoverOptions{
