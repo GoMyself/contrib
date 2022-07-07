@@ -87,7 +87,7 @@ func InitRedisSentinel(dsn []string, psd, name string, db int) *redis.Client {
 func InitRedis(dsn string, psd string, db int) *redis.Client {
 
 	reddb := redis.NewClient(&redis.Options{
-		Username:     dsn,
+		Addr:         dsn,
 		Password:     psd, // no password set
 		DB:           db,  // use default DB
 		DialTimeout:  10 * time.Second,
