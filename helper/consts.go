@@ -288,4 +288,7 @@ const (
 	SubPermissionEqualErr          = "1275" //上下级权限相同
 	MustApplyAfter1AM              = "1276" //请下在1点以后再申请
 	DeleteBankcardInBlackListErr   = "1277" //不允许删除黑名单中的银行卡
+	NotAllowAddLinkErr             = "1278" //不允许新增推广链接
+	NotAllowDeleteLinkErr          = "1279" //不允许删除推广链接
+	NotAllowModifySubRebateErr     = "1280" //不允许修改下级返水/返点比例
 )
