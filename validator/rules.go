@@ -107,10 +107,11 @@ var (
 		"77": true,
 		"76": true,
 		"78": true,
-		//Vietnamobile 092, 056, 058
-		"92": true,
-		"56": true,
-		"58": true,
+		//Vietnamobile 092, 056, 058, 052
+		"092": true,
+		"056": true,
+		"058": true,
+		"052": true,
 		//Gmobie 099, 059
 		"99": true,
 		"59": true,
