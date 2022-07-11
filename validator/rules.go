@@ -524,7 +524,7 @@ func CheckStringCommaAlpha(s string) bool {
 	}
 
 	for _, r := range s {
-		if (r < 'A' || r > 'Z') && (r < 'a' || r > 'z') && r != ',' {
+		if (r < 'A' || r > 'Z') && (r < '0' || r > '9') && (r < 'a' || r > 'z') && r != ',' {
 			return false
 		}
 	}
