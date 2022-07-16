@@ -123,25 +123,33 @@ func Update(value []byte, uid uint64) bool {
 func Offline(uids []string) error {
 
 	var (
+		cmds  []*redis.StringCmd
 		uKeys []string
 	)
+	pipe1 := client.TxPipeline()
 	for _, v := range uids {
 		uuid := fmt.Sprintf("TI%s", v)
-		uKey, err := client.Get(ctx, uuid).Result()
-		if err != nil {
-			continue
+		cmds = append(cmds, pipe1.Get(ctx, uuid))
+	}
+	_, err := pipe1.Exec(ctx)
+	_ = pipe1.Close()
+	if err != nil {
+		return err
+	}
+
+	for _, cmd := range cmds {
+		uKey, err := cmd.Result()
+		if err == nil {
+			uKeys = append(uKeys, uKey)
 		}
-
-		uKeys = append(uKeys, uKey)
 	}
 
-	pipe := client.TxPipeline()
-	defer pipe.Close()
-
+	pipe2 := client.TxPipeline()
 	for _, v := range uKeys {
-		client.Unlink(ctx, v)
+		pipe2.Unlink(ctx, v)
 	}
-	_, err := pipe.Exec(ctx)
+	_, err = pipe2.Exec(ctx)
+	_ = pipe2.Close()
 	return err
 }
 
