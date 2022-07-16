@@ -120,15 +120,30 @@ func Update(value []byte, uid uint64) bool {
 	return true
 }
 
-func Offline(uid string) error {
+func Offline(uids []string) error {
 
-	uuid := fmt.Sprintf("TI%s", uid)
-	key, err := client.Get(ctx, uuid).Result()
-	if err != nil {
-		return err
+	var (
+		uuids []string
+		uKeys []string
+	)
+	for _, v := range uuids {
+		uuid := fmt.Sprintf("TI%s", v)
+		uKey, err := client.Get(ctx, uuid).Result()
+		if err != nil {
+			continue
+		}
+
+		uKeys = append(uKeys, uKey)
 	}
 
-	return client.Unlink(ctx, key).Err()
+	pipe := client.TxPipeline()
+	defer pipe.Close()
+
+	for _, v := range uKeys {
+		client.Unlink(ctx, v)
+	}
+	_, err := pipe.Exec(ctx)
+	return err
 }
 
 func Destroy(ctx *fasthttp.RequestCtx) {
