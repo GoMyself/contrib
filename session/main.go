@@ -123,10 +123,9 @@ func Update(value []byte, uid uint64) bool {
 func Offline(uids []string) error {
 
 	var (
-		uuids []string
 		uKeys []string
 	)
-	for _, v := range uuids {
+	for _, v := range uids {
 		uuid := fmt.Sprintf("TI%s", v)
 		uKey, err := client.Get(ctx, uuid).Result()
 		if err != nil {
