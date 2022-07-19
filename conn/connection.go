@@ -4,9 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/beanstalkd/go-beanstalk"
-	"github.com/ip2location/ip2location-go/v9"
-	"github.com/meilisearch/meilisearch-go"
-
 	//mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"github.com/go-redis/redis/v8"
@@ -154,20 +151,6 @@ func InitRedisCluster(dsn []string, psd string) *redis.ClusterClient {
 	fmt.Println(pong, err)
 
 	return reddb
-}
-
-func InitMeiliSearch(url, key string) *meilisearch.Client {
-
-	client := meilisearch.NewClient(meilisearch.ClientConfig{
-		Host:   url,
-		APIKey: key,
-	})
-	_, err := client.GetKeys()
-	if err != nil {
-		log.Fatalf("InitMeiliSearch failed: %s", err.Error())
-	}
-
-	return client
 }
 
 func InitES(url []string, username, password string) *elastic.Client {
