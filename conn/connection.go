@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/beanstalkd/go-beanstalk"
-	//mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/ip2location/ip2location-go/v9"
 	"github.com/jmoiron/sqlx"
 	"github.com/nats-io/nats.go"
 	"github.com/olivere/elastic/v7"
@@ -15,7 +15,6 @@ import (
 	cpool "github.com/silenceper/pool"
 	_ "github.com/taosdata/driver-go/v2/taosRestful"
 	"log"
-	//"strings"
 	"time"
 )
 
