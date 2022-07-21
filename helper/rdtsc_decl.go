@@ -21,7 +21,7 @@ func HttpDoTimeout(requestBody []byte, method string, requestURI string, headers
 	req.Header.SetMethod(method)
 
 	switch method {
-	case "POST":
+	case "POST", "PUT":
 		req.SetBody(requestBody)
 	}
 
