@@ -297,6 +297,8 @@ const (
 	PlatformTransferCheckErr       = "1284" //场馆转账查单失败
 	PlatformTransferInSuccess      = "1285" //场馆转入成功
 	PlatformTransferInFailed       = "1286" //场馆转入失败
-	PlatformTransferOutSuccess     = "1287" //场馆转出成功
-	PlatformTransferOutFailed      = "1288" //场馆转出失败
+	PlatformTransferInPending      = "1287" //场馆转入处理中
+	PlatformTransferOutSuccess     = "1288" //场馆转出成功
+	PlatformTransferOutFailed      = "1289" //场馆转出失败
+	PlatformTransferOutPending     = "1290" //场馆转出处理中
 )
