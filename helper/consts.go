@@ -291,4 +291,7 @@ const (
 	NotAllowAddLinkErr             = "1278" //不允许新增推广链接
 	NotAllowDeleteLinkErr          = "1279" //不允许删除推广链接
 	NotAllowModifySubRebateErr     = "1280" //不允许修改下级返水/返点比例
+	PlatformLoginErr               = "1281" //场馆登陆失败
+	PlatformTransferInErr          = "1282" //场馆转入失败
+	PlatformTransferOutErr         = "1283" //场馆转出失败
 )
