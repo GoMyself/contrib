@@ -294,4 +294,5 @@ const (
 	PlatformLoginErr               = "1281" //场馆登陆失败
 	PlatformTransferInErr          = "1282" //场馆转入失败
 	PlatformTransferOutErr         = "1283" //场馆转出失败
+	PlatformTransferCheckErr       = "1284" //场馆转账查单失败
 )
