@@ -291,14 +291,15 @@ const (
 	NotAllowAddLinkErr             = "1278" //不允许新增推广链接
 	NotAllowDeleteLinkErr          = "1279" //不允许删除推广链接
 	NotAllowModifySubRebateErr     = "1280" //不允许修改下级返水/返点比例
-	PlatformLoginErr               = "1281" //场馆登陆失败
-	PlatformTransferInErr          = "1282" //场馆转入失败
-	PlatformTransferOutErr         = "1283" //场馆转出失败
-	PlatformTransferCheckErr       = "1284" //场馆转账查单失败
-	PlatformTransferInSuccess      = "1285" //场馆转入成功
-	PlatformTransferInFailed       = "1286" //场馆转入失败
-	PlatformTransferInPending      = "1287" //场馆转入处理中
-	PlatformTransferOutSuccess     = "1288" //场馆转出成功
-	PlatformTransferOutFailed      = "1289" //场馆转出失败
-	PlatformTransferOutPending     = "1290" //场馆转出处理中
+	PlatformBalanceErr             = "1281" //场馆查询余额失败
+	PlatformLoginErr               = "1282" //场馆登陆失败
+	PlatformTransferInErr          = "1283" //场馆转入失败
+	PlatformTransferOutErr         = "1284" //场馆转出失败
+	PlatformTransferCheckErr       = "1285" //场馆转账查单失败
+	PlatformTransferInSuccess      = "1286" //场馆转入成功
+	PlatformTransferInFailed       = "1287" //场馆转入失败
+	PlatformTransferInPending      = "1288" //场馆转入处理中
+	PlatformTransferOutSuccess     = "1289" //场馆转出成功
+	PlatformTransferOutFailed      = "1290" //场馆转出失败
+	PlatformTransferOutPending     = "1291" //场馆转出处理中
 )
